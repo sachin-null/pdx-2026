@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ONE SIDE LOVE – Part 3 | Paradox World</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root{--c:#fb7185;--bg:#04030a;--border:rgba(251,113,133,.12);--w:rgba(255,255,255,.85);--muted:rgba(255,255,255,.38)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--c);border-radius:2px}
+body{background:var(--bg);font-family:'Crimson Pro',serif;min-height:100vh;overflow-x:hidden;color:var(--w)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 55% 45% at 15% 20%,rgba(251,113,133,.10) 0%,transparent 65%),
+  radial-gradient(ellipse 45% 50% at 85% 80%,rgba(251,113,133,.07) 0%,transparent 60%)}
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.05) 3px,rgba(0,0,0,.05) 4px)}
+nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:54px;background:rgba(4,3,10,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Cinzel',serif;font-size:.75rem;font-weight:700;color:var(--c);letter-spacing:.2em;text-shadow:0 0 14px var(--c)}
+.nav-links{display:flex;gap:6px}
+.nav-link{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:5px 11px;border-radius:4px;letter-spacing:.08em;transition:all .2s}
+.nav-link:hover{color:var(--c);border-color:var(--c)}
+.chapter-intro{position:relative;z-index:10;text-align:center;padding:60px 20px 32px;animation:fadeDown .8s ease both}
+.part-badge{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:.58rem;letter-spacing:.28em;color:rgba(251,113,133,.6);border:1px solid rgba(251,113,133,.2);padding:5px 16px;border-radius:20px;margin-bottom:16px;background:rgba(251,113,133,.04)}
+.ch-title{font-family:'Cinzel',serif;font-size:clamp(1.5rem,5vw,2.8rem);font-weight:900;letter-spacing:.05em;margin-bottom:8px;background:linear-gradient(135deg,#fff 0%,var(--c) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(251,113,133,.25))}
+.ch-sub{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.2);letter-spacing:.2em}
+.divider{display:flex;align-items:center;gap:14px;max-width:640px;margin:0 auto;padding:0 20px 36px;position:relative;z-index:10}
+.divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(251,113,133,.18),transparent)}
+.divider-gem{font-size:.72rem;color:var(--c);text-shadow:0 0 10px var(--c);animation:pulse 3s ease infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+.story-wrap{position:relative;z-index:10;max-width:680px;margin:0 auto;padding:0 20px 40px}
+.story-content{font-size:clamp(1rem,2.2vw,1.12rem);line-height:2;color:rgba(255,255,255,.72);letter-spacing:.01em}
+.story-content p,.story-content br+br{margin-bottom:18px}
+.story-content strong{color:var(--c);text-shadow:0 0 8px rgba(251,113,133,.2)}
+.story-content b{color:var(--c);text-shadow:0 0 8px rgba(251,113,133,.2)}
+.part-nav{position:relative;z-index:10;max-width:680px;margin:0 auto;padding:28px 20px 80px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--border)}
+.part-info{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.12em;text-align:center;flex:1}
+.part-dots{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.pdot{width:8px;height:8px;border-radius:50%;border:1px solid rgba(251,113,133,.25);background:transparent;transition:all .3s}
+.pdot.active{background:var(--c);border-color:var(--c);box-shadow:0 0 8px var(--c)}
+.pdot.done{background:rgba(251,113,133,.3);border-color:rgba(251,113,133,.3)}
+.nav-btn{font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.12em;padding:11px 22px;border-radius:8px;text-decoration:none;transition:all .28s;border:1px solid var(--border);color:var(--muted);background:transparent;white-space:nowrap}
+.nav-btn:hover{color:var(--w);border-color:rgba(251,113,133,.3)}
+.nav-btn.next{color:var(--c);border-color:rgba(251,113,133,.35);background:rgba(251,113,133,.06)}
+.nav-btn.next:hover{background:rgba(251,113,133,.14);box-shadow:0 0 20px rgba(251,113,133,.2);transform:translateX(3px)}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:768px){nav{padding:0 48px}.story-wrap,.part-nav{padding-left:32px;padding-right:32px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">PARADOX WORLD</div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">↩ STORY</a>
+    <a href="/" class="nav-link">🏠</a>
+  </div>
+</nav>
+<div class="chapter-intro">
+  <div class="part-badge">✦ PART 3 OF 3 ✦</div>
+  <h1 class="ch-title">ONE SIDE LOVE</h1>
+  <div class="ch-sub">// ROMANTIC · 💘</div>
+</div>
+<div class="divider"><div class="divider-line"></div><div class="divider-gem">✦</div><div class="divider-line"></div></div>
+<div class="story-wrap">
+  <div class="story-content">
+<p class="quote">“Njan oruthane ishtapettittund…”</p>
+
+<p>……</p>
+
+<p>Aa oru message…<br>
+ente heart-il direct aayi veenu…</p>
+
+<p>Typing… delete… typing… delete…</p>
+
+<p>Njan chodhichu…</p>
+
+<p class="highlight">“Aaraa?”</p>
+
+<p>Few seconds…<br>
+reply illa…</p>
+
+<p>Pinne…</p>
+
+<p class="quote">“School friend aanu…”</p>
+
+<p>🙂💔</p>
+
+<p>Ente face-il smile undayirunnu…<br>
+pakshe ullil… full empty…</p>
+
+<p>---</p>
+
+<p>Aval continue cheythu…</p>
+
+<p class="quote">
+“Avanod parayan bayam aanu…  
+pakshe njan serious aanu…”
+</p>
+
+<p>Njan reply cheythu…</p>
+
+<p class="highlight">“Parayu… avan accept cheyyum 🙂”</p>
+
+<p>💔</p>
+
+<p>---</p>
+
+<p>Aa raathri…</p>
+
+<p>Njan online-il thanne irunnu…<br>
+pakshe oru messageum ayachilla…</p>
+
+<p>Last seen nokki…<br>
+aval online vannu poyi…</p>
+
+<p class="quote">“Njan entha avalkku?”</p>
+
+<p>---</p>
+
+<p>Next day…</p>
+
+<p>college-il aval usual pole… happy…</p>
+
+<p>Enne nokki paranju…</p>
+
+<p class="highlight">“Paranju…”</p>
+
+<p>😶</p>
+
+<p>Njan chodhichu…</p>
+
+<p class="highlight">“Enth paranju?”</p>
+
+<p>Aval chirichu…</p>
+
+<p class="quote">“He said yes…” 😍</p>
+
+<p>💔</p>
+
+<p>---</p>
+
+<p>Ellarum santhosham…<br>
+aval happy…</p>
+
+<p>Njanum chirichu…<br>
+pakshe… fake…</p>
+
+<p>---</p>
+
+<p>Days kazhinju…</p>
+
+<p>Chat kuranju…<br>
+calls illa…</p>
+
+<p>“Good morning” illa…<br>
+“Good night” illa…</p>
+
+<p>---</p>
+
+<p>Oru divasam…</p>
+
+<p>aval text ayachu…</p>
+
+<p class="quote">“Nee ente best friend aanu…”</p>
+
+<p>🙂💔</p>
+
+<p>---</p>
+
+<p>Last message…</p>
+
+<p class="highlight">“Take care…”</p>
+
+<p>---</p>
+
+<p>Ippo…</p>
+
+<p>Chat open cheyyumbol…</p>
+
+<p>scroll cheyyumbol…</p>
+
+<p>old messages mathram…</p>
+
+<p>---</p>
+
+<p class="quote">“Last seen… long ago…”</p>
+
+<p>---</p>
+
+<p>Njan arinjath oru kaaryam…</p>
+
+<p class="highlight">
+“Ellavarum nammale ishtapettalum…  
+nammal ishtapettavarkku nammal mathram mathiyakilla…”
+</p>
+
+<p>---</p>
+
+<p class="quote">
+“Oneside love…  
+silent aayi thudangi…  
+silent aayi thanne theernnu…”
+</p>
+
+<p>🥀</p>
+  </div>
+</div>
+<div class="part-nav">
+  <a href="part2.html" class="nav-btn">← BACK</a>
+  <div class="part-info">
+    ONE SIDE LOVE
+    <div class="part-dots"><div class="pdot done"></div><div class="pdot done"></div><div class="pdot active"></div></div>
+  </div>
+  <a href="/" class="nav-btn next">🏠 HOME</a>
+</div>
+<script>
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}});
+},{threshold:.06});
+document.querySelectorAll('.story-content p,.story-content br').forEach((el,i)=>{
+  if(el.tagName==='P'){
+    el.style.opacity='0';el.style.transform='translateY(16px)';
+    el.style.transition=`opacity .5s ease ${Math.min(i*.03,.5)}s, transform .5s ease ${Math.min(i*.03,.5)}s`;
+    obs.observe(el);
+  }
+});
+</script>
+</body>
+</html>

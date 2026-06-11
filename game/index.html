@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Game Zone | Paradox World</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#060816;
+  --primary:#8b5cf6;
+  --primary2:#ec4899;
+  --green:#25d366;
+  --white:#f8faff;
+  --muted:#7c7f9a;
+  --glass:rgba(255,255,255,.03);
+  --border:rgba(139,92,246,.12);
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+body{
+  background:var(--bg);
+  color:var(--white);
+  overflow-x:hidden;
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+}
+
+/* BG */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(circle at top left,rgba(139,92,246,.16),transparent 35%),
+    radial-gradient(circle at bottom right,rgba(236,72,153,.12),transparent 35%);
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='rgba(255,255,255,0.02)' stroke-width='1'%3E%3Cpath d='M0 80h160M80 0v160'/%3E%3C/g%3E%3C/svg%3E");
+  opacity:.35;
+}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:100;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;
+  background:rgba(6,8,22,.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{ display:flex;align-items:center;gap:10px; }
+.nav-icon{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;box-shadow:0 0 20px rgba(139,92,246,.35);
+}
+.nav-title{
+  font-family:'Syne',sans-serif;font-size:.95rem;
+  font-weight:700;letter-spacing:.03em;
+}
+.nav-back{
+  text-decoration:none;font-family:'Space Mono',monospace;
+  font-size:.6rem;letter-spacing:.12em;color:var(--muted);
+  border:1px solid var(--border);padding:8px 16px;
+  border-radius:100px;transition:.25s;
+}
+.nav-back:hover{
+  color:var(--white);border-color:rgba(139,92,246,.35);
+  background:rgba(139,92,246,.08);
+}
+
+/* HERO */
+.hero{
+  position:relative;z-index:10;
+  text-align:center;padding:55px 20px 40px;
+}
+.hero-tag{
+  display:inline-block;padding:6px 18px;border-radius:100px;
+  border:1px solid rgba(139,92,246,.22);background:rgba(139,92,246,.05);
+  color:var(--primary);font-family:'Space Mono',monospace;
+  font-size:.6rem;letter-spacing:.18em;margin-bottom:18px;
+  animation:fadeDown .6s ease both;
+}
+.hero-title{
+  font-family:'Syne',sans-serif;font-size:clamp(2.5rem,9vw,5rem);
+  line-height:.9;font-weight:800;margin-bottom:12px;
+  background:linear-gradient(135deg,#fff,var(--primary2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:fadeDown .7s ease .06s both;
+}
+.hero-sub{
+  color:var(--muted);font-size:.92rem;
+  max-width:500px;margin:auto;line-height:1.8;
+  animation:fadeDown .7s ease .1s both;
+}
+
+/* GRID */
+.grid{
+  position:relative;z-index:10;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+  max-width:1200px;margin:auto;
+  padding:20px 20px 40px;
+}
+
+/* CARD */
+.card{
+  position:relative;overflow:hidden;
+  border-radius:22px;background:var(--glass);
+  border:1px solid var(--border);
+  transition:.35s cubic-bezier(.23,1,.32,1);
+  backdrop-filter:blur(14px);
+  animation:fadeUp .5s ease both;
+}
+.card:hover{
+  transform:translateY(-8px);
+  border-color:rgba(139,92,246,.4);
+  box-shadow:0 20px 50px rgba(0,0,0,.45),0 0 40px rgba(139,92,246,.18);
+}
+/* Top accent line on hover */
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:2px;z-index:3;
+  background:linear-gradient(90deg,transparent,var(--primary),var(--primary2),transparent);
+  transform:scaleX(0);transition:transform .35s ease;
+}
+.card:hover::before{ transform:scaleX(1); }
+
+/* IMAGE */
+.card-img{
+  position:relative;height:180px;overflow:hidden;
+}
+.card-img img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .5s ease,filter .4s;
+  filter:brightness(.7) saturate(1.05);
+}
+.card:hover img{ transform:scale(1.08);filter:brightness(.9) saturate(1.1); }
+.card-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(6,8,22,.96) 0%,rgba(6,8,22,.1) 55%,transparent 100%);
+}
+
+/* Gradient fallback when image fails */
+.card-img.snake-bg  { background:linear-gradient(135deg,#001a08,#060816); }
+.card-img.rps-bg    { background:linear-gradient(135deg,#1a0800,#060816); }
+.card-img.tap-bg    { background:linear-gradient(135deg,#1a1000,#060816); }
+.card-img.guess-bg  { background:linear-gradient(135deg,#0d0020,#060816); }
+.card-img.hack-bg   { background:linear-gradient(135deg,#001a0a,#060816); }
+.card-img.brain-bg  { background:linear-gradient(135deg,#1a0010,#060816); }
+
+/* CARD CONTENT */
+.card-content{ padding:18px; }
+.card-tag{
+  font-family:'Space Mono',monospace;font-size:.55rem;
+  letter-spacing:.16em;color:rgba(255,255,255,.32);
+  margin-bottom:8px;text-transform:uppercase;
+}
+.card h3{
+  font-family:'Syne',sans-serif;font-size:1.15rem;
+  margin-bottom:10px;font-weight:700;
+}
+.card p{
+  color:var(--muted);font-size:.83rem;
+  line-height:1.65;margin-bottom:18px;
+}
+
+/* PLAY BUTTON */
+.play-btn{
+  width:100%;border:none;padding:13px;border-radius:14px;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  color:white;cursor:pointer;font-family:'Space Mono',monospace;
+  font-size:.65rem;letter-spacing:.12em;transition:.25s;font-weight:700;
+  position:relative;overflow:hidden;
+}
+.play-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--primary2),var(--primary));
+  opacity:0;transition:opacity .3s;
+}
+.play-btn:hover::before{ opacity:1; }
+.play-btn span{ position:relative;z-index:1; }
+.play-btn:hover{
+  transform:scale(1.02);
+  box-shadow:0 10px 28px rgba(139,92,246,.4);
+}
+
+/* EXTRA BUTTONS */
+.extra-buttons{
+  position:relative;z-index:10;
+  display:flex;gap:14px;justify-content:center;
+  align-items:center;flex-wrap:wrap;
+  padding:10px 20px 50px;
+}
+.extra-btn{
+  text-decoration:none;font-family:'Space Mono',monospace;
+  font-size:.65rem;letter-spacing:.08em;
+  padding:14px 24px;border-radius:100px;
+  transition:all .25s ease;border:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+.extra-btn.creator{
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  color:#000;font-weight:700;
+  box-shadow:0 8px 24px rgba(37,211,102,.18);
+  border-color:transparent;
+}
+.extra-btn.creator:hover{
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 14px 36px rgba(37,211,102,.35);
+}
+.extra-btn.explore{
+  background:rgba(255,255,255,.03);color:var(--white);
+}
+.extra-btn.explore:hover{
+  border-color:rgba(139,92,246,.35);
+  background:rgba(139,92,246,.08);
+  transform:translateY(-3px);
+}
+
+/* FOOTER */
+.footer{
+  position:relative;z-index:10;
+  text-align:center;padding:28px 20px;
+  border-top:1px solid var(--border);
+  color:rgba(255,255,255,.18);
+  font-family:'Space Mono',monospace;
+  font-size:.58rem;letter-spacing:.15em;
+}
+
+/* ANIMATIONS */
+@keyframes fadeDown{ from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)} }
+@keyframes fadeUp  { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+
+/* MOBILE */
+@media(max-width:768px){
+  .hero{ padding-top:45px; }
+  .grid{ gap:16px;padding:16px 16px 32px; }
+  nav{ padding:0 16px; }
+}
+@media(max-width:480px){
+  .grid{ grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-icon">🎮</div>
+    <div class="nav-title">GAME ZONE</div>
+  </div>
+  <a href="/" class="nav-back">← HOME</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">✦ PARADOX GAME ZONE ✦</div>
+  <h1 class="hero-title">FUN<br/>GAMES</h1>
+  <p class="hero-sub">Play mini games, challenges and fun experiences inside the Paradox World universe ⚡</p>
+</div>
+
+<!-- GRID -->
+<div class="grid">
+
+  <!-- SNAKE -->
+  <div class="card" style="animation-delay:.04s">
+    <div class="card-img snake-bg">
+      <img src="../assets/image/game/snake.jpg" alt="Snake Game"
+        onerror="this.style.display='none'"/>
+    </div>
+    <div class="card-content">
+      <div class="card-tag">Classic · Arcade</div>
+      <h3>Snake Game 🐍</h3>
+      <p>Eat, grow and survive as long as possible in this classic retro snake challenge.</p>
+      <button class="play-btn" onclick="location.href='snake.html'">
+        <span>PLAY NOW →</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ROCK PAPER -->
+  <div class="card" style="animation-delay:.08s">
+    <div class="card-img rps-bg">
+      <img src="../assets/image/game/rps.jpg" alt="Rock Paper Scissors"
+        onerror="this.style.display='none'"/>
+    </div>
+    <div class="card-content">
+      <div class="card-tag">Battle · Fun</div>
+      <h3>Rock Paper Scissors ✊</h3>
+      <p>Challenge the AI and test your luck in this fast paced hand battle game.</p>
+      <button class="play-btn" onclick="location.href='rps.html'">
+        <span>PLAY NOW →</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- TAP FAST -->
+  <div class="card" style="animation-delay:.12s">
+    <div class="card-img tap-bg">
+      <img src="../assets/image/game/tap.jpg" alt="Tap Fast"
+        onerror="this.style.display='none'"/>
+    </div>
+    <div class="card-content">
+      <div class="card-tag">Speed · Reflex</div>
+      <h3>Tap Fast ⚡</h3>
+      <p>Tap as quickly as possible before the timer ends and beat your best score.</p>
+      <button class="play-btn" onclick="location.href='tap.html'">
+        <span>PLAY NOW →</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- GUESS NUMBER -->
+  <div class="card" style="animation-delay:.16s">
+    <div class="card-img guess-bg">
+      <img src="../assets/image/game/guess.jpg" alt="Guess Number"
+        onerror="this.style.display='none'"/>
+    </div>
+    <div class="card-content">
+      <div class="card-tag">Puzzle · Mind</div>
+      <h3>Guess Number 🎯</h3>
+      <p>Use logic and luck to guess the hidden number before your attempts run out.</p>
+      <button class="play-btn" onclick="location.href='guess.html'">
+        <span>PLAY NOW →</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- HACKING SIM -->
+  <div class="card" style="animation-delay:.20s">
+    <div class="card-img hack-bg">
+      <img src="../assets/image/game/hack.jpg" alt="Hacking Simulator"
+        onerror="this.style.display='none'"/>
+    </div>
+    <div class="card-content">
+      <div class="card-tag">Cyber · Simulator</div>
+      <h3>Hacking Simulator 💻</h3>
+      <p>Enter the digital world and simulate futuristic hacking terminals and systems.</p>
+      <button class="play-btn" onclick="location.href='hacking.html'">
+        <span>ENTER →</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- BRAIN TEST -->
+  <div class="card" style="animation-delay:.24s">
+    <div class="card-img brain-bg">
+      <img src="../assets/image/game/brain.jpg" alt="Brain Test"
+        onerror="this.style.display='none'"/>
+    </div>
+    <div class="card-content">
+      <div class="card-tag">IQ · Challenge</div>
+      <h3>Brain Test 🧠</h3>
+      <p>Solve tricky questions and challenge your brain with fun mind bending puzzles.</p>
+      <button class="play-btn" onclick="location.href='brain.html'">
+        <span>PLAY →</span>
+      </button>
+    </div>
+  </div>
+
+</div><!-- GRID END -->
+
+<!-- EXTRA BUTTONS -->
+<div class="extra-buttons">
+  <a href="https://wa.me/919037272275" target="_blank" class="extra-btn creator">
+    💬 Message Creator
+  </a>
+  <a href="/" class="extra-btn explore">
+    ✨ Explore More
+  </a>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">PARADOX WORLD · GAME ZONE // 2026</div>
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if(e.isIntersecting){
+      setTimeout(() => {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        obs.unobserve(e.target);
+      }, i * 60);
+    }
+  });
+}, {threshold: .08});
+
+document.querySelectorAll('.card').forEach(c => {
+  c.style.opacity = '0';
+  c.style.transform = 'translateY(24px)';
+  c.style.transition = 'opacity .5s ease, transform .5s ease, border-color .35s, box-shadow .35s, transform .35s cubic-bezier(.23,1,.32,1)';
+  obs.observe(c);
+});
+</script>
+</body>
+</html>

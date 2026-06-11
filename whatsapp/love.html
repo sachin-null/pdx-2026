@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love Calculator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:linear-gradient(135deg,#ff416c,#ff4b2b);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:white;
+}
+
+.box{
+  width:90%;
+  max-width:400px;
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(15px);
+  padding:25px;
+  border-radius:15px;
+  text-align:center;
+}
+
+h2{margin-bottom:10px;}
+
+.option{
+  background:#ffffff20;
+  padding:10px;
+  margin:8px 0;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.option:hover{
+  background:white;
+  color:black;
+}
+
+/* RESULT */
+.result{
+  font-size:22px;
+  margin-top:15px;
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:8px;
+  background:white;
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* BACK */
+.back-btn{
+  position:fixed;
+  top:20px;
+  left:20px;
+  background:white;
+  color:black;
+  padding:10px;
+  border-radius:50%;
+  text-decoration:none;
+}
+
+/* HIDE */
+.hidden{display:none;}
+</style>
+</head>
+
+<body>
+
+<a href="index.html" class="back-btn">←</a>
+
+<div class="box" id="quiz">
+
+<h2>💖 Love Calculator</h2>
+
+<p id="question"></p>
+<div id="options"></div>
+
+</div>
+
+<div class="box hidden" id="resultBox">
+  <h2>Result 💘</h2>
+  <div class="result" id="result"></div>
+  <button onclick="location.reload()">Try Again 😍</button>
+</div>
+
+<script>
+
+let index=0;
+let score=0;
+
+const questions=[
+{q:"Are you single? 🙂",o:["Yes 😎","No 😏"]},
+{q:"Do you have a besty? 😅",o:["Yes ❤️","No 😐"]},
+{q:"Do you have a crush? 🥰",o:["Yes 😍","No 😅"]},
+{q:"Do you believe in love? 💕",o:["Yes ❤️","No 🤷"]},
+{q:"Ever been in relationship? 😏",o:["Yes 😎","No 😇"]}
+];
+
+function loadQ(){
+let q=questions[index];
+document.getElementById("question").innerText=q.q;
+
+let html="";
+q.o.forEach(op=>{
+html+=`<div class="option" onclick="selectAns()">${op}</div>`;
+});
+
+document.getElementById("options").innerHTML=html;
+}
+
+function selectAns(){
+score+=Math.floor(Math.random()*20)+10; // random add
+index++;
+
+if(index<questions.length){
+loadQ();
+}else{
+showResult();
+}
+}
+
+function showResult(){
+document.getElementById("quiz").classList.add("hidden");
+document.getElementById("resultBox").classList.remove("hidden");
+
+let percent=Math.min(score,100);
+
+let text="";
+
+if(percent>80){
+text="🔥 True Love Loading... "+percent+"% 💖";
+}else if(percent>60){
+text="😍 Strong Connection "+percent+"% 💕";
+}else if(percent>40){
+text="😅 Little Crush "+percent+"% 💘";
+}else{
+text="😂 Single Forever "+percent+"% 😜";
+}
+
+document.getElementById("result").innerText=text;
+}
+
+loadQ();
+
+</script>
+
+</body>
+</html>

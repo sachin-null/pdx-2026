@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:white;
+}
+
+/* MAIN BOX */
+.box{
+  width:90%;
+  max-width:400px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(15px);
+  padding:25px;
+  border-radius:15px;
+  text-align:center;
+  animation:fade 0.5s ease;
+}
+
+@keyframes fade{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1;}
+}
+
+/* INPUT */
+input,select{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border:none;
+  border-radius:8px;
+  outline:none;
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:8px;
+  background:#25d366;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  transform:scale(1.05);
+  background:#1ebe5d;
+}
+
+/* PROGRESS BAR */
+.progress{
+  height:6px;
+  background:#333;
+  border-radius:10px;
+  margin-bottom:15px;
+  overflow:hidden;
+}
+
+.progress div{
+  height:100%;
+  width:0%;
+  background:#25d366;
+  transition:0.4s;
+}
+
+/* HIDE */
+.hidden{display:none;}
+.back-btn{
+  position:fixed;
+  top:20px;
+  left:20px;
+  background:#25d366;
+  color:black;
+  padding:10px 14px;
+  border-radius:50%;
+  text-decoration:none;
+  font-size:18px;
+  z-index:2000;
+  box-shadow:0 0 10px rgba(37,211,102,0.6);
+  transition:0.3s;
+}
+
+.back-btn:hover{
+  transform:scale(1.1);
+  background:#1ebe5d;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box" id="start">
+  <h2>Enter Your Name 😎</h2>
+  <input id="name" placeholder="Your name">
+  <button onclick="start()">Start Quiz</button>
+</div>
+
+<div class="box hidden" id="quiz">
+  <div class="progress"><div id="bar"></div></div>
+  <h3 id="title"></h3>
+  <p id="question"></p>
+  <select id="answer"></select>
+  <button onclick="nextQ()">Next</button>
+</div>
+
+<div class="box hidden" id="share">
+  <h3>🔥 Share with Friends</h3>
+  <button onclick="shareWhatsApp()">Share on WhatsApp</button>
+  <button onclick="startGuess()">Test Friend</button>
+</div>
+
+<div class="box hidden" id="guess">
+  <div class="progress"><div id="bar2"></div></div>
+  <h3 id="guessTitle"></h3>
+  <p id="gq"></p>
+  <select id="gans"></select>
+  <button onclick="nextGuess()">Next</button>
+</div>
+
+<div class="box hidden" id="result">
+  <h2 id="score"></h2>
+  <button onclick="location.reload()">Create Your Own 🔁</button>
+</div>
+<a href="index.html" class="back-btn">←</a>
+
+<script>
+let name="",index=0,answers=[],score=0;
+
+const questions=[
+{q:"Favorite Chocolate 🍫",o:["Dairy Milk","KitKat","Five Star","Other"]},
+{q:"Favorite Food 🍗",o:["Mandhi","Biriyani","Porotta & Beef","Sadya"]},
+{q:"Favorite Place 🌍",o:["Beach","Hill","City","Home"]},
+{q:"Favorite Color 🎨",o:["Black","Blue","Red","White"]},
+{q:"Biggest Fear 😨",o:["Ghost","Ex","Besty","You 🤭"]},
+{q:"Favorite Time ⏰",o:["Morning","Night","Midnight","Evening"]}
+];
+
+function start(){
+name=document.getElementById("name").value;
+if(name=="") return alert("Enter name");
+
+document.getElementById("start").classList.add("hidden");
+document.getElementById("quiz").classList.remove("hidden");
+document.getElementById("title").innerText=name+"'s Quiz";
+loadQ();
+}
+
+function loadQ(){
+let q=questions[index];
+document.getElementById("question").innerText=q.q;
+
+let sel=document.getElementById("answer");
+sel.innerHTML="";
+q.o.forEach(op=> sel.innerHTML+=`<option>${op}</option>`);
+
+// progress
+document.getElementById("bar").style.width=((index+1)/questions.length)*100+"%";
+}
+
+function nextQ(){
+answers.push(document.getElementById("answer").value);
+index++;
+
+if(index<questions.length){
+loadQ();
+}else{
+document.getElementById("quiz").classList.add("hidden");
+document.getElementById("share").classList.remove("hidden");
+}
+}
+
+function shareWhatsApp(){
+let text="🔥 Try this quiz about "+name+" 😎👇\n"+window.location.href;
+window.open("https://wa.me/?text="+encodeURIComponent(text));
+}
+
+// GUESS
+let gIndex=0;
+
+function startGuess(){
+document.getElementById("share").classList.add("hidden");
+document.getElementById("guess").classList.remove("hidden");
+document.getElementById("guessTitle").innerText="About "+name;
+loadGuess();
+}
+
+function loadGuess(){
+let q=questions[gIndex];
+document.getElementById("gq").innerText=q.q;
+
+let sel=document.getElementById("gans");
+sel.innerHTML="";
+q.o.forEach(op=> sel.innerHTML+=`<option>${op}</option>`);
+
+// progress
+document.getElementById("bar2").style.width=((gIndex+1)/questions.length)*100+"%";
+}
+
+function nextGuess(){
+if(answers[gIndex]==document.getElementById("gans").value) score++;
+gIndex++;
+
+if(gIndex<questions.length){
+loadGuess();
+}else{
+let percent=Math.round((score/questions.length)*100);
+document.getElementById("guess").classList.add("hidden");
+document.getElementById("result").classList.remove("hidden");
+
+let text="You got "+percent+"% 😎";
+
+if(percent==100) text="Best Friend 🏆🔥";
+else if(percent>60) text="Close Friend 🤝";
+else text="Just Friend 😅";
+
+document.getElementById("score").innerText=text;
+}
+}
+</script>
+
+</body>
+</html>

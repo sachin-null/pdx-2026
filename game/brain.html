@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brain Test Game</title>
+
+<style>
+body{
+  background:#0b0f1a;
+  color:white;
+  font-family:Poppins,sans-serif;
+  text-align:center;
+  padding:20px;
+}
+
+h1{
+  margin-bottom:10px;
+  color:#00eaff;
+}
+
+.timer{
+  font-size:18px;
+  margin-bottom:15px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+  max-width:400px;
+  margin:auto;
+}
+
+.box{
+  background:#111;
+  border-radius:10px;
+  padding:20px;
+  font-size:20px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.box:hover{
+  background:#00eaff;
+  color:black;
+}
+
+.hidden{
+  background:#222;
+  color:transparent;
+}
+
+.result{
+  margin-top:20px;
+  font-size:20px;
+}
+
+button{
+  margin-top:15px;
+  padding:10px 20px;
+  border:none;
+  border-radius:6px;
+  background:#00eaff;
+  cursor:pointer;
+}
+
+/* BACK BUTTON */
+.back{
+  position:absolute;
+  top:15px;
+  left:15px;
+  color:#00eaff;
+  text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<a href="index.html" class="back">⬅ Back</a>
+
+<h1>🧠 Brain Test</h1>
+<p>Remember the numbers in order!</p>
+<div class="timer">Time: <span id="time">5</span>s</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="result" id="result"></div>
+<button onclick="startGame()">Restart</button>
+
+<script>
+let numbers = [];
+let current = 1;
+let timer = 5;
+let clickable = false;
+
+const grid = document.getElementById("grid");
+const result = document.getElementById("result");
+const timeEl = document.getElementById("time");
+
+function startGame(){
+  grid.innerHTML="";
+  result.innerHTML="";
+  numbers = shuffle([...Array(15).keys()].map(x=>x+1));
+  current = 1;
+  timer = 5;
+  clickable = false;
+
+  timeEl.innerText = timer;
+
+  numbers.forEach(num=>{
+    const div = document.createElement("div");
+    div.className="box";
+    div.innerText=num;
+    div.onclick=()=>check(num,div);
+    grid.appendChild(div);
+  });
+
+  let countdown = setInterval(()=>{
+    timer--;
+    timeEl.innerText = timer;
+
+    if(timer===0){
+      clearInterval(countdown);
+      hideNumbers();
+    }
+  },1000);
+}
+
+function hideNumbers(){
+  document.querySelectorAll(".box").forEach(box=>{
+    box.classList.add("hidden");
+  });
+  clickable = true;
+}
+
+function check(num,el){
+  if(!clickable) return;
+
+  if(num === current){
+    el.style.background="#00ff88";
+    el.innerText=num;
+    current++;
+
+    if(current>15){
+      result.innerHTML="🎉 You WIN!";
+      clickable=false;
+    }
+  }else{
+    result.innerHTML="❌ Wrong! You Lose";
+    clickable=false;
+  }
+}
+
+function shuffle(arr){
+  return arr.sort(()=>Math.random()-0.5);
+}
+
+startGame();
+</script>
+
+</body>
+</html>

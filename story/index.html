@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Story World | Paradox World</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#07030f;
+  --bg2:#0e0820;
+  --sci:#00d4ff;
+  --fan:#c084fc;
+  --mys:#fbbf24;
+  --hor:#f43f5e;
+  --rom:#fb7185;
+  --all:#a78bfa;
+  --border:rgba(255,255,255,0.07);
+  --w:rgba(255,255,255,0.85);
+  --muted:rgba(255,255,255,0.4);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--all);border-radius:2px}
+
+body{
+  background:var(--bg);color:var(--w);
+  font-family:'Rajdhani',sans-serif;
+  min-height:100vh;overflow-x:hidden;
+}
+
+/* ANIMATED GRADIENT BG */
+.grad-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 55% 45% at 15% 25%,rgba(192,132,252,.09) 0%,transparent 65%),
+    radial-gradient(ellipse 40% 50% at 85% 70%,rgba(244,63,94,.07) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 40% at 60% 10%,rgba(0,212,255,.06) 0%,transparent 60%);
+  animation:gradShift 18s ease-in-out infinite alternate;
+}
+@keyframes gradShift{
+  0%{opacity:.8}50%{opacity:1}100%{opacity:.7}
+}
+
+/* NOISE */
+body::before{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size:180px;opacity:.5;
+}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:58px;
+  background:rgba(7,3,15,.88);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Orbitron',monospace;font-size:.8rem;font-weight:900;
+  color:var(--all);letter-spacing:.18em;text-shadow:0 0 16px var(--all);
+}
+.nav-back{
+  font-family:'Share Tech Mono',monospace;font-size:.68rem;
+  color:var(--muted);text-decoration:none;
+  border:1px solid var(--border);padding:6px 14px;border-radius:4px;
+  letter-spacing:.1em;transition:all .2s;
+}
+.nav-back:hover{color:var(--w);border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.04)}
+
+/* HERO */
+.hero{
+  position:relative;z-index:10;
+  text-align:center;padding:56px 20px 0;
+  animation:fadeDown .7s ease both;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Share Tech Mono',monospace;font-size:.62rem;
+  letter-spacing:.3em;color:var(--muted);margin-bottom:18px;
+}
+.hero-eyebrow span{display:block;width:28px;height:1px;background:var(--border)}
+.hero-title{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(2.4rem,8vw,6rem);font-weight:900;
+  letter-spacing:.06em;line-height:.92;margin-bottom:14px;
+  background:linear-gradient(135deg,#fff 0%,var(--all) 50%,var(--rom) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 30px rgba(167,139,250,.2));
+}
+.hero-sub{
+  font-family:'Share Tech Mono',monospace;font-size:.7rem;
+  color:var(--muted);letter-spacing:.18em;margin-bottom:48px;
+}
+
+/* GENRE SELECTOR — big clickable buttons */
+.genre-wrap{
+  position:relative;z-index:10;
+  padding:0 16px 32px;
+  animation:fadeDown .7s ease .08s both;
+}
+.genre-label{
+  font-family:'Share Tech Mono',monospace;font-size:.58rem;
+  color:rgba(255,255,255,.2);letter-spacing:.2em;
+  text-align:center;margin-bottom:14px;
+}
+.genre-row{
+  display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+}
+.genre-btn{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:12px 18px;border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.03);
+  cursor:pointer;transition:all .28s;
+  position:relative;overflow:hidden;
+  min-width:72px;
+}
+.genre-btn::before{
+  content:'';position:absolute;inset:0;border-radius:12px;
+  opacity:0;transition:opacity .3s;
+}
+.genre-btn:active{transform:scale(.95)}
+.genre-btn .g-icon{font-size:1.4rem;line-height:1}
+.genre-btn .g-name{
+  font-family:'Share Tech Mono',monospace;font-size:.55rem;
+  letter-spacing:.12em;color:var(--muted);transition:color .25s;
+}
+
+/* Active states per genre */
+.genre-btn.active.all      {border-color:var(--all);background:rgba(167,139,250,.1);box-shadow:0 0 20px rgba(167,139,250,.18)}
+.genre-btn.active.all      .g-name{color:var(--all)}
+.genre-btn.active.sci      {border-color:var(--sci);background:rgba(0,212,255,.08);box-shadow:0 0 20px rgba(0,212,255,.18)}
+.genre-btn.active.sci      .g-name{color:var(--sci)}
+.genre-btn.active.fan      {border-color:var(--fan);background:rgba(192,132,252,.08);box-shadow:0 0 20px rgba(192,132,252,.18)}
+.genre-btn.active.fan      .g-name{color:var(--fan)}
+.genre-btn.active.mys      {border-color:var(--mys);background:rgba(251,191,36,.07);box-shadow:0 0 20px rgba(251,191,36,.15)}
+.genre-btn.active.mys      .g-name{color:var(--mys)}
+.genre-btn.active.hor      {border-color:var(--hor);background:rgba(244,63,94,.08);box-shadow:0 0 20px rgba(244,63,94,.18)}
+.genre-btn.active.hor      .g-name{color:var(--hor)}
+.genre-btn.active.rom      {border-color:var(--rom);background:rgba(251,113,133,.08);box-shadow:0 0 20px rgba(251,113,133,.18)}
+.genre-btn.active.rom      .g-name{color:var(--rom)}
+
+/* SEARCH */
+.search-wrap{
+  position:relative;z-index:10;
+  max-width:440px;margin:0 auto;padding:0 16px 28px;
+  animation:fadeDown .7s ease .12s both;
+}
+.search-input{
+  width:100%;padding:11px 40px 11px 16px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);border-radius:8px;
+  color:var(--w);font-family:'Share Tech Mono',monospace;
+  font-size:.75rem;letter-spacing:.07em;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.search-input::placeholder{color:rgba(255,255,255,.18)}
+.search-input:focus{border-color:rgba(255,255,255,.18);box-shadow:0 0 20px rgba(167,139,250,.08)}
+.s-icon{position:absolute;right:30px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;font-size:.85rem}
+
+/* COUNT + DIVIDER */
+.count-row{
+  position:relative;z-index:10;
+  max-width:1060px;margin:0 auto;
+  padding:0 20px 14px;
+  display:flex;align-items:center;gap:12px;
+  font-family:'Share Tech Mono',monospace;font-size:.6rem;
+  color:var(--muted);letter-spacing:.15em;
+}
+.count-row::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* CARDS GRID */
+.grid-wrap{
+  position:relative;z-index:10;
+  max-width:1060px;margin:0 auto;
+  padding:0 12px 100px;
+}
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+/* STORY CARD */
+.scard{
+  position:relative;display:block;
+  text-decoration:none;color:inherit;
+  border-radius:14px;overflow:hidden;
+  border:1px solid var(--border);
+  background:var(--bg2);
+  transition:transform .3s cubic-bezier(.23,1,.32,1), box-shadow .3s, border-color .3s;
+  animation:fadeUp .45s ease both;
+  -webkit-tap-highlight-color:transparent;
+}
+.scard:active{transform:scale(.97)}
+
+/* genre colored border on hover */
+.scard[data-g="Science"]:hover  {border-color:rgba(0,212,255,.4);box-shadow:0 18px 48px rgba(0,0,0,.5),0 0 28px rgba(0,212,255,.1);transform:translateY(-8px) scale(1.01)}
+.scard[data-g="Fantasy"]:hover  {border-color:rgba(192,132,252,.4);box-shadow:0 18px 48px rgba(0,0,0,.5),0 0 28px rgba(192,132,252,.1);transform:translateY(-8px) scale(1.01)}
+.scard[data-g="Mystery"]:hover  {border-color:rgba(251,191,36,.4);box-shadow:0 18px 48px rgba(0,0,0,.5),0 0 28px rgba(251,191,36,.08);transform:translateY(-8px) scale(1.01)}
+.scard[data-g="Horror"]:hover   {border-color:rgba(244,63,94,.4);box-shadow:0 18px 48px rgba(0,0,0,.5),0 0 28px rgba(244,63,94,.12);transform:translateY(-8px) scale(1.01)}
+.scard[data-g="Romantic"]:hover {border-color:rgba(251,113,133,.4);box-shadow:0 18px 48px rgba(0,0,0,.5),0 0 28px rgba(251,113,133,.1);transform:translateY(-8px) scale(1.01)}
+
+/* Image */
+.scard-img-wrap{position:relative;overflow:hidden;height:118px}
+@media(min-width:480px){.scard-img-wrap{height:140px}}
+@media(min-width:768px){.scard-img-wrap{height:162px}}
+
+.scard-img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .45s cubic-bezier(.23,1,.32,1),filter .45s;
+  filter:brightness(.72) saturate(1.1);
+}
+.scard:hover .scard-img{transform:scale(1.08);filter:brightness(.9) saturate(1.25)}
+
+.scard-img-wrap::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(14,8,32,.96) 0%,rgba(14,8,32,.25) 55%,transparent 100%);
+}
+
+/* Genre badge */
+.scard-badge{
+  position:absolute;top:10px;left:10px;z-index:2;
+  font-family:'Share Tech Mono',monospace;font-size:.56rem;
+  letter-spacing:.1em;padding:3px 10px;border-radius:20px;
+  background:rgba(7,3,15,.78);backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.1);
+}
+.scard[data-g="Science"]  .scard-badge{color:var(--sci);border-color:rgba(0,212,255,.25)}
+.scard[data-g="Fantasy"]  .scard-badge{color:var(--fan);border-color:rgba(192,132,252,.25)}
+.scard[data-g="Mystery"]  .scard-badge{color:var(--mys);border-color:rgba(251,191,36,.25)}
+.scard[data-g="Horror"]   .scard-badge{color:var(--hor);border-color:rgba(244,63,94,.25)}
+.scard[data-g="Romantic"] .scard-badge{color:var(--rom);border-color:rgba(251,113,133,.25)}
+
+.scard-num{
+  position:absolute;top:10px;right:10px;z-index:2;
+  font-family:'Orbitron',monospace;font-size:.58rem;
+  color:rgba(255,255,255,.3);
+  background:rgba(7,3,15,.7);border:1px solid rgba(255,255,255,.08);
+  width:26px;height:26px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* Body */
+.scard-body{padding:11px 13px 15px;position:relative}
+.scard-title{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(.65rem,2.1vw,.8rem);font-weight:700;
+  color:#fff;letter-spacing:.04em;line-height:1.22;margin-bottom:4px;
+}
+.scard-desc{
+  font-size:.78rem;font-weight:600;
+  color:rgba(255,255,255,.42);line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
+}
+.scard-arrow{
+  position:absolute;bottom:13px;right:13px;
+  font-size:.75rem;opacity:.3;transition:transform .2s,opacity .2s;
+}
+.scard:hover .scard-arrow{transform:translateX(4px);opacity:.8}
+.scard[data-g="Science"]  .scard-arrow{color:var(--sci)}
+.scard[data-g="Fantasy"]  .scard-arrow{color:var(--fan)}
+.scard[data-g="Mystery"]  .scard-arrow{color:var(--mys)}
+.scard[data-g="Horror"]   .scard-arrow{color:var(--hor)}
+.scard[data-g="Romantic"] .scard-arrow{color:var(--rom)}
+
+/* EMPTY */
+.empty{
+  grid-column:1/-1;text-align:center;padding:70px 20px;
+  font-family:'Share Tech Mono',monospace;font-size:.78rem;
+  color:rgba(255,255,255,.18);letter-spacing:.12em;
+  animation:fadeUp .5s ease both;
+}
+.empty-icon{font-size:3rem;display:block;margin-bottom:14px;opacity:.35}
+
+/* SCROLL TOP */
+.scroll-top{
+  position:fixed;bottom:24px;right:20px;z-index:200;
+  width:42px;height:42px;border-radius:50%;
+  background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3);
+  color:var(--all);font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;opacity:0;pointer-events:none;
+  transition:opacity .3s,transform .3s,background .2s;
+  box-shadow:0 0 18px rgba(167,139,250,.15);
+}
+.scroll-top.show{opacity:1;pointer-events:all}
+.scroll-top:hover{background:var(--all);color:#fff;transform:translateY(-3px)}
+
+@keyframes fadeDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp  {from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)}}
+
+@media(min-width:600px){
+  .cards-grid{grid-template-columns:repeat(3,1fr);gap:15px}
+  .grid-wrap{padding:0 20px 100px}
+  .count-row{padding:0 20px 14px}
+}
+@media(min-width:900px){
+  .cards-grid{grid-template-columns:repeat(4,1fr);gap:18px}
+  .grid-wrap,.count-row{padding-left:32px;padding-right:32px}
+  nav{padding:0 48px}
+}
+
+/* ══ STORY THUMBNAILS ══ */
+.scard-img-wrap {
+  position: relative;
+  overflow: hidden;
+  height: 118px;
+}
+@media(min-width:480px){.scard-img-wrap{height:140px}}
+@media(min-width:768px){.scard-img-wrap{height:162px}}
+
+/* Gradient thumbnail base */
+.sthumb {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+/* Big emoji icon */
+.sthumb-icon {
+  font-size: clamp(2.5rem, 8vw, 3.5rem);
+  position: relative; z-index: 2;
+  filter: drop-shadow(0 0 20px var(--ti-accent));
+  animation: iconFloat 4s ease-in-out infinite alternate;
+  user-select: none;
+}
+@keyframes iconFloat {
+  from { transform: translateY(0) scale(1); }
+  to   { transform: translateY(-8px) scale(1.05); }
+}
+
+/* Accent glow circle behind icon */
+.sthumb-glow {
+  position: absolute; z-index: 1;
+  width: 100px; height: 100px; border-radius: 50%;
+  background: radial-gradient(circle, var(--ti-accent) 0%, transparent 70%);
+  opacity: 0.25; filter: blur(16px);
+  animation: glowPulse 3s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%,100%{opacity:.2;transform:scale(1)} 50%{opacity:.4;transform:scale(1.2)}
+}
+
+/* FX: star particles */
+.sthumb.fx-star::before {
+  content: '✦ ✦ ✦';
+  position: absolute; bottom: 8px; right: 10px; z-index: 2;
+  font-size: .5rem; color: var(--ti-accent); opacity: .35;
+  letter-spacing: 4px; animation: starTwinkle 2s ease infinite;
+}
+@keyframes starTwinkle { 0%,100%{opacity:.2}50%{opacity:.5} }
+
+/* FX: grid lines */
+.sthumb.fx-grid::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 1;
+  background-image:
+    linear-gradient(var(--ti-accent) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ti-accent) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.04;
+}
+
+/* FX: pulse ring */
+.sthumb.fx-pulse::before {
+  content: '';
+  position: absolute; z-index: 1;
+  width: 80px; height: 80px; border-radius: 50%;
+  border: 1px solid var(--ti-accent);
+  opacity: 0; animation: ringPulse 2s ease infinite;
+}
+.sthumb.fx-pulse::after {
+  content: '';
+  position: absolute; z-index: 1;
+  width: 120px; height: 120px; border-radius: 50%;
+  border: 1px solid var(--ti-accent);
+  opacity: 0; animation: ringPulse 2s ease .5s infinite;
+}
+@keyframes ringPulse {
+  0%{opacity:.4;transform:scale(.5)} 100%{opacity:0;transform:scale(1.5)}
+}
+
+/* FX: rain */
+.sthumb.fx-rain::before {
+  content: '| | | | | | | | | |';
+  position: absolute; top: 0; left: 0; right: 0; z-index: 1;
+  font-size: .6rem; color: var(--ti-accent); opacity: .1;
+  letter-spacing: 6px; overflow: hidden;
+  animation: rainFall 1.5s linear infinite;
+}
+@keyframes rainFall { from{transform:translateY(-20px)} to{transform:translateY(20px)} }
+
+/* FX: glow burst */
+.sthumb.fx-glow::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 1;
+  background: radial-gradient(circle at 50% 60%, var(--ti-accent) 0%, transparent 55%);
+  opacity: 0.06; animation: glowBreath 3s ease infinite;
+}
+@keyframes glowBreath { 0%,100%{opacity:.04} 50%{opacity:.1} }
+
+/* FX: void (black hole swirl) */
+.sthumb.fx-void::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 1;
+  background: conic-gradient(from 0deg, transparent 80%, var(--ti-accent) 85%, transparent 90%);
+  opacity: .07; animation: voidSpin 8s linear infinite;
+  border-radius: 50%; margin: auto;
+  width: 120px; height: 120px;
+}
+@keyframes voidSpin { to{transform:rotate(360deg)} }
+
+/* FX: loop */
+.sthumb.fx-loop::before {
+  content: '';
+  position: absolute; z-index: 1;
+  width: 90px; height: 90px; border-radius: 50%;
+  border: 2px dashed var(--ti-accent);
+  opacity: .15; animation: loopSpin 4s linear infinite;
+}
+@keyframes loopSpin { to{transform:rotate(360deg)} }
+
+/* FX: split (parallel universe) */
+.sthumb.fx-split::before {
+  content: '';
+  position: absolute; left: 50%; top: 0; bottom: 0; z-index: 1;
+  width: 1px; background: var(--ti-accent);
+  opacity: .2; animation: splitGlow 2s ease infinite;
+}
+@keyframes splitGlow { 0%,100%{opacity:.1} 50%{opacity:.35} }
+
+/* FX: dna helix */
+.sthumb.fx-dna::before {
+  content: 'G-C-A-T-G-C';
+  position: absolute; bottom: 6px; left: 8px; z-index: 2;
+  font-family: monospace; font-size: .45rem;
+  color: var(--ti-accent); opacity: .25; letter-spacing: 2px;
+}
+
+/* FX: fog */
+.sthumb.fx-fog::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 1;
+  background: radial-gradient(ellipse 80% 40% at 50% 80%, rgba(255,255,255,.04) 0%, transparent 70%);
+}
+
+/* Bottom gradient */
+.sthumb::after {
+  content: ''; position: absolute; inset: 0; z-index: 3;
+  background: linear-gradient(to top, rgba(14,8,32,.95) 0%, transparent 60%);
+}
+
+/* Accent corner tag */
+.scard-badge {
+  position: absolute; top: 10px; left: 10px; z-index: 4;
+  font-family: 'Share Tech Mono', monospace; font-size: .55rem;
+  letter-spacing: .1em; padding: 3px 10px; border-radius: 20px;
+  background: rgba(14,8,32,.75); backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,.1);
+  text-transform: uppercase;
+}
+.scard-num {
+  position: absolute; top: 10px; right: 10px; z-index: 4;
+  font-family: 'Orbitron', monospace; font-size: .6rem;
+  color: rgba(255,255,255,.3);
+  background: rgba(14,8,32,.7); border: 1px solid rgba(255,255,255,.08);
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+</style>
+</head>
+<body>
+
+<div class="grad-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">PARADOX_WORLD</div>
+  <a href="/" class="nav-back">🏠 HOME</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">
+    <span></span>STORY ARCHIVE<span></span>
+  </div>
+  <h1 class="hero-title">STORY<br/>WORLD</h1>
+  <p class="hero-sub">// CHOOSE YOUR REALITY · ENTER THE UNKNOWN</p>
+</div>
+
+<!-- GENRE BUTTONS -->
+<div class="genre-wrap">
+  <div class="genre-label">// BY SACHIN //</div>
+  <div class="genre-row">
+    <div class="genre-btn active all"  data-cat="All"     onclick="setGenre(this)"><span class="g-icon">✦</span><span class="g-name">ALL</span></div>
+    
+    <div class="genre-btn sci"         data-cat="Science"  onclick="setGenre(this)"><span class="g-icon">🔬</span><span class="g-name">SCIENCE</span></div>
+    
+    <div class="genre-btn fan"         data-cat="Fantasy"  onclick="setGenre(this)"><span class="g-icon">🧙</span><span class="g-name">FANTASY</span></div>
+    
+    <div class="genre-btn mys"         data-cat="Mystery"  onclick="setGenre(this)"><span class="g-icon">🔮</span><span class="g-name">MYSTERY</span></div>
+    
+    <div class="genre-btn hor"         data-cat="Horror"   onclick="setGenre(this)"><span class="g-icon">👻</span><span class="g-name">HORROR</span></div>
+    
+    <div class="genre-btn rom"         data-cat="Romantic" onclick="setGenre(this)"><span class="g-icon">💘</span><span class="g-name">ROMANTIC</span></div>
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <input class="search-input" id="searchInput" type="text"
+    placeholder="SEARCH STORIES..." oninput="onSearch()" autocomplete="off"/>
+  <span class="s-icon">🔍</span>
+</div>
+
+<!-- COUNT -->
+<div class="count-row" id="countRow">// 0 STORIES</div>
+
+<!-- GRID -->
+<div class="grid-wrap">
+  <div class="cards-grid" id="cardsGrid"></div>
+</div>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const BASE = '';
+
+// ── REAL STORIES FROM NETLIFY ──
+const stories = [
+  // SCIENCE
+  { title:'🕒 Time Travel',        desc:'Past, future… and the cost of changing it.',      g:'Science',  img:'category/science.jpg',   href:'/story/science/time-travel/' },
+  
+  { title:'🔁 Time Loop',          desc:'Same moment. Again. And again.',                   g:'Science',  img:'category/science.jpg',   href:'/story/science/time-loop/' },
+  
+  { title:'🧪 Parallel Universe',  desc:'Another world. Another you.',                      g:'Science',  img:'category/science.jpg',   href:'/story/science/parallel-universe/' },
+  
+  { title:'🤖 Artificial Intelligence', desc:'When machines start thinking.',               g:'Science',  img:'category/science.jpg',   href:'/story/science/ai/' },
+  
+  { title:'🧬 Human Experiment',   desc:'Science crossed the moral line.',                  g:'Science',  img:'category/science.jpg',   href:'/story/science/human-experiment/' },
+  
+  { title:'🌌 Alien Contact',      desc:'We were never alone.',                             g:'Science',  img:'category/science.jpg',   href:'/story/science/alien-contact/' },
+  
+  { title:'🛰️ Space Mystery',      desc:'Signals from the dark.',                           g:'Science',  img:'category/science.jpg',   href:'/story/science/space-mystry/' },
+  
+  { title:'🕳️ Black Hole',         desc:'Point of no return in space.',                     g:'Science',  img:'category/science.jpg',   href:'/story/science/black-hole/' },
+  
+  { title:'🧠 Simulation Theory',  desc:'Are we living in a simulation?',                   g:'Science',  img:'category/science.jpg',   href:'/story/science/simulation-theory/' },
+  
+  { title:'🌑 Dark Matter',        desc:'The unseen mass of the universe.',                  g:'Science',  img:'category/science.jpg',   href:'/story/science/dark-matter/' },
+  
+  { title:'🧬 Genetic Mutation',   desc:'When DNA rewrites itself.',                        g:'Science',  img:'category/science.jpg',   href:'/story/science/genetic-mutation/' },
+
+//fantasy
+  
+  { title:'🌑 The Shadow Kingdom', desc:'The kingdom without shadows.',                      g:'Fantasy',  img:'category/fantasy.jpg',   href:'/story/fantasy/the-shadow-kingdom/' },
+  
+  { title:'📜 The Time Scroll',    desc:'A scroll that rewrites time itself.',              g:'Fantasy',  img:'category/fantasy.jpg',   href:'/story/fantasy/time-scroll/' },
+  
+  { title:'🌌 When Star Forgot',   desc:'A star that lost its memory of light.',            g:'Fantasy',  img:'category/fantasy.jpg',   href:'/story/fantasy/wehn-star-forgot/' },
+
+
+  // MYSTERY
+  { title:'🧩 Paradox Room',       desc:'A room with no way in — and no way out.',          g:'Mystery',  img:'category/mystery.jpg',   href:'/story/mystery/paradox-room/' },
+  
+  { title:'🔍 Unsolved Crime',     desc:'The case that shook the whole city.',              g:'Mystery',  img:'category/mystery.jpg',   href:'/story/mystery/unsolved-crime/' },
+  
+  { title:'🏨 Abandoned Place',    desc:'A place forgotten by time and people.',            g:'Mystery',  img:'category/mystery.jpg',   href:'/story/mystery/abandoned-plac/' },
+  
+  { title:'📜 Ancient Secrets',    desc:'Buried truths older than civilization.',           g:'Mystery',  img:'category/mystery.jpg',   href:'/story/mystery/ancient-secrets/' },
+  
+  { title:'🩸 Psychological',      desc:'What the mind hides, the truth reveals.',         g:'Mystery',  img:'category/mystery.jpg',   href:'/story/mystery/psychology-mystry/' },
+  { title:'⏳ Time Mystery',        desc:'A timeline with no beginning and no end.',         g:'Mystery',  img:'category/mystery.jpg',   href:'/story/mystery/time-mystry/' },
+  
+  { title:'🧠 Hidden Code',        desc:'A code no one was meant to find.',                g:'Mystery',  img:'category/mystery.jpg',   href:'/story/mystery/hidden-code/' },
+  
+  { title:'💀 Dead Land',          desc:'A land where the dead never truly leave.',         g:'Mystery',  img:'category/mystery.jpg',   href:'/story/mystery/dead-land/' },
+
+
+  // HORROR
+  { title:'🚆 The Last Train',     desc:'It never stops…',                                 g:'Horror',   img:'category/horror.jpg',    href:'/story/horror/the-last-train' },
+  
+  { title:'⏰ Whispers at 3:17 AM',desc:'Something calls your name…',                      g:'Horror',   img:'category/horror.jpg',    href:'/story/horror/wishper-317' },
+  
+  { title:'🌲 The Forest',         desc:'You\'re not alone inside…',                        g:'Horror',   img:'category/horror.jpg',    href:'/story/horror/the-forest' },
+  { title:'📱 The Voice Note',     desc:'A message from nowhere…',                          g:'Horror',   img:'category/horror.jpg',    href:'/story/horror/voise-note' },
+  
+
+  
+  // ROMANTIC
+  { title:'💔 One Side Love',      desc:'Loving someone silently...',                       g:'Romantic', img:'category/romantic.jpg',  href:'/story/romantic/oneside-love' },
+  
+  { title:'🌧️ Two Souls, One Rain',desc:'A love born in rain...',                            g:'Romantic', img:'category/romantic.jpg',  href:'/story/romantic/towsoule-onerain' },
+  
+  { title:'😍 Love at First Sight',desc:'One look changed everything...',                   g:'Romantic', img:'category/romantic.jpg',  href:'/story/romantic/hear-smile' },
+  
+  { title:'🥀 Love After Goodbye', desc:'When love returns again...',                       g:'Romantic', img:'category/romantic.jpg',  href:'/story/romantic/love-after-goodby' },
+  { title:'💌 Secret Love',        desc:'Hidden feelings, untold story...',                 g:'Romantic', img:'category/romantic.jpg',  href:'/story/romantic/secret-love' },
+  
+  { title:'❤️ Long Distance Love', desc:'Miles apart but hearts close...',                   g:'Romantic', img:'category/romantic.jpg',  href:'/story/romantic/long-distance' },
+  
+  
+  
+  { title:'😍 High School Love',   desc:'Love finds you unexpectedly...',                   g:'Romantic', img:'category/romantic.jpg',  href:'/story/romantic/high-school' },
+  { title:'🥺 Unfinished Story',   desc:'When love ends in pain...',                        g:'Romantic', img:'category/romantic.jpg',  href:'/story/romantic/unfinished' },
+  
+  { title:'🔁Endless Love', desc:'  Nwar ending story😘...',                           g:'Romantic', img:'category/romantic.jpg',  href:'/story/romantic/silent' },
+];
+
+const COLORS = {
+  Science:'#00d4ff', Fantasy:'#c084fc',
+  Mystery:'#fbbf24', Horror:'#f43f5e', Romantic:'#fb7185'
+};
+
+let activeGenre = 'All';
+let searchQ = '';
+
+// ── GENRE SELECT ──
+function setGenre(el){
+  document.querySelectorAll('.genre-btn').forEach(b=>{
+    b.classList.remove('active');
+  });
+  el.classList.add('active');
+  activeGenre = el.dataset.cat;
+  render();
+  window.scrollTo({top:document.querySelector('.search-wrap').offsetTop - 70, behavior:'smooth'});
+}
+
+// ── SEARCH ──
+function onSearch(){
+  searchQ = document.getElementById('searchInput').value.toLowerCase().trim();
+  render();
+}
+
+// ── RENDER ──
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.opacity='1';
+      e.target.style.transform='translateY(0)';
+    }
+  });
+},{threshold:.07});
+
+function render(){
+  const grid = document.getElementById('cardsGrid');
+  const countRow = document.getElementById('countRow');
+
+  const list = stories.filter(s=>{
+    const gOk = activeGenre==='All' || s.g===activeGenre;
+    const sOk = !searchQ ||
+      s.title.toLowerCase().includes(searchQ) ||
+      s.desc.toLowerCase().includes(searchQ) ||
+      s.g.toLowerCase().includes(searchQ);
+    return gOk && sOk;
+  });
+
+  countRow.textContent = `// ${list.length} STOR${list.length!==1?'IES':'Y'} FOUND`;
+
+  if(!list.length){
+    grid.innerHTML=`<div class="empty"><span class="empty-icon">📖</span>NO STORIES FOUND<br/><span style="font-size:.65rem;letter-spacing:.08em">TRY DIFFERENT SEARCH</span></div>`;
+    return;
+  }
+
+  const col = activeGenre!=='All' ? COLORS[activeGenre] : 'rgba(255,255,255,0.3)';
+
+  grid.innerHTML = list.map((s,i)=>`
+    <a href="${s.href}" class="scard" data-g="${s.g}" style="animation-delay:${i*.04}s">
+      <div class="scard-img-wrap">
+        <div class="scard-thumb" data-title="${s.title}"></div>
+        <div class="scard-badge" style="color:${col}">${s.g}</div>
+        <div class="scard-num">${String(i+1).padStart(2,'0')}</div>
+      </div>
+      <div class="scard-body">
+        <div class="scard-title">${s.title}</div>
+        <div class="scard-desc">${s.desc}</div>
+        <div class="scard-arrow">→</div>
+      </div>
+    </a>
+  `).join('');
+
+  // Animate entrance
+  document.querySelectorAll('.scard').forEach((c,i)=>{
+    c.style.opacity='0';
+    c.style.transform='translateY(22px)';
+    c.style.transition=`opacity .4s ease ${i*.04}s, transform .4s ease ${i*.04}s, border-color .3s, box-shadow .3s, transform .3s cubic-bezier(.23,1,.32,1)`;
+    obs.observe(c);
+  });
+  initThumbs();
+}
+
+const THUMBS = {
+  '🕒 Time Travel': {grad:'linear-gradient(135deg,#0a0820 0%,#1a0a4a 40%,#0d1a3a 100%)',accent:'#6366f1',icon:'⏳',fx:'clock'},
+  '🔁 Time Loop': {grad:'linear-gradient(135deg,#050a15 0%,#0a1a2a 50%,#0a0520 100%)',accent:'#22d3ee',icon:'🔁',fx:'loop'},
+  '🧪 Parallel Universe': {grad:'linear-gradient(135deg,#080418 0%,#1a0a3a 50%,#0a1830 100%)',accent:'#a855f7',icon:'🌀',fx:'split'},
+  '🤖 Artificial Intelligence': {grad:'linear-gradient(135deg,#020c0c 0%,#0a2020 50%,#041020 100%)',accent:'#00d4ff',icon:'🤖',fx:'grid'},
+  '🧬 Human Experiment': {grad:'linear-gradient(135deg,#0a0505 0%,#1a0a10 50%,#0a1005 100%)',accent:'#f43f5e',icon:'🧬',fx:'dna'},
+  '🌌 Alien Contact': {grad:'linear-gradient(135deg,#020410 0%,#080818 50%,#040210 100%)',accent:'#34d399',icon:'👽',fx:'star'},
+  '🛰️ Space Mystery': {grad:'linear-gradient(135deg,#020208 0%,#0a0a18 50%,#080410 100%)',accent:'#818cf8',icon:'🛸',fx:'star'},
+  '🕳️ Black Hole': {grad:'linear-gradient(135deg,#000000 0%,#050210 40%,#000000 100%)',accent:'#7c3aed',icon:'🕳️',fx:'hole'},
+  '🧠 Simulation Theory': {grad:'linear-gradient(135deg,#020810 0%,#081820 50%,#040c18 100%)',accent:'#00eaff',icon:'💻',fx:'grid'},
+  '🌑 Dark Matter': {grad:'linear-gradient(135deg,#000000 0%,#04020a 50%,#000000 100%)',accent:'#4f46e5',icon:'🌑',fx:'void'},
+  '🧬 Genetic Mutation': {grad:'linear-gradient(135deg,#050a05 0%,#0a1a0a 50%,#051005 100%)',accent:'#10b981',icon:'🔬',fx:'dna'},
+  '🌑 The Shadow Kingdom': {grad:'linear-gradient(135deg,#050010 0%,#100520 50%,#050008 100%)',accent:'#818cf8',icon:'🌑',fx:'void'},
+  '📜 The Time Scroll': {grad:'linear-gradient(135deg,#100800 0%,#201500 50%,#100a00 100%)',accent:'#fbbf24',icon:'📜',fx:'glow'},
+  '🌌 When Star Forgot': {grad:'linear-gradient(135deg,#020410 0%,#080818 50%,#040210 100%)',accent:'#c084fc',icon:'⭐',fx:'star'},
+  '🐲 The Dragon Kingdom': {grad:'linear-gradient(135deg,#100500 0%,#200a00 50%,#100200 100%)',accent:'#f97316',icon:'🐉',fx:'fire'},
+  '✨ The Lost Magic': {grad:'linear-gradient(135deg,#080020 0%,#140a30 50%,#080018 100%)',accent:'#c084fc',icon:'✨',fx:'glow'},
+  '🧩 Paradox Room': {grad:'linear-gradient(135deg,#080808 0%,#181008 50%,#080808 100%)',accent:'#fbbf24',icon:'🚪',fx:'fog'},
+  '🔍 Unsolved Crime': {grad:'linear-gradient(135deg,#0a0800 0%,#181200 50%,#0a0800 100%)',accent:'#fbbf24',icon:'🔦',fx:'fog'},
+  '🏨 Abandoned Place': {grad:'linear-gradient(135deg,#080808 0%,#101010 50%,#050505 100%)',accent:'#94a3b8',icon:'🏚️',fx:'fog'},
+  '📜 Ancient Secrets': {grad:'linear-gradient(135deg,#100800 0%,#201500 50%,#100a00 100%)',accent:'#fbbf24',icon:'🗿',fx:'glow'},
+  '🩸 Psychological': {grad:'linear-gradient(135deg,#0a0000 0%,#1a0000 50%,#0a0000 100%)',accent:'#f43f5e',icon:'🧠',fx:'pulse'},
+  '⏳ Time Mystery': {grad:'linear-gradient(135deg,#080808 0%,#101018 50%,#080808 100%)',accent:'#fbbf24',icon:'⌛',fx:'fog'},
+  '🧠 Hidden Code': {grad:'linear-gradient(135deg,#020808 0%,#041010 50%,#020808 100%)',accent:'#fbbf24',icon:'🔐',fx:'grid'},
+  '💀 Dead Land': {grad:'linear-gradient(135deg,#040404 0%,#080808 50%,#040404 100%)',accent:'#64748b',icon:'💀',fx:'void'},
+  '🚆 The Last Train': {grad:'linear-gradient(135deg,#050000 0%,#100000 50%,#050000 100%)',accent:'#f43f5e',icon:'🚂',fx:'pulse'},
+  '⏰ Whispers at 3:17 AM': {grad:'linear-gradient(135deg,#000005 0%,#000010 50%,#000005 100%)',accent:'#f43f5e',icon:'🕰️',fx:'pulse'},
+  '🌲 The Forest': {grad:'linear-gradient(135deg,#010805 0%,#021005 50%,#010805 100%)',accent:'#f43f5e',icon:'🌲',fx:'fog'},
+  '📱 The Voice Note': {grad:'linear-gradient(135deg,#050005 0%,#0a000a 50%,#050005 100%)',accent:'#f43f5e',icon:'📳',fx:'pulse'},
+  '💔 One Side Love': {grad:'linear-gradient(135deg,#100008 0%,#200010 50%,#100008 100%)',accent:'#fb7185',icon:'💔',fx:'glow'},
+  '🌧️ Two Souls, One Rain': {grad:'linear-gradient(135deg,#040a12 0%,#081420 50%,#040a12 100%)',accent:'#fb7185',icon:'🌧️',fx:'rain'},
+  '😍 Love at First Sight': {grad:'linear-gradient(135deg,#100008 0%,#1a0010 50%,#100008 100%)',accent:'#fb7185',icon:'💗',fx:'glow'},
+  '🥀 Love After Goodbye': {grad:'linear-gradient(135deg,#0a0008 0%,#140010 50%,#0a0008 100%)',accent:'#fb7185',icon:'🥀',fx:'glow'},
+  '💌 Secret Love': {grad:'linear-gradient(135deg,#100008 0%,#1a0015 50%,#100008 100%)',accent:'#fb7185',icon:'💌',fx:'glow'},
+  '❤️ Long Distance Love': {grad:'linear-gradient(135deg,#0a0005 0%,#150008 50%,#0a0005 100%)',accent:'#fb7185',icon:'🌍',fx:'glow'},
+  '😍 High School Love': {grad:'linear-gradient(135deg,#100008 0%,#1a0012 50%,#100008 100%)',accent:'#fb7185',icon:'🏫',fx:'glow'},
+  '🥺 Unfinished Story': {grad:'linear-gradient(135deg,#080008 0%,#100010 50%,#080008 100%)',accent:'#fb7185',icon:'📝',fx:'glow'},
+  '💝 Beauty of Sign Language': {grad:'linear-gradient(135deg,#0a0008 0%,#140010 50%,#0a0008 100%)',accent:'#fb7185',icon:'🤟',fx:'glow'},
+};
+
+function initThumbs() {
+  document.querySelectorAll('.scard-thumb').forEach(el => {
+    const card = el.closest('.scard');
+    const title = card ? card.querySelector('.scard-title')?.textContent?.trim() : '';
+    const t = THUMBS[title] || {
+      grad: 'linear-gradient(135deg,#0a0820,#120a28)',
+      accent: '#a78bfa', icon: '📖', fx: 'glow'
+    };
+    el.style.cssText = `
+      width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+      background:${t.grad};position:relative;overflow:hidden;
+      --ti-accent:${t.accent};
+    `;
+    el.className = `sthumb fx-${t.fx}`;
+    el.innerHTML = `<div class="sthumb-glow" style="background:radial-gradient(circle,${t.accent} 0%,transparent 70%)"></div><div class="sthumb-icon">${t.icon}</div>`;
+  });
+}
+
+// Scroll top
+window.addEventListener('scroll',()=>{
+  document.getElementById('scrollTop').classList.toggle('show', window.scrollY>350);
+});
+
+render();
+</script>
+</body>
+</html>

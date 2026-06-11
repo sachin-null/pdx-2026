@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>☠️ Dead Land | Paradox World</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:ital,wght@0,400;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+
+<style>
+
+:root{
+  --c:#8b5cf6;
+  --bg:#05040a;
+  --border:rgba(139,92,246,.18);
+  --w:rgba(255,255,255,.88);
+  --muted:rgba(255,255,255,.38);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:var(--bg);
+  color:var(--w);
+
+  font-family:'Crimson Pro',serif;
+
+  min-height:100vh;
+  overflow-x:hidden;
+
+  position:relative;
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar{
+  width:3px;
+}
+
+::-webkit-scrollbar-thumb{
+  background:var(--c);
+  border-radius:10px;
+}
+
+/* BACKGROUND GLOW */
+
+body::before{
+  content:'';
+
+  position:fixed;
+  inset:0;
+
+  pointer-events:none;
+  z-index:0;
+
+  background:
+  radial-gradient(circle at top left,
+  rgba(139,92,246,.15),
+  transparent 40%),
+
+  radial-gradient(circle at bottom right,
+  rgba(139,92,246,.12),
+  transparent 40%);
+}
+
+/* NOISE EFFECT */
+
+body::after{
+  content:'';
+
+  position:fixed;
+  inset:0;
+
+  pointer-events:none;
+  z-index:1;
+
+  background:
+  repeating-linear-gradient(
+  0deg,
+  transparent,
+  transparent 3px,
+  rgba(255,255,255,.015) 4px);
+}
+
+/* NAVBAR */
+
+nav{
+  position:sticky;
+  top:0;
+
+  z-index:100;
+
+  height:55px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:0 22px;
+
+  background:rgba(5,4,10,.92);
+
+  backdrop-filter:blur(16px);
+
+  border-bottom:1px solid var(--border);
+}
+
+.nav-logo{
+  font-family:'Cinzel',serif;
+
+  font-size:.78rem;
+  font-weight:700;
+
+  letter-spacing:.22em;
+
+  color:var(--c);
+
+  text-shadow:0 0 15px var(--c);
+}
+
+.nav-links{
+  display:flex;
+  gap:8px;
+}
+
+.nav-link{
+  text-decoration:none;
+
+  font-family:'Share Tech Mono',monospace;
+  font-size:.62rem;
+
+  color:var(--muted);
+
+  border:1px solid var(--border);
+
+  padding:6px 12px;
+
+  border-radius:5px;
+
+  transition:.3s;
+}
+
+.nav-link:hover{
+  color:var(--c);
+  border-color:var(--c);
+
+  background:rgba(139,92,246,.08);
+}
+
+/* HERO */
+
+.hero{
+  position:relative;
+  z-index:5;
+
+  text-align:center;
+
+  padding:90px 20px 50px;
+
+  animation:fadeDown .8s ease;
+}
+
+/* BADGE */
+
+.genre-badge{
+  display:inline-block;
+
+  padding:6px 18px;
+
+  border-radius:30px;
+
+  border:1px solid rgba(139,92,246,.3);
+
+  background:rgba(139,92,246,.05);
+
+  font-family:'Share Tech Mono',monospace;
+  font-size:.6rem;
+
+  letter-spacing:.28em;
+
+  color:var(--c);
+
+  margin-bottom:22px;
+
+  text-shadow:0 0 10px var(--c);
+}
+
+/* TITLE */
+
+.story-title{
+  font-family:'Cinzel',serif;
+
+  font-size:clamp(2rem,6vw,4.5rem);
+  font-weight:900;
+
+  line-height:.95;
+
+  margin-bottom:18px;
+
+  background:
+  linear-gradient(
+  135deg,
+  #ffffff 0%,
+  var(--c) 70%);
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+  filter:drop-shadow(0 0 25px rgba(139,92,246,.28));
+}
+
+/* DESCRIPTION */
+
+.story-desc{
+  max-width:650px;
+  margin:auto;
+
+  color:rgba(255,255,255,.48);
+
+  font-size:clamp(1rem,2vw,1.15rem);
+
+  line-height:1.8;
+
+  font-style:italic;
+
+  letter-spacing:.03em;
+}
+
+/* DIVIDER */
+
+.divider{
+  display:flex;
+  align-items:center;
+  gap:15px;
+
+  max-width:500px;
+
+  margin:0 auto;
+
+  padding:0 20px 45px;
+
+  position:relative;
+  z-index:5;
+}
+
+.divider-line{
+  flex:1;
+  height:1px;
+
+  background:
+  linear-gradient(
+  90deg,
+  transparent,
+  rgba(139,92,246,.25),
+  transparent);
+}
+
+.divider-gem{
+  color:var(--c);
+
+  font-size:.8rem;
+
+  text-shadow:0 0 12px var(--c);
+
+  animation:pulse 3s infinite;
+}
+
+/* PARTS */
+
+.parts-wrap{
+  position:relative;
+  z-index:5;
+
+  max-width:760px;
+
+  margin:auto;
+
+  padding:0 20px 90px;
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(180px,1fr));
+
+  gap:16px;
+}
+
+/* CARD */
+
+.part-card{
+  text-decoration:none;
+
+  background:
+  rgba(255,255,255,.03);
+
+  border:
+  1px solid rgba(139,92,246,.15);
+
+  border-radius:14px;
+
+  padding:24px 18px;
+
+  transition:.35s;
+
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.part-card:hover{
+  transform:translateY(-6px);
+
+  border-color:var(--c);
+
+  background:
+  rgba(139,92,246,.08);
+
+  box-shadow:
+  0 18px 45px rgba(0,0,0,.45),
+  0 0 20px rgba(139,92,246,.18);
+}
+
+.part-num{
+  font-family:'Share Tech Mono',monospace;
+
+  font-size:.6rem;
+
+  color:rgba(139,92,246,.55);
+
+  letter-spacing:.18em;
+}
+
+.part-title{
+  font-family:'Cinzel',serif;
+
+  font-size:.9rem;
+
+  font-weight:700;
+
+  color:rgba(255,255,255,.85);
+
+  line-height:1.4;
+}
+
+.part-cta{
+  margin-top:10px;
+
+  font-family:'Share Tech Mono',monospace;
+
+  font-size:.62rem;
+
+  color:var(--c);
+
+  letter-spacing:.15em;
+
+  opacity:.75;
+}
+
+.part-card:hover .part-cta{
+  opacity:1;
+}
+
+/* ANIMATION */
+
+@keyframes pulse{
+  0%,100%{
+    opacity:.5;
+    transform:scale(1);
+  }
+
+  50%{
+    opacity:1;
+    transform:scale(1.2);
+  }
+}
+
+@keyframes fadeDown{
+  from{
+    opacity:0;
+    transform:translateY(-20px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+  nav{
+    padding:0 15px;
+  }
+
+  .story-title{
+    font-size:2.3rem;
+  }
+
+  .story-desc{
+    font-size:.95rem;
+    line-height:1.7;
+  }
+
+  .parts-wrap{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+
+  <div class="nav-logo">
+    PARADOX WORLD
+  </div>
+
+  <div class="nav-links">
+
+    <a href="../../index.html"
+    class="nav-link">
+      ← STORY
+    </a>
+
+    <a href="/"
+    class="nav-link">
+      🏠 HOME
+    </a>
+
+  </div>
+
+</nav>
+
+<!-- HERO -->
+
+<div class="hero">
+
+  <div class="genre-badge">
+    ☠️ DARK HORROR STORY
+  </div>
+
+  <h1 class="story-title">
+    ☠️ DEAD LAND
+  </h1>
+
+  <p class="story-desc">
+    In the forgotten lands beyond reality...
+    whispers still echo through the dead silence.
+    Some places were never meant to be found.
+  </p>
+
+</div>
+
+<!-- DIVIDER -->
+
+<div class="divider">
+
+  <div class="divider-line"></div>
+
+  <div class="divider-gem">
+    ✦
+  </div>
+
+  <div class="divider-line"></div>
+
+</div>
+
+<!-- STORY PARTS -->
+
+<div class="parts-wrap">
+
+  <a href="part1.html"
+  class="part-card">
+
+    <div class="part-num">
+      Part 1
+    </div>
+
+    <div class="part-title">
+      The Empty Road
+    </div>
+
+    <div class="part-cta">
+      Read →
+    </div>
+
+  </a>
+
+  <a href="part2.html"
+  class="part-card">
+
+    <div class="part-num">
+      Part 2
+    </div>
+
+    <div class="part-title">
+      Voices In Darkness
+    </div>
+
+    <div class="part-cta">
+      Read →
+    </div>
+
+  </a>
+
+  <a href="part3.html"
+  class="part-card">
+
+    <div class="part-num">
+      Part 3
+    </div>
+
+    <div class="part-title">
+      The Forgotten Church
+    </div>
+
+    <div class="part-cta">
+      Read →
+    </div>
+
+  </a>
+
+  <a href="part4.html"
+  class="part-card">
+
+    <div class="part-num">
+      Part 4
+    </div>
+
+    <div class="part-title">
+      The Last Signal
+    </div>
+
+    <div class="part-cta">
+      Read →
+    </div>
+
+  </a>
+
+</div>
+
+<script>
+
+document.querySelectorAll('.part-card')
+.forEach((card,index)=>{
+
+  card.style.opacity='0';
+  card.style.transform='translateY(20px)';
+
+  card.style.transition=
+  `opacity .45s ease ${index*.08}s,
+   transform .45s ease ${index*.08}s`;
+
+  setTimeout(()=>{
+
+    card.style.opacity='1';
+    card.style.transform='translateY(0)';
+
+  },index*80+120);
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Dream Beyond Reality — Part 2 | Paradox World</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&family=Noto+Sans+Malayalam:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#06040e;--bg2:#0c0818;
+  --rose:#fb7185;--purple:#a78bfa;--gold:#fbbf24;--blue:#60a5fa;--green:#34d399;
+  --white:#fdf4ff;--muted:rgba(253,244,255,.42);--border:rgba(167,139,250,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px}
+body{background:var(--bg);color:var(--white);font-family:'Crimson Pro',serif;min-height:100vh;overflow-x:hidden}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 65% 50% at 75% 15%,rgba(167,139,250,.1) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 55% at 20% 80%,rgba(96,165,250,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 35% at 50% 50%,rgba(52,211,153,.04) 0%,transparent 55%);
+}
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px)}
+
+nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:54px;background:rgba(6,4,14,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:.82rem;font-weight:700;color:var(--purple);letter-spacing:.1em;text-shadow:0 0 12px rgba(167,139,250,.3)}
+.nav-links{display:flex;gap:6px}
+.nav-link{font-family:'Space Mono',monospace;font-size:.58rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:5px 11px;border-radius:4px;letter-spacing:.08em;transition:all .2s}
+.nav-link:hover{color:var(--purple);border-color:rgba(167,139,250,.3)}
+
+.cover{position:relative;z-index:10;width:100%;height:260px;overflow:hidden}
+@media(min-width:600px){.cover{height:340px}}
+.cover-img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.35) saturate(.7) hue-rotate(250deg);transition:transform 8s ease}
+.cover:hover .cover-img{transform:scale(1.04)}
+.cover::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,4,14,.2) 0%,rgba(6,4,14,.7) 70%,rgba(6,4,14,1) 100%)}
+.cover-text{position:absolute;bottom:24px;left:0;right:0;z-index:2;text-align:center;padding:0 20px}
+.part-badge{display:inline-block;font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.28em;color:rgba(167,139,250,.6);border:1px solid rgba(167,139,250,.2);padding:5px 16px;border-radius:20px;margin-bottom:12px;background:rgba(167,139,250,.04)}
+.cover-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,3.5rem);font-weight:900;letter-spacing:.02em;line-height:.95;background:linear-gradient(135deg,#fff 0%,var(--purple) 55%,var(--blue) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(167,139,250,.3))}
+.cover-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(.8rem,1.8vw,1rem);color:rgba(167,139,250,.4);letter-spacing:.08em;margin-top:6px}
+
+.chapter-label{position:relative;z-index:10;text-align:center;padding:28px 20px 16px}
+.chapter-name{font-family:'Playfair Display',serif;font-size:clamp(.88rem,2.5vw,1.15rem);font-weight:700;color:rgba(253,244,255,.45);letter-spacing:.08em;font-style:italic}
+.chapter-tagline{font-family:'Space Mono',monospace;font-size:.58rem;color:rgba(167,139,250,.3);letter-spacing:.18em;margin-top:5px}
+
+.divider{display:flex;align-items:center;gap:14px;max-width:640px;margin:0 auto;padding:0 20px 32px;position:relative;z-index:10}
+.divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,.2),transparent)}
+.divider-gem{font-size:.75rem;color:var(--purple);text-shadow:0 0 10px var(--purple);animation:pulse 3s ease infinite}
+@keyframes pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
+
+.story-wrap{position:relative;z-index:10;max-width:660px;margin:0 auto;padding:0 20px 40px}
+
+.para{font-family:'Noto Sans Malayalam',sans-serif;font-size:clamp(1rem,2.5vw,1.15rem);line-height:2.1;color:rgba(253,244,255,.75);margin-bottom:20px;letter-spacing:.01em;font-weight:400}
+.para.center{text-align:center}
+.para.poetic{text-align:center;font-size:clamp(.95rem,2.2vw,1.08rem);color:rgba(253,244,255,.6);line-height:2.2;font-style:italic}
+.para b,.para strong{color:var(--purple);font-weight:600;text-shadow:0 0 10px rgba(167,139,250,.25)}
+
+.scene-break{text-align:center;margin:28px 0;font-size:.75rem;color:rgba(167,139,250,.18);letter-spacing:.4em}
+
+.highlight-line{
+  display:block;font-family:'Noto Sans Malayalam',sans-serif;
+  font-size:clamp(1rem,2.5vw,1.2rem);font-weight:500;
+  font-style:italic;text-align:left;margin:18px 0;padding:14px 20px;
+  border-left:2px solid var(--purple);
+  background:linear-gradient(90deg,rgba(167,139,250,.07),transparent);
+  border-radius:0 8px 8px 0;
+  color:var(--purple);text-shadow:0 0 12px rgba(167,139,250,.2);
+}
+.highlight-line.rose{border-color:var(--rose);background:linear-gradient(90deg,rgba(251,113,133,.07),transparent);color:var(--rose);text-shadow:0 0 12px rgba(251,113,133,.2)}
+.highlight-line.gold{border-color:var(--gold);background:linear-gradient(90deg,rgba(251,191,36,.07),transparent);color:var(--gold);text-shadow:0 0 12px rgba(251,191,36,.2)}
+.highlight-line.green{border-color:var(--green);background:linear-gradient(90deg,rgba(52,211,153,.07),transparent);color:var(--green);text-shadow:0 0 12px rgba(52,211,153,.2)}
+
+/* Beep monitor box */
+.beep-box{
+  background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.06);
+  border-radius:10px;padding:20px 24px;margin:24px 0;text-align:center;
+}
+.beep-text{
+  font-family:'Space Mono',monospace;font-size:.9rem;
+  letter-spacing:.35em;color:rgba(52,211,153,.6);
+  animation:beepAnim 1.2s ease-in-out infinite;
+}
+@keyframes beepAnim{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* Hospital box */
+.hospital-box{
+  background:linear-gradient(135deg,rgba(96,165,250,.06),rgba(167,139,250,.04));
+  border:1px solid rgba(96,165,250,.15);border-radius:16px;
+  padding:24px 22px;margin:28px 0;position:relative;overflow:hidden;
+}
+.hospital-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),var(--purple),transparent)}
+.hospital-label{font-family:'Space Mono',monospace;font-size:.56rem;color:rgba(96,165,250,.4);letter-spacing:.2em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.hospital-label::before{content:'';display:block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.5s ease infinite}
+.hospital-box .para{color:rgba(253,244,255,.65);margin-bottom:12px}
+.hospital-box .para:last-child{margin-bottom:0}
+
+/* Ring reveal box */
+.ring-box{
+  background:linear-gradient(135deg,rgba(251,191,36,.07),rgba(167,139,250,.05));
+  border:1px solid rgba(251,191,36,.2);border-radius:14px;
+  padding:24px;margin:28px 0;position:relative;text-align:center;
+}
+.ring-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.ring-box .para{color:rgba(253,244,255,.65);margin-bottom:10px;text-align:center}
+
+/* Quantum box */
+.quantum-box{
+  background:linear-gradient(135deg,rgba(96,165,250,.07),rgba(167,139,250,.06));
+  border:1px solid rgba(96,165,250,.2);border-radius:14px;
+  padding:22px 24px;margin:28px 0;position:relative;
+}
+.quantum-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),var(--purple),transparent)}
+.quantum-label{font-family:'Space Mono',monospace;font-size:.56rem;color:rgba(96,165,250,.45);letter-spacing:.2em;margin-bottom:12px}
+.quantum-box .para{color:rgba(253,244,255,.6);margin-bottom:10px}
+.quantum-box .para:last-child{margin-bottom:0}
+
+/* Final ending */
+.end-box{
+  background:linear-gradient(135deg,rgba(52,211,153,.06),rgba(167,139,250,.05),rgba(251,113,133,.04));
+  border:1px solid rgba(52,211,153,.2);border-radius:18px;
+  padding:32px 26px;margin:36px 0;position:relative;text-align:center;overflow:hidden;
+}
+.end-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--gold),var(--purple),var(--blue),var(--green))}
+.end-label{font-family:'Space Mono',monospace;font-size:.56rem;color:rgba(52,211,153,.4);letter-spacing:.2em;margin-bottom:16px}
+.end-emoji{font-size:2rem;display:block;margin-bottom:14px;animation:endFloat 3s ease-in-out infinite alternate}
+@keyframes endFloat{from{transform:translateY(0) scale(1)}to{transform:translateY(-8px) scale(1.05)}}
+.end-box .para{color:rgba(253,244,255,.55);margin-bottom:0;text-align:center;font-size:1.05rem}
+
+.part-nav{position:relative;z-index:10;max-width:660px;margin:0 auto;padding:24px 20px 80px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--border)}
+.part-info{font-family:'Space Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.1em;text-align:center;flex:1}
+.part-dots{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.pdot{width:8px;height:8px;border-radius:50%;border:1px solid rgba(167,139,250,.3);background:transparent;transition:all .3s}
+.pdot.active{background:var(--purple);border-color:var(--purple);box-shadow:0 0 8px var(--purple)}
+.pdot.done{background:rgba(167,139,250,.3);border-color:rgba(167,139,250,.3)}
+.nav-btn{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;padding:11px 22px;border-radius:8px;text-decoration:none;transition:all .28s;border:1px solid var(--border);color:var(--muted);background:transparent;white-space:nowrap}
+.nav-btn:hover{color:var(--white);border-color:rgba(167,139,250,.3)}
+.nav-btn.next{color:var(--purple);border-color:rgba(167,139,250,.35);background:rgba(167,139,250,.06)}
+.nav-btn.next:hover{background:rgba(167,139,250,.14);box-shadow:0 0 20px rgba(167,139,250,.2);transform:translateX(3px)}
+
+@media(min-width:768px){nav{padding:0 48px}.story-wrap,.part-nav{padding-left:32px;padding-right:32px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">PARADOX WORLD</div>
+  <div class="nav-links">
+    <a href="./part1.html" class="nav-link">← Part 1</a>
+    <a href="/" class="nav-link">🏠</a>
+  </div>
+</nav>
+
+<div class="cover">
+  <img class="cover-img"
+    src="./assets/image/story/romantic/dream.jpg"
+    alt="The Reality That Chose Me"
+    onerror="this.parentElement.style.background='linear-gradient(180deg,#0d0420,#06040e)'"/>
+  <div class="cover-text">
+    <div class="part-badge">✦ PART TWO ✦</div>
+    <h1 class="cover-title">The Reality That<br/>Chose Me</h1>
+    <p class="cover-sub">— ഒരു ലോകം എന്നെ തിരഞ്ഞെടുത്തു —</p>
+  </div>
+</div>
+
+<div class="chapter-label">
+  <div class="chapter-name">Part 2 : The Reality That Chose Me</div>
+  <div class="chapter-tagline">// QUANTUM IMMORTALITY · HOSPITAL · TOGETHER</div>
+</div>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-gem">💜</div>
+  <div class="divider-line"></div>
+</div>
+
+<div class="story-wrap">
+
+  <p class="para">
+    അടുത്ത ദിവസം.<br/>
+    സ്കൂൾ കഴിഞ്ഞു.
+  </p>
+
+  <p class="para">
+    Ayame സുഹൃത്തുക്കളോടൊപ്പം ചിരിക്കുകയായിരുന്നു.<br/>
+    ഞാൻ ദൂരത്ത് നിന്ന് അവളെ നോക്കി.
+  </p>
+
+  <p class="para poetic">
+    അവൾ സുരക്ഷിതയാണെന്ന് കണ്ടപ്പോൾ<br/>
+    എന്റെ മനസിന് ചെറിയൊരു ആശ്വാസം ലഭിച്ചു.
+  </p>
+
+  <div class="highlight-line">"ഇന്നലത്തെ സ്വപ്നം വെറും സ്വപ്നം മാത്രം..."</div>
+
+  <p class="para">ഞാൻ സ്വയം പറഞ്ഞു.</p>
+
+  <p class="para">റോഡ് ക്രോസ് ചെയ്യാൻ ഞാൻ മുന്നോട്ട് നടന്നു.</p>
+
+  <div class="scene-break">· · · 💜 · · ·</div>
+
+  <p class="para">അപ്പോൾ...</p>
+
+  <div class="hospital-box" style="background:linear-gradient(135deg,rgba(244,63,94,.07),rgba(96,165,250,.03));border-color:rgba(244,63,94,.18)">
+    <div class="hospital-label" style="color:rgba(244,63,94,.4)">// ആ നിമിഷം</div>
+    <p class="para poetic">
+      ഒരു വലിയ ഹോൺ.<br/>
+      വെളുത്ത പ്രകാശം.<br/>
+      ഒരൊറ്റ നിമിഷം.
+    </p>
+    <p class="para poetic" style="color:rgba(253,244,255,.35)">
+      പിന്നീട്...<br/>
+      ശൂന്യത.<br/>
+      ഇരുട്ട്.
+    </p>
+  </div>
+
+  <div class="scene-break">· · · 💜 · · ·</div>
+
+  <p class="para poetic">
+    എത്ര സമയം കഴിഞ്ഞെന്ന് എനിക്കറിയില്ല.<br/>
+    പക്ഷേ പതിയെ...<br/>
+    ഒരു ശബ്ദം കേൾക്കാൻ തുടങ്ങി.
+  </p>
+
+  <div class="beep-box">
+    <div class="beep-text">ബീപ്പ്... &nbsp;&nbsp; ബീപ്പ്... &nbsp;&nbsp; ബീപ്പ്...</div>
+  </div>
+
+  <p class="para">ഞാൻ കണ്ണുകൾ തുറന്നു.</p>
+
+  <div class="hospital-box">
+    <div class="hospital-label">// ആശുപത്രി</div>
+    <p class="para">ആശുപത്രി.</p>
+    <p class="para">എന്റെ കൈയിൽ ആരോ പിടിച്ചിരിക്കുന്നു.</p>
+    <p class="para">ഞാൻ തല തിരിച്ചു.</p>
+    <p class="para" style="font-size:1.2rem;font-weight:500;color:var(--purple);text-shadow:0 0 12px rgba(167,139,250,.3)">
+      <b>Ayame...</b>
+    </p>
+    <p class="para poetic">
+      അവൾ എന്റെ കൈ പിടിച്ച് കരഞ്ഞുകൊണ്ടിരുന്നു.<br/>
+      അവളുടെ കണ്ണുകൾ ഉറക്കമില്ലാത്ത രാത്രികളുടെ<br/>
+      അടയാളം വഹിച്ചിരുന്നു.
+    </p>
+  </div>
+
+  <p class="para">ഞാൻ അവളെ വിളിച്ചു.</p>
+
+  <div class="highlight-line rose">"Ayame..."</div>
+
+  <p class="para">അവൾ ഉടനെ എഴുന്നേറ്റു.</p>
+  <p class="para">അടുത്ത നിമിഷം അവൾ എന്നെ ചേർത്ത് പിടിച്ചു.</p>
+
+  <div class="highlight-line gold">"നീ തിരിച്ചു വന്നു..."</div>
+  <div class="highlight-line rose">"ഞാൻ നിന്നെ നഷ്ടപ്പെട്ടെന്ന് കരുതി..."</div>
+
+  <div class="scene-break">· · · 💜 · · ·</div>
+
+  <p class="para poetic">
+    എനിക്ക് ഒന്നും മനസ്സിലായില്ല.<br/>
+    ഇത് സ്വപ്നമാണോ?<br/>
+    യാഥാർത്ഥ്യമാണോ?
+  </p>
+
+  <p class="para">അപ്പോൾ ഞാൻ ശ്രദ്ധിച്ചു...</p>
+
+  <div class="ring-box">
+    <p class="para" style="font-size:1.4rem">💍</p>
+    <p class="para">എന്റെ വിരലിൽ ഒരു മോതിരം.</p>
+    <p class="para"><b>അതേ മോതിരം.</b></p>
+    <p class="para poetic" style="color:rgba(251,191,36,.6)">
+      ആ സ്വപ്നത്തിൽ അവൾ എനിക്ക് നൽകിയ<br/>
+      അതേ മോതിരം.
+    </p>
+    <p class="para poetic">എന്റെ ശരീരത്തിലൂടെ ഒരു വിറയൽ പാഞ്ഞു.</p>
+  </div>
+
+  <p class="para">അവൾ ചിരിച്ചു.<br/>
+  കണ്ണീരിനിടയിലൂടെ.</p>
+
+  <div class="highlight-line gold">"നമ്മൾ വിവാഹം കഴിക്കുമെന്ന് ഞാൻ പറഞ്ഞില്ലേ..."</div>
+
+  <div class="scene-break">· · · 💜 · · ·</div>
+
+  <p class="para">അപ്പോൾ എനിക്ക് എല്ലാം മനസ്സിലായി.</p>
+
+  <div class="quantum-box">
+    <div class="quantum-label">// Quantum Immortality</div>
+    <p class="para poetic">
+      ആ സ്വപ്നങ്ങൾ...<br/>
+      <b>സ്വപ്നങ്ങൾ അല്ലായിരുന്നു.</b><br/>
+      അത് മറ്റൊരു ലോകത്തിന്റെ ഓർമ്മകളായിരുന്നു.
+    </p>
+    <p class="para poetic" style="color:rgba(244,63,94,.5)">
+      ഒരു ലോകത്ത് Ayame മരിച്ചു.
+    </p>
+    <p class="para poetic" style="color:rgba(96,165,250,.5)">
+      മറ്റൊരു ലോകത്ത്...<br/>
+      മരിച്ചത് ഞാൻ ആയിരുന്നു.
+    </p>
+    <p class="para poetic">
+      പക്ഷേ എന്റെ ബോധം<br/>
+      ജീവിച്ചിരുന്ന മറ്റൊരു യാഥാർത്ഥ്യത്തിലേക്ക് എത്തിയിരുന്നു.
+    </p>
+    <div class="highlight-line" style="margin:14px 0 0">
+      Quantum Immortality.<br/>
+      മരണം അവസാനം അല്ലായിരുന്നു.<br/>
+      അത് മറ്റൊരു പ്രപഞ്ചത്തിലേക്കുള്ള വാതിൽ മാത്രമായിരുന്നു.
+    </div>
+  </div>
+
+  <div class="scene-break">· · · 💜 · · ·</div>
+
+  <p class="para poetic">
+    ജനലിന് പുറത്തു മഴ പെയ്യാൻ തുടങ്ങി.<br/>
+    ഈ തവണ...<br/>
+    <span style="color:var(--green)">ആ മഴയിൽ ദുഃഖമില്ലായിരുന്നു.</span>
+  </p>
+
+  <p class="para">
+    Ayame എന്റെ കൈ മുറുകെ പിടിച്ചു.<br/>
+    ഞാനും അവളുടെ കൈ വിട്ടില്ല.
+  </p>
+
+  <div class="end-box">
+    <div class="end-label">// THE END</div>
+    <span class="end-emoji">💍✨</span>
+    <p class="para">
+      അനന്തമായ പ്രപഞ്ചങ്ങളിൽ...<br/>
+      <b style="color:var(--green)">ഒടുവിൽ ഞങ്ങൾ ഒരുമിച്ചു.</b>
+    </p>
+  </div>
+
+</div>
+
+<div class="part-nav">
+  <a href="./part1.html" class="nav-btn">← Part 1</a>
+  <div class="part-info">
+    THE DREAM BEYOND REALITY
+    <div class="part-dots">
+      <div class="pdot done"></div>
+      <div class="pdot active"></div>
+    </div>
+  </div>
+  <a href="/story/romantic/" class="nav-btn next">More Stories →</a>
+</div>
+
+<script>
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}
+  });
+},{threshold:.07});
+document.querySelectorAll('.para,.dream-box,.hospital-box,.ring-box,.quantum-box,.end-box,.highlight-line,.scene-break,.beep-box').forEach(el=>{
+  el.style.opacity='0';
+  el.style.transform='translateY(18px)';
+  el.style.transition='opacity .6s ease,transform .6s ease';
+  obs.observe(el);
+});
+</script>
+</body>
+</html>

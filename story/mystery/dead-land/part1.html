@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>☠️ YOMI NO KUNI | Part 1</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+JP:wght@300;500;700&family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --red:#ff2f6d;
+  --dark:#050509;
+  --card:#0d0b14;
+  --text:#f5f5f5;
+  --muted:rgba(255,255,255,.45);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:
+  radial-gradient(circle at top left, rgba(255,47,109,.15), transparent 30%),
+  radial-gradient(circle at bottom right, rgba(120,0,255,.12), transparent 30%),
+  #050509;
+
+  color:var(--text);
+  font-family:'Noto Serif JP',serif;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* NAVBAR */
+
+nav{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:60px;
+
+  background:rgba(5,5,9,.85);
+  backdrop-filter:blur(15px);
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  padding:0 20px;
+  z-index:999;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.logo{
+  font-family:'Orbitron',sans-serif;
+  color:var(--red);
+  letter-spacing:.25em;
+  font-size:.9rem;
+  text-shadow:0 0 15px var(--red);
+}
+
+.nav-btn{
+  text-decoration:none;
+  color:var(--muted);
+  border:1px solid rgba(255,255,255,.08);
+  padding:8px 14px;
+  border-radius:10px;
+  transition:.3s;
+  font-size:.7rem;
+}
+
+.nav-btn:hover{
+  color:white;
+  border-color:var(--red);
+  box-shadow:0 0 15px rgba(255,47,109,.2);
+}
+
+/* HERO */
+
+.hero{
+  padding-top:120px;
+  text-align:center;
+  padding-inline:20px;
+}
+
+.badge{
+  display:inline-block;
+  padding:8px 18px;
+  border-radius:30px;
+  border:1px solid rgba(255,47,109,.2);
+
+  color:var(--red);
+  background:rgba(255,47,109,.06);
+
+  font-size:.75rem;
+  letter-spacing:.2em;
+  margin-bottom:20px;
+}
+
+.hero h1{
+  font-size:clamp(2.2rem,8vw,5rem);
+  font-family:'Cinzel',serif;
+
+  background:linear-gradient(135deg,#fff,var(--red));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+  margin-bottom:18px;
+}
+
+.hero p{
+  color:var(--muted);
+  max-width:700px;
+  margin:auto;
+  line-height:1.9;
+}
+
+/* IMAGE */
+
+.cover{
+  width:92%;
+  max-width:950px;
+  margin:40px auto;
+  border-radius:25px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+
+  box-shadow:0 0 40px rgba(255,47,109,.15);
+}
+
+.cover img{
+  width:100%;
+  display:block;
+  object-fit:cover;
+}
+
+/* STORY */
+
+.story{
+  width:92%;
+  max-width:850px;
+
+  margin:auto;
+
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+
+  padding:35px;
+  border-radius:25px;
+
+  backdrop-filter:blur(15px);
+}
+
+.story h2{
+  color:var(--red);
+  font-family:'Cinzel',serif;
+  margin-bottom:25px;
+  font-size:2rem;
+}
+
+.story p{
+  line-height:2.2;
+  margin-bottom:25px;
+  color:rgba(255,255,255,.82);
+
+  opacity:0;
+  transform:translateY(25px);
+  animation:fadeUp .8s forwards;
+}
+
+.story p:nth-child(2){animation-delay:.2s}
+.story p:nth-child(3){animation-delay:.5s}
+.story p:nth-child(4){animation-delay:.8s}
+.story p:nth-child(5){animation-delay:1.1s}
+
+@keyframes fadeUp{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* QUOTE */
+
+.quote{
+  margin:30px 0;
+  padding:20px;
+  border-left:3px solid var(--red);
+
+  background:rgba(255,47,109,.05);
+  color:#ff9ab8;
+  font-style:italic;
+}
+
+/* BUTTONS */
+
+.buttons{
+  width:92%;
+  max-width:850px;
+
+  margin:40px auto 80px;
+
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  flex:1;
+  min-width:180px;
+
+  text-align:center;
+  text-decoration:none;
+
+  padding:15px;
+  border-radius:14px;
+
+  transition:.35s;
+}
+
+.back{
+  border:1px solid rgba(255,255,255,.08);
+  color:var(--muted);
+}
+
+.back:hover{
+  color:white;
+  border-color:white;
+}
+
+.next{
+  background:linear-gradient(135deg,var(--red),#ff6b81);
+  color:white;
+
+  box-shadow:0 0 20px rgba(255,47,109,.25);
+}
+
+.next:hover{
+  transform:translateY(-4px);
+  box-shadow:0 0 30px rgba(255,47,109,.4);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.story{
+  padding:25px;
+}
+
+.story h2{
+  font-size:1.5rem;
+}
+
+.buttons{
+  flex-direction:column;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+
+<div class="logo">PARADOX WORLD</div>
+
+<a href="index.html" class="nav-btn">↩ STORY</a>
+
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="badge">☠️ JAPANESE HORROR</div>
+
+<h1>YOMI NO KUNI</h1>
+
+<p>
+A cursed village hidden deep inside the mountains of Japan...
+People say the dead still walk there after midnight.
+</p>
+
+</section>
+
+<!-- STORY -->
+
+<div class="story">
+
+<h2>Part 1 : The Red Torii Gate</h2>
+
+<p>
+Tokyoയിൽ താമസിച്ചിരുന്ന <b>Ren Takahashi</b> എന്ന വിദ്യാർത്ഥിക്ക്
+ഒരു ദിവസം പഴയ ഒരു കത്ത് ലഭിച്ചു.
+</p>
+
+<p>
+ആ കത്തിൽ എഴുതിയിരുന്നത്:
+<br><br>
+<i>
+“Yomi no Kuni awaits you...”  
+</i>
+</p>
+
+<p>
+ആ പേര് അവൻ മുമ്പ് കേട്ടിട്ടില്ല.
+പക്ഷേ ആ വാക്ക് വായിച്ച നിമിഷം തന്നെ,
+അവന്റെ തലയിൽ ഒരു പഴയ ഓർമ്മ മിന്നി.
+</p>
+
+<div class="quote">
+“Do not enter after the third bell...”  
+</div>
+
+<p>
+ആ രാത്രിയിൽ Ren ട്രെയിനിൽ കയറി
+ജപ്പാനിലെ മലനിരകളുടെ ഇടയിലുള്ള
+ഒരു ഉപേക്ഷിക്കപ്പെട്ട ഗ്രാമത്തിലേക്ക് യാത്ര തിരിച്ചു.
+</p>
+
+<p>
+അവൻ ഗ്രാമത്തിന്റെ പ്രവേശന കവാടത്തിൽ എത്തിയപ്പോൾ,
+ചുവന്ന നിറത്തിലുള്ള പഴയ <b>Torii Gate</b> കാറ്റിൽ പതുക്കെ കുലുങ്ങുകയായിരുന്നു...
+</p>
+
+<p>
+പിന്നെ...
+ആരും ഇല്ലാത്ത ഗ്രാമത്തിൽ നിന്ന്
+ഒരു പെൺകുട്ടിയുടെ ശബ്ദം കേട്ടു.
+</p>
+
+</div>
+
+<!-- BUTTONS -->
+
+<div class="buttons">
+
+<a href="index.html" class="btn back">← BACK</a>
+
+<a href="part2.html" class="btn next">NEXT PART →</a>
+
+</div>
+
+</body>
+</html>

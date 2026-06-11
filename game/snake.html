@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake Game</title>
+  
+  <style>
+    body {
+      background: #0b141a;
+      color: white;
+      text-align: center;
+      font-family: Arial;
+    }
+    
+    /* BACK BUTTON */
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #25d366;
+      color: black;
+      padding: 10px;
+      border-radius: 50%;
+      text-decoration: none;
+      font-size: 18px;
+    }
+    
+    /* CANVAS */
+    canvas {
+      background: black;
+      margin-top: 60px;
+      border: 2px solid #25d366;
+    }
+    
+    .score {
+      margin-top: 10px;
+      font-size: 20px;
+    }
+    
+    /* MOBILE CONTROLS */
+    .controls {
+      margin-top: 15px;
+    }
+    
+    .controls button {
+      padding: 12px;
+      margin: 5px;
+      border: none;
+      border-radius: 8px;
+      background: #25d366;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  
+  <a href="index.html" class="back-btn"> ⬅️</a>
+  
+  <h2>🐍 Snake Game</h2>
+  <div class="score">Score: <span id="score">0</span></div>
+  
+  <canvas id="game" width="300" height="300"></canvas>
+  
+  <div class="controls">
+    <br>
+    <button onclick="changeDir('up')">⬆️</button><br>
+    <button onclick="changeDir('left')">⬅️</button>
+    <button onclick="changeDir('down')">⬇️</button>
+    <button onclick="changeDir('right')">➡️</button>
+  </div>
+  
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+    
+    let box = 15;
+    let snake = [{ x: 150, y: 150 }];
+    let dir = "RIGHT";
+    
+    let food = {
+      x: Math.floor(Math.random() * 20) * box,
+      y: Math.floor(Math.random() * 20) * box
+    };
+    
+    let score = 0;
+    let speed = 200; // START SLOW 🔥
+    let game;
+    
+    // KEYBOARD
+    document.addEventListener("keydown", e => {
+      if (e.key == "ArrowUp" && dir != "DOWN") dir = "UP";
+      if (e.key == "ArrowDown" && dir != "UP") dir = "DOWN";
+      if (e.key == "ArrowLeft" && dir != "RIGHT") dir = "LEFT";
+      if (e.key == "ArrowRight" && dir != "LEFT") dir = "RIGHT";
+    });
+    
+    // MOBILE
+    function changeDir(d) {
+      if (d == "up" && dir != "DOWN") dir = "UP";
+      if (d == "down" && dir != "UP") dir = "DOWN";
+      if (d == "left" && dir != "RIGHT") dir = "LEFT";
+      if (d == "right" && dir != "LEFT") dir = "RIGHT";
+    }
+    
+    function startGame() {
+      game = setInterval(draw, speed);
+    }
+    
+    function draw() {
+      
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, 300, 300);
+      
+      // snake
+      for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = i == 0 ? "#25d366" : "white";
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+      }
+      
+      // food
+      ctx.fillStyle = "red";
+      ctx.fillRect(food.x, food.y, box, box);
+      
+      // move
+      let headX = snake[0].x;
+      let headY = snake[0].y;
+      
+      if (dir == "LEFT") headX -= box;
+      if (dir == "UP") headY -= box;
+      if (dir == "RIGHT") headX += box;
+      if (dir == "DOWN") headY += box;
+      
+      // eat
+      if (headX == food.x && headY == food.y) {
+        score++;
+        document.getElementById("score").innerText = score;
+        
+        // 🔥 SPEED INCREASE
+        if (speed > 60) {
+          speed -= 10;
+          clearInterval(game);
+          startGame();
+        }
+        
+        food = {
+          x: Math.floor(Math.random() * 20) * box,
+          y: Math.floor(Math.random() * 20) * box
+        };
+        
+      } else {
+        snake.pop();
+      }
+      
+      let newHead = { x: headX, y: headY };
+      
+      // collision
+      if (headX < 0 || headY < 0 || headX >= 300 || headY >= 300 || collision(newHead, snake)) {
+        clearInterval(game);
+        alert("Game Over 😢 Score: " + score);
+        location.reload();
+      }
+      
+      snake.unshift(newHead);
+    }
+    
+    function collision(head, array) {
+      for (let i = 0; i < array.length; i++) {
+        if (head.x == array[i].x && head.y == array[i].y) {
+          return true;
+        }
+      }
+      return false;
+    }
+    
+    // START GAME
+    startGame();
+  </script>
+  
+</body>
+
+</html>

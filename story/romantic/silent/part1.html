@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Dream Beyond Reality — Part 1 | Paradox World</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&family=Noto+Sans+Malayalam:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#06040e;--bg2:#0c0818;
+  --rose:#fb7185;--purple:#a78bfa;--gold:#fbbf24;--blue:#60a5fa;
+  --white:#fdf4ff;--muted:rgba(253,244,255,.42);--border:rgba(251,113,133,.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-thumb{background:var(--rose);border-radius:2px}
+body{
+  background:var(--bg);color:var(--white);
+  font-family:'Crimson Pro',serif;
+  min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 65% 50% at 20% 15%,rgba(167,139,250,.09) 0%,transparent 65%),
+    radial-gradient(ellipse 55% 55% at 80% 85%,rgba(251,113,133,.08) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 35% at 55% 50%,rgba(96,165,250,.04) 0%,transparent 55%);
+}
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px)}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:54px;
+  background:rgba(6,4,14,.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{font-family:'Playfair Display',serif;font-size:.82rem;font-weight:700;color:var(--rose);letter-spacing:.1em;text-shadow:0 0 12px rgba(251,113,133,.3)}
+.nav-links{display:flex;gap:6px}
+.nav-link{font-family:'Space Mono',monospace;font-size:.58rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:5px 11px;border-radius:4px;letter-spacing:.08em;transition:all .2s}
+.nav-link:hover{color:var(--rose);border-color:rgba(251,113,133,.3)}
+
+/* COVER */
+.cover{position:relative;z-index:10;width:100%;height:260px;overflow:hidden}
+@media(min-width:600px){.cover{height:340px}}
+.cover-img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.35) saturate(.7) hue-rotate(280deg);transition:transform 8s ease}
+.cover:hover .cover-img{transform:scale(1.04)}
+.cover::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,4,14,.2) 0%,rgba(6,4,14,.7) 70%,rgba(6,4,14,1) 100%)}
+.cover-text{position:absolute;bottom:24px;left:0;right:0;z-index:2;text-align:center;padding:0 20px}
+.part-badge{display:inline-block;font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.28em;color:rgba(251,113,133,.6);border:1px solid rgba(251,113,133,.2);padding:5px 16px;border-radius:20px;margin-bottom:12px;background:rgba(251,113,133,.04)}
+.cover-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,3.5rem);font-weight:900;letter-spacing:.02em;line-height:.95;background:linear-gradient(135deg,#fff 0%,var(--rose) 60%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(251,113,133,.3))}
+.cover-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(.8rem,1.8vw,1rem);color:rgba(251,113,133,.4);letter-spacing:.08em;margin-top:6px}
+
+/* CHAPTER */
+.chapter-label{position:relative;z-index:10;text-align:center;padding:28px 20px 16px}
+.chapter-name{font-family:'Playfair Display',serif;font-size:clamp(.88rem,2.5vw,1.15rem);font-weight:700;color:rgba(253,244,255,.45);letter-spacing:.08em;font-style:italic}
+.chapter-tagline{font-family:'Space Mono',monospace;font-size:.58rem;color:rgba(251,113,133,.3);letter-spacing:.18em;margin-top:5px}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:14px;max-width:640px;margin:0 auto;padding:0 20px 32px;position:relative;z-index:10}
+.divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(251,113,133,.2),transparent)}
+.divider-gem{font-size:.75rem;color:var(--rose);text-shadow:0 0 10px var(--rose);animation:pulse 3s ease infinite}
+@keyframes pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
+
+/* STORY */
+.story-wrap{position:relative;z-index:10;max-width:660px;margin:0 auto;padding:0 20px 40px}
+
+/* Malayalam text styling */
+.para{
+  font-family:'Noto Sans Malayalam',sans-serif;
+  font-size:clamp(1rem,2.5vw,1.15rem);
+  line-height:2.1;color:rgba(253,244,255,.75);
+  margin-bottom:20px;letter-spacing:.01em;
+  font-weight:400;
+}
+.para.center{text-align:center}
+.para.poetic{
+  text-align:center;
+  font-family:'Noto Sans Malayalam',sans-serif;
+  font-size:clamp(.95rem,2.2vw,1.08rem);
+  color:rgba(253,244,255,.6);
+  line-height:2.2;font-style:italic;
+}
+.para b,.para strong{
+  color:var(--rose);
+  font-weight:600;
+  text-shadow:0 0 10px rgba(251,113,133,.25);
+}
+
+/* Scene break */
+.scene-break{text-align:center;margin:28px 0;font-size:.75rem;color:rgba(251,113,133,.18);letter-spacing:.4em}
+
+/* Highlight line */
+.highlight-line{
+  display:block;
+  font-family:'Noto Sans Malayalam',sans-serif;
+  font-size:clamp(1rem,2.5vw,1.2rem);
+  font-weight:500;color:var(--gold);
+  font-style:italic;text-align:center;
+  text-shadow:0 0 12px rgba(251,191,36,.2);
+  margin:18px 0;
+  padding:14px 20px;
+  border-left:2px solid var(--gold);
+  background:linear-gradient(90deg,rgba(251,191,36,.06),transparent);
+  border-radius:0 8px 8px 0;
+  text-align:left;
+}
+
+/* Dream box */
+.dream-box{
+  background:linear-gradient(135deg,rgba(96,165,250,.07),rgba(167,139,250,.05));
+  border:1px solid rgba(96,165,250,.2);
+  border-radius:16px;padding:24px 22px;margin:28px 0;
+  position:relative;overflow:hidden;
+}
+.dream-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),var(--purple),transparent)}
+.dream-label{font-family:'Space Mono',monospace;font-size:.56rem;color:rgba(96,165,250,.45);letter-spacing:.2em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.dream-label::before{content:'';display:block;width:7px;height:7px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);animation:pulse 1.8s ease infinite}
+.dream-box .para{color:rgba(253,244,255,.62);margin-bottom:12px}
+.dream-box .para:last-child{margin-bottom:0}
+
+/* Accident box */
+.accident-box{
+  background:linear-gradient(135deg,rgba(244,63,94,.07),rgba(167,139,250,.04));
+  border:1px solid rgba(244,63,94,.2);
+  border-radius:14px;padding:22px 22px;margin:28px 0;
+  position:relative;
+}
+.accident-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#f43f5e,transparent)}
+.accident-label{font-family:'Space Mono',monospace;font-size:.56rem;color:rgba(244,63,94,.45);letter-spacing:.2em;margin-bottom:14px}
+.accident-box .para{color:rgba(253,244,255,.6);margin-bottom:10px}
+.accident-box .para:last-child{margin-bottom:0}
+
+/* Ending box */
+.end-box{
+  background:linear-gradient(135deg,rgba(251,113,133,.06),rgba(167,139,250,.04));
+  border:1px solid rgba(251,113,133,.18);
+  border-radius:14px;padding:24px;margin:32px 0;
+  text-align:center;position:relative;
+}
+.end-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--rose),transparent)}
+.end-label{font-family:'Space Mono',monospace;font-size:.56rem;color:rgba(251,113,133,.4);letter-spacing:.2em;margin-bottom:14px}
+.end-box .para{color:rgba(253,244,255,.5);margin-bottom:0;text-align:center}
+
+/* Part nav */
+.part-nav{
+  position:relative;z-index:10;max-width:660px;margin:0 auto;
+  padding:24px 20px 80px;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;border-top:1px solid var(--border);
+}
+.part-info{font-family:'Space Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.1em;text-align:center;flex:1}
+.part-dots{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.pdot{width:8px;height:8px;border-radius:50%;border:1px solid rgba(251,113,133,.3);background:transparent;transition:all .3s}
+.pdot.active{background:var(--rose);border-color:var(--rose);box-shadow:0 0 8px var(--rose)}
+.pdot.done{background:rgba(251,113,133,.3);border-color:rgba(251,113,133,.3)}
+.nav-btn{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;padding:11px 22px;border-radius:8px;text-decoration:none;transition:all .28s;border:1px solid var(--border);color:var(--muted);background:transparent;white-space:nowrap}
+.nav-btn:hover{color:var(--white);border-color:rgba(251,113,133,.3)}
+.nav-btn.next{color:var(--rose);border-color:rgba(251,113,133,.35);background:rgba(251,113,133,.06)}
+.nav-btn.next:hover{background:rgba(251,113,133,.14);box-shadow:0 0 20px rgba(251,113,133,.2);transform:translateX(3px)}
+
+@media(min-width:768px){nav{padding:0 48px}.story-wrap,.part-nav{padding-left:32px;padding-right:32px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">PARADOX WORLD</div>
+  <div class="nav-links">
+    <a href="/story/romantic/" class="nav-link">💘 Romantic</a>
+    <a href="/" class="nav-link">🏠</a>
+  </div>
+</nav>
+
+<!-- COVER -->
+<div class="cover">
+  <img class="cover-img"
+    src="./assets/image/story/romantic/dream.jpg"
+    alt="The Dream Beyond Reality"
+    onerror="this.parentElement.style.background='linear-gradient(180deg,#0a0418,#06040e)'"/>
+  <div class="cover-text">
+    <div class="part-badge">✦ PART ONE ✦</div>
+    <h1 class="cover-title">The Dream Beyond<br/>Reality</h1>
+    <p class="cover-sub">— A love too deep to say out loud —</p>
+  </div>
+</div>
+
+<div class="chapter-label">
+  <div class="chapter-name">Part 1 : The Dream Beyond Reality</div>
+  <div class="chapter-tagline">// ROMANTIC · ONE SIDE LOVE · DREAMS</div>
+</div>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-gem">💗</div>
+  <div class="divider-line"></div>
+</div>
+
+<!-- STORY -->
+<div class="story-wrap">
+
+  <p class="para">
+    സ്കൂളിലെ അവസാന വർഷം...<br/>
+    എല്ലാവർക്കും ഭാവിയെക്കുറിച്ചുള്ള സ്വപ്നങ്ങളായിരുന്നു.<br/>
+    പക്ഷേ എനിക്ക് ഒരു സ്വപ്നം മാത്രമേ ഉണ്ടായിരുന്നുള്ളൂ...
+  </p>
+
+  <div class="highlight-line">Ayame.</div>
+
+  <p class="para">
+    അവൾക്ക് ഞാൻ ഒരു സുഹൃത്ത് മാത്രം.<br/>
+    എന്നാൽ എനിക്ക്...<br/>
+    അവൾ എന്റെ ലോകമായിരുന്നു.
+  </p>
+
+  <p class="para poetic">
+    അവൾ ചിരിക്കുമ്പോൾ<br/>
+    എനിക്ക് കാരണമില്ലാതെ സന്തോഷം തോന്നും.<br/>
+    അവൾ ദുഃഖിച്ചാൽ<br/>
+    എന്റെ മനസും മൗനമാകും.
+  </p>
+
+  <div class="scene-break">· · · 💗 · · ·</div>
+
+  <p class="para">
+    എന്നാൽ ഞാൻ ഒരിക്കലും പറഞ്ഞില്ല...<br/>
+    <b>"ഞാൻ നിന്നെ സ്നേഹിക്കുന്നു"</b> എന്ന്.
+  </p>
+
+  <p class="para poetic">
+    കാരണം...<br/>
+    അവളെ നഷ്ടപ്പെടുത്താനുള്ള ഭയം<br/>
+    അവളെ സ്വന്തമാക്കാനുള്ള ആഗ്രഹത്തേക്കാൾ<br/>
+    വലുതായിരുന്നു.
+  </p>
+
+  <div class="scene-break">· · · 💗 · · ·</div>
+
+  <p class="para">
+    പക്ഷേ രാത്രികളിൽ...<br/>
+    വിചിത്രമായ ചില സ്വപ്നങ്ങൾ എനിക്ക് വരാൻ തുടങ്ങി.
+  </p>
+
+  <div class="dream-box">
+    <div class="dream-label">// സ്വപ്നങ്ങൾ</div>
+    <p class="para">ആ സ്വപ്നങ്ങളിൽ ഞങ്ങൾ ഒരുമിച്ചായിരുന്നു.</p>
+    <p class="para poetic">
+      മഴയിൽ നനഞ്ഞു നടന്നു.<br/>
+      കടൽത്തീരത്ത് ഇരുന്നു.<br/>
+      ഒരേ കുടക്കീഴിൽ മണിക്കൂറുകൾ സംസാരിച്ചു.
+    </p>
+    <p class="para poetic">
+      യാഥാർത്ഥ്യത്തിൽ ഒരിക്കലും സംഭവിക്കാത്ത നിമിഷങ്ങൾ...<br/>
+      പക്ഷേ സ്വപ്നങ്ങളിൽ അവ അത്രയും <b>സത്യമായിരുന്നു.</b>
+    </p>
+  </div>
+
+  <div class="scene-break">· · · 💗 · · ·</div>
+
+  <p class="para">
+    ഒരു രാത്രി...<br/>
+    ഞാൻ ഇതുവരെ കണ്ടതിൽ ഏറ്റവും മനോഹരമായ സ്വപ്നം കണ്ടു.
+  </p>
+
+  <div class="dream-box">
+    <div class="dream-label">// ആ രാത്രിയിലെ സ്വപ്നം</div>
+    <p class="para poetic">
+      സന്ധ്യാസമയം.<br/>
+      ആകാശം സ്വർണ്ണ നിറമായിരുന്നു.
+    </p>
+    <p class="para">Ayame എന്റെ മുന്നിൽ നിന്നു.</p>
+    <p class="para">അവളുടെ കൈയിൽ ഒരു ചെറിയ വെള്ളി മോതിരം.</p>
+    <p class="para">അവൾ ചിരിച്ചു.</p>
+    <div class="highlight-line">"ഇത് നിനക്കാണ്..."</div>
+    <p class="para">അവൾ ആ മോതിരം എന്റെ വിരലിൽ ഇട്ടു.</p>
+    <p class="para poetic">
+      ആ നിമിഷം...<br/>
+      എന്റെ ജീവിതം <b>പൂർണ്ണമായതായി</b> തോന്നി.
+    </p>
+  </div>
+
+  <div class="scene-break">· · · 💗 · · ·</div>
+
+  <p class="para">പക്ഷേ പെട്ടെന്ന്...</p>
+
+  <div class="accident-box">
+    <div class="accident-label">// ആ നിമിഷം</div>
+    <p class="para poetic">
+      ഒരു വലിയ ശബ്ദം.<br/>
+      ബ്രേക്കിന്റെ നിലവിളി.<br/>
+      മഴ.<br/>
+      ആളുകളുടെ ഓട്ടം.
+    </p>
+    <p class="para">ഞാൻ കണ്ടത്...<br/>
+    <b>Ayame റോഡിൽ കിടക്കുന്നതായിരുന്നു.</b></p>
+    <p class="para">അവളുടെ കണ്ണുകൾ പതിയെ അടയുകയായിരുന്നു.</p>
+    <p class="para">ഞാൻ അവളെ ചേർത്ത് പിടിച്ച് കരഞ്ഞു.</p>
+    <p class="para poetic">
+      മഴ എന്റെ കണ്ണീരിനൊപ്പം ഒഴുകി.
+    </p>
+    <div class="highlight-line" style="border-color:var(--rose);background:linear-gradient(90deg,rgba(251,113,133,.08),transparent);color:var(--rose)">
+      "Please don't leave me..."
+    </div>
+    <p class="para">ഞാൻ നിലവിളിച്ചു.</p>
+    <p class="para">പക്ഷേ അവൾ പ്രതികരിച്ചില്ല.</p>
+  </div>
+
+  <div class="scene-break">· · · 💗 · · ·</div>
+
+  <p class="para poetic">
+    അടുത്ത നിമിഷം...<br/>
+    ഞാൻ ഞെട്ടി ഉണർന്നു.
+  </p>
+
+  <p class="para center" style="font-family:'Space Mono',monospace;font-size:.85rem;letter-spacing:.2em;color:rgba(251,113,133,.5)">
+    രാത്രി 3 മണി.
+  </p>
+
+  <p class="para poetic">
+    എന്റെ കണ്ണുകൾ നിറഞ്ഞിരുന്നു.<br/><br/>
+    അത് ഒരു സ്വപ്നം മാത്രമായിരുന്നു.<br/>
+    പക്ഷേ എന്തുകൊണ്ടോ...<br/>
+    എന്റെ ഹൃദയം ഇപ്പോഴും വേദനിച്ചിരുന്നു.
+  </p>
+
+  <div class="end-box">
+    <div class="end-label">// PART ONE END</div>
+    <p class="para poetic">
+      അന്ന് രാത്രി എനിക്ക് ഉറങ്ങാൻ കഴിഞ്ഞില്ല...<br/>
+      കാരണം ആ സ്വപ്നം...<br/>
+      <b>ഒരു ഓർമ്മ പോലെയായിരുന്നു.</b>
+    </p>
+  </div>
+
+</div>
+
+<!-- PART NAV -->
+<div class="part-nav">
+  <a href="/story/romantic/" class="nav-btn">← Romantic</a>
+  <div class="part-info">
+    THE DREAM BEYOND REALITY
+    <div class="part-dots">
+      <div class="pdot active"></div>
+      <div class="pdot"></div>
+      <div class="pdot"></div>
+    </div>
+  </div>
+  <a href="./part2.html" class="nav-btn next">Part 2 →</a>
+</div>
+
+<script>
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}
+  });
+},{threshold:.07});
+document.querySelectorAll('.para,.dream-box,.accident-box,.end-box,.highlight-line,.scene-break').forEach(el=>{
+  el.style.opacity='0';
+  el.style.transform='translateY(18px)';
+  el.style.transition='opacity .6s ease,transform .6s ease';
+  obs.observe(el);
+});
+</script>
+</body>
+</html>

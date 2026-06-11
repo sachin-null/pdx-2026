@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hacking Simulator</title>
+
+<style>
+body{
+  background:black;
+  color:#00ff88;
+  font-family:monospace;
+  margin:0;
+  padding:10px;
+}
+
+/* TERMINAL */
+.terminal{
+  max-width:800px;
+  margin:auto;
+  background:#010101;
+  padding:15px;
+  border-radius:10px;
+  box-shadow:0 0 20px #00ff88;
+}
+
+/* OUTPUT */
+#output{
+  height:300px;
+  overflow-y:auto;
+  margin-bottom:10px;
+  font-size:14px;
+}
+
+/* INPUT LINE */
+.input-line{
+  display:flex;
+  align-items:center;
+}
+
+.prompt{
+  margin-right:5px;
+}
+
+/* INPUT FIX */
+input{
+  flex:1;
+  background:none;
+  border:none;
+  outline:none;
+  color:#00ff88;
+  font-family:monospace;
+  font-size:16px; /* mobile important */
+}
+
+/* TAP AREA */
+.tap-area{
+  text-align:center;
+  font-size:12px;
+  color:#888;
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="terminal" onclick="focusInput()">
+
+<div id="output">
+<p>Initializing system...</p>
+<p>Type <b>help</b> to begin</p>
+</div>
+
+<div class="input-line">
+<span class="prompt">root@paradox:~$</span>
+<input type="text" id="cmd">
+</div>
+
+<div class="tap-area">Tap anywhere to start typing...</div>
+
+</div>
+
+<script>
+const input = document.getElementById("cmd");
+const output = document.getElementById("output");
+
+/* FORCE FOCUS (MOBILE FIX) */
+function focusInput(){
+  input.focus();
+}
+
+/* ENTER COMMAND */
+input.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    let cmd = input.value;
+    print("root@paradox:~$ " + cmd);
+    runCommand(cmd.toLowerCase());
+    input.value = "";
+  }
+});
+
+/* PRINT */
+function print(text){
+  output.innerHTML += "<p>" + text + "</p>";
+  output.scrollTop = output.scrollHeight;
+}
+
+/* COMMANDS */
+function runCommand(cmd){
+
+  if(cmd === "help"){
+    print("Commands: scan | hack | decrypt | clear");
+  }
+
+  else if(cmd === "scan"){
+    fake("Scanning target...", [
+      "Target Found: 192.168.0.1",
+      "Ports: 22, 80, 443",
+      "Weak security detected ⚠️"
+    ]);
+  }
+
+  else if(cmd === "hack"){
+    fake("Bypassing firewall...", [
+      "Injecting payload...",
+      "Access granted ✅",
+      "Root unlocked 🔓"
+    ]);
+  }
+
+  else if(cmd === "decrypt"){
+    fake("Decrypting...", [
+      "██▒▒▒▒▒ 20%",
+      "████▒▒▒ 50%",
+      "███████ 100%",
+      "Done ✔️"
+    ]);
+  }
+
+  else if(cmd === "clear"){
+    output.innerHTML = "";
+  }
+
+  else{
+    print("Unknown command ❌");
+  }
+}
+
+/* FAKE LOADING */
+function fake(text, steps){
+  print(text);
+  let i = 0;
+
+  let interval = setInterval(()=>{
+    if(i < steps.length){
+      print(steps[i]);
+      i++;
+    } else {
+      clearInterval(interval);
+    }
+  }, 600);
+}
+</script>
+
+</body>
+</html>

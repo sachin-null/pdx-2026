@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mystery World | Paradox World</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cyan:   #00ffe7;
+    --pink:   #ff2d78;
+    --purple: #a855f7;
+    --yellow: #ffe600;
+    --bg:     #020817;
+    --bg2:    #080f20;
+    --border: rgba(0,255,231,0.15);
+    --glass:  rgba(0,255,231,0.04);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 2px; }
+
+  body {
+    background: var(--bg);
+    color: #e0f7f4;
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID BG ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,231,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,231,0.025) 1px, transparent 1px);
+    background-size: 44px 44px;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px;
+    background: rgba(2,8,23,0.92); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Orbitron', monospace; font-size: .82rem; font-weight: 900;
+    color: var(--cyan); letter-spacing: .15em;
+    text-shadow: 0 0 14px var(--cyan);
+  }
+  .nav-back {
+    font-family: 'Share Tech Mono', monospace; font-size: .72rem;
+    color: rgba(224,247,244,0.7); text-decoration: none;
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border: 1px solid var(--border); border-radius: 6px;
+    transition: all .2s;
+  }
+  .nav-back:hover, .nav-back:active { background: rgba(0,255,231,0.08); border-color: var(--cyan); color: var(--cyan); }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    position: relative; z-index: 2;
+    text-align: center; padding: 48px 20px 36px;
+    animation: fadeDown .7s ease both;
+  }
+  .page-tag {
+    font-family: 'Share Tech Mono', monospace; font-size: .65rem;
+    color: var(--pink); letter-spacing: .25em;
+    border: 1px solid rgba(255,45,120,0.3); padding: 5px 14px;
+    border-radius: 20px; display: inline-block; margin-bottom: 16px;
+    text-shadow: 0 0 8px var(--pink);
+  }
+  .page-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.8rem, 6vw, 3.2rem); font-weight: 900;
+    color: #fff; letter-spacing: .05em; margin-bottom: 10px;
+    text-shadow: 0 0 40px rgba(255,255,255,0.1);
+  }
+  .page-title span {
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .page-sub {
+    font-family: 'Share Tech Mono', monospace; font-size: .75rem;
+    color: rgba(0,255,231,0.45); letter-spacing: .15em;
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    position: relative; z-index: 2;
+    display: flex; gap: 8px; padding: 0 16px 24px;
+    overflow-x: auto; scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-pill {
+    font-family: 'Share Tech Mono', monospace; font-size: .65rem;
+    color: rgba(224,247,244,0.6); letter-spacing: .1em;
+    border: 1px solid var(--border); padding: 7px 16px;
+    border-radius: 20px; background: var(--glass);
+    white-space: nowrap; cursor: pointer;
+    transition: all .2s; flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .filter-pill.active,
+  .filter-pill:hover {
+    border-color: var(--cyan); color: var(--cyan);
+    background: rgba(0,255,231,0.08);
+    box-shadow: 0 0 12px rgba(0,255,231,0.15);
+  }
+
+  /* ── SEARCH ── */
+  .search-wrap {
+    position: relative; z-index: 2;
+    padding: 0 16px 28px;
+  }
+  .search-input {
+    width: 100%; padding: 12px 44px 12px 16px;
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 10px; color: #e0f7f4;
+    font-family: 'Share Tech Mono', monospace; font-size: .8rem;
+    letter-spacing: .06em; outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .search-input::placeholder { color: rgba(0,255,231,0.3); }
+  .search-input:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 20px rgba(0,255,231,0.1);
+  }
+  .search-icon {
+    position: absolute; right: 30px; top: 50%;
+    transform: translateY(-50%);
+    color: rgba(0,255,231,0.4); font-size: .9rem; pointer-events: none;
+  }
+
+  /* ── CARDS GRID ── */
+  .cards-wrap {
+    position: relative; z-index: 2;
+    padding: 0 12px 80px;
+  }
+  .count-bar {
+    font-family: 'Share Tech Mono', monospace; font-size: .65rem;
+    color: rgba(0,255,231,0.35); letter-spacing: .12em;
+    padding: 0 4px 16px;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    position: relative;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden;
+    text-decoration: none; color: inherit;
+    display: block;
+    transition: transform .25s, box-shadow .25s, border-color .25s;
+    -webkit-tap-highlight-color: transparent;
+    animation: fadeUp .5s ease both;
+    will-change: transform;
+  }
+  .card:active {
+    transform: scale(0.97);
+  }
+  @media(hover:hover) {
+    .card:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: rgba(0,255,231,0.35);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,255,231,0.08), 0 0 30px rgba(0,255,231,0.08);
+    }
+    .card:hover .card-img { transform: scale(1.07); filter: brightness(1) saturate(1.2); }
+    .card:hover .card-overlay { opacity: 1; }
+    .card:hover .card-arrow { transform: translateX(4px); opacity: 1; }
+  }
+
+  /* Image */
+  .card-img-wrap {
+    position: relative; overflow: hidden;
+    height: 120px;
+  }
+  @media(min-width:480px) { .card-img-wrap { height: 140px; } }
+  @media(min-width:768px) { .card-img-wrap { height: 160px; } }
+
+  .card-img {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block;
+    transition: transform .4s ease, filter .4s ease;
+    filter: brightness(.8) saturate(1.05);
+  }
+
+  /* Gradient overlay on image */
+  .card-img-wrap::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 30%, rgba(8,15,32,0.85) 100%);
+    pointer-events: none;
+  }
+
+  /* Hover glow overlay */
+  .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0,255,231,0.06), rgba(168,85,247,0.06));
+    opacity: 0; transition: opacity .3s; pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Category badge on image */
+  .card-cat {
+    position: absolute; top: 10px; left: 10px; z-index: 2;
+    font-family: 'Share Tech Mono', monospace; font-size: .58rem;
+    color: var(--cyan); letter-spacing: .1em;
+    background: rgba(2,8,23,0.75); backdrop-filter: blur(4px);
+    border: 1px solid rgba(0,255,231,0.25);
+    padding: 3px 9px; border-radius: 10px;
+    text-shadow: 0 0 6px var(--cyan);
+  }
+
+  /* Body */
+  .card-body {
+    padding: 12px 12px 14px;
+    position: relative;
+  }
+  .card-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(.68rem, 2.2vw, .82rem);
+    font-weight: 700; color: #fff;
+    letter-spacing: .04em; line-height: 1.25;
+    margin-bottom: 5px;
+  }
+  .card-desc {
+    font-size: .78rem; font-weight: 600;
+    color: rgba(224,247,244,0.5); line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .card-arrow {
+    position: absolute; bottom: 14px; right: 14px;
+    color: var(--cyan); font-size: .8rem;
+    opacity: 0.4; transition: transform .2s, opacity .2s;
+  }
+
+  /* Number badge */
+  .card-num {
+    position: absolute; top: 10px; right: 10px; z-index: 2;
+    font-family: 'Orbitron', monospace; font-size: .6rem;
+    color: rgba(0,255,231,0.5); font-weight: 700;
+    background: rgba(2,8,23,0.7);
+    border: 1px solid rgba(0,255,231,0.15);
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty {
+    grid-column: 1/-1; text-align: center; padding: 60px 20px;
+    font-family: 'Share Tech Mono', monospace; font-size: .82rem;
+    color: rgba(0,255,231,0.3); letter-spacing: .1em;
+    animation: fadeUp .5s ease both;
+  }
+  .empty div { font-size: 2.5rem; margin-bottom: 12px; }
+
+  /* ── SCROLL TO TOP ── */
+  .scroll-top {
+    position: fixed; bottom: 24px; right: 20px; z-index: 200;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(0,255,231,0.1); border: 1px solid var(--cyan);
+    color: var(--cyan); font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; opacity: 0; pointer-events: none;
+    transition: opacity .3s, transform .3s, background .2s;
+    box-shadow: 0 0 20px rgba(0,255,231,0.2);
+  }
+  .scroll-top.show { opacity: 1; pointer-events: all; }
+  .scroll-top:hover { background: var(--cyan); color: var(--bg); transform: translateY(-3px); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeUp   { from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)} }
+
+  /* ── TABLET / DESKTOP UPGRADES ── */
+  @media(min-width:600px) {
+    .cards-grid { grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .cards-wrap { padding: 0 20px 80px; }
+  }
+  @media(min-width:900px) {
+    .cards-grid { grid-template-columns: repeat(4,1fr); gap: 18px; }
+    .cards-wrap { padding: 0 32px 80px; }
+    .filter-bar { padding: 0 32px 24px; }
+    .search-wrap { padding: 0 32px 28px; max-width: 500px; }
+    nav { padding: 16px 40px; }
+    .page-header { padding: 64px 32px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">PARADOX_WORLD</div>
+  <a href="../index.html" class="nav-back">🏠 HOME</a>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-tag">// CLASSIFIED_ARCHIVES</div>
+  <h1 class="page-title">MYSTERY <span>VAULT</span></h1>
+  <p class="page-sub">👁️ &nbsp; UNSOLVED FILES &amp; HIDDEN TRUTHS &nbsp; 👁️</p>
+</div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <input class="search-input" type="text" placeholder="SEARCH_MYSTERIES..." id="searchInput" oninput="filterCards()"/>
+  <span class="search-icon">🔍</span>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" id="filterBar">
+  <div class="filter-pill active" data-cat="All" onclick="setFilter(this,'All')">ALL</div>
+  
+  
+  <div class="filter-pill" data-cat="Ancient" onclick="setFilter(this,'Ancient')">ANCIENT</div>
+  
+  
+  <div class="filter-pill" data-cat="Cosmos" onclick="setFilter(this,'Cosmos')">COSMOS</div>
+  
+  
+  <div class="filter-pill" data-cat="Digital" onclick="setFilter(this,'Digital')">DIGITAL</div>
+  
+  
+  <div class="filter-pill" data-cat="Mind" onclick="setFilter(this,'Mind')">MIND</div>
+  
+  <div class="filter-pill" data-cat="Physics" onclick="setFilter(this,'Physics')">PHYSICS</div>
+  
+  <div class="filter-pill" data-cat="Reality" onclick="setFilter(this,'Reality')">REALITY</div>
+  
+  <div class="filter-pill" data-cat="Supernatural" onclick="setFilter(this,'Supernatural')">PARANORMAL</div>
+</div>
+
+<!-- CARDS WRAP -->
+<div class="cards-wrap">
+  <div class="count-bar" id="countBar">// 20 FILES LOADED</div>
+  <div class="cards-grid" id="cardsGrid"></div>
+</div>
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  const BASE = '..'; // 🔥 IMPORTANT FIX (relative path)
+  
+  const mysteries = [
+    { title: 'Anunnaki', desc: 'Evolution or intelligent design?', cat: 'Ancient', img: 'mystery/anunnaki.jpg', href: 'mystery/anunnaki/', emoji: '👽' },
+    
+    { title: 'Dark Web', desc: 'The hidden side of the internet.', cat: 'Digital', img: 'mystery/darkweb.jpg', href: 'mystery/darkweb/', emoji: '💻' },
+    
+    { title: 'Alien Life', desc: 'Are we alone in this universe?', cat: 'Cosmos', img: 'mystery/alien.jpg', href: 'mystery/alien/', emoji: '🛸' },
+    
+    { title: 'Bermuda', desc: 'Disappearances beyond explanation.', cat: 'Reality', img: 'mystery/bermuda.jpg', href: 'mystery/bermuda/', emoji: '🌀' },
+    
+    { title: 'Pyramids', desc: 'Ancient power plants or tombs?', cat: 'Ancient', img: 'mystery/pyramid.jpg', href: 'mystery/pyramid/', emoji: '🔺' },
+    
+    { title: 'Simulation', desc: 'Are we living in a supercomputer?', cat: 'Reality', img: 'mystery/simulation.jpg', href: 'mystery/simulation/', emoji: '🖥️' },
+    
+    { title: 'Time Travel', desc: 'Breaking the barriers of time.', cat: 'Physics', img: 'mystery/timetravel.jpg', href: 'mystery/timetravel/', emoji: '⏳' },
+    
+    { title: 'Time Loop', desc: 'Living the same moment again?', cat: 'Physics', img: 'mystery/timeloop.jpg', href: 'mystery/timeloop/', emoji: '🔁' },
+    
+    { title: 'Paranormal', desc: 'Ghosts or unknown energy?', cat: 'Supernatural', img: 'mystery/ghost.jpg', href: 'mystery/paranormal/', emoji: '👻' },
+    
+    { title: 'Déjà Vu', desc: 'I have seen this before...', cat: 'Mind', img: 'mystery/dejavu.jpg', href: 'mystery/dejavu/', emoji: '🧠' },
+    
+    { title: 'After Death', desc: 'End or another beginning?', cat: 'Reality', img: 'mystery/afterdeath.jpg', href: 'mystery/afterdeath/', emoji: '✨' },
+    
+    { title: 'Lucid Dream', desc: 'Control your own reality.', cat: 'Mind', img: 'mystery/lucid.jpg', href: 'mystery/lucid/', emoji: '💭' },
+    
+    { title: 'Sleep Paralysis', desc: 'Trapped inside your own body.', cat: 'Mind', img: 'mystery/sleep.jpg', href: 'mystery/sleep/', emoji: '😱' },
+    
+    { title: 'Crop Circles', desc: 'Alien message or human prank?', cat: 'Ancient', img: 'mystery/crop.jpg', href: 'mystery/crop/', emoji: '🌾' },
+    
+    { title: 'Voynich MS', desc: 'The book no one can read.', cat: 'Ancient', img: 'mystery/voynich.jpg', href: 'mystery/voynich/', emoji: '📜' },
+    
+    { title: 'Area 51', desc: 'Classified Alien research?', cat: 'Digital', img: 'mystery/area.jpg', href: 'mystery/area/', emoji: '🔒' },
+    
+    { title: 'Atlantis', desc: 'The lost city under the ocean.', cat: 'Ancient', img: 'mystery/atlantis.jpg', href: 'mystery/atlantis/', emoji: '🌊' },
+    
+    { title: 'Illuminati', desc: 'Who is ruling the world?', cat: 'Reality', img: 'illuminati/main.jpg', href: 'mystery/illuminati/', emoji: '🔺' },
+    
+    { title: 'Mandela Effect', desc: 'False memories of history.', cat: 'Mind', img: 'mystery/mandela.jpg', href: 'mystery/mandela/', emoji: '🌀' },
+    
+    { title: 'Black Holes', desc: 'The monsters that eat time.', cat: 'Cosmos', img: 'mystery/blackhole.jpg', href: 'mystery/blackhole/', emoji: '🕳️' },
+  ];
+  
+  let activeFilter = 'All';
+  let searchQ = '';
+  
+  function setFilter(el, cat) {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    activeFilter = cat;
+    render();
+  }
+  
+  function filterCards() {
+    searchQ = document.getElementById('searchInput').value.toLowerCase();
+    render();
+  }
+  
+  function render() {
+    const grid = document.getElementById('cardsGrid');
+    const countBar = document.getElementById('countBar');
+    
+    const filtered = mysteries.filter(m => {
+      const catOk = activeFilter === 'All' || m.cat === activeFilter;
+      const searchOk = !searchQ || m.title.toLowerCase().includes(searchQ) || m.desc.toLowerCase().includes(searchQ) || m.cat.toLowerCase().includes(searchQ);
+      return catOk && searchOk;
+    });
+    
+    countBar.textContent = `// ${filtered.length} FILE${filtered.length !== 1 ? 'S' : ''} LOADED`;
+    
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="empty"><div>👁️</div>NO FILES FOUND<br/>TRY DIFFERENT QUERY</div>`;
+      return;
+    }
+    
+    grid.innerHTML = filtered.map((m, i) => `
+    <a href="${BASE}/${m.href}" class="card" style="animation-delay:${i * 0.04}s">
+      <div class="card-img-wrap">
+        <img class="card-img"
+          src="${BASE}/assets/image/${m.img}"
+          alt="${m.title}"
+          loading="lazy"
+          onerror="this.src='${BASE}/assets/image/fallback.jpg'"/>
+        
+        <div class="card-overlay"></div>
+        <div class="card-cat">${m.cat.toUpperCase()}</div>
+        <div class="card-num">${String(i+1).padStart(2,'0')}</div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-title">${m.emoji} ${m.title}</div>
+        <div class="card-desc">${m.desc}</div>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+  `).join('');
+  }
+  
+  // Scroll button
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('scrollTop');
+    btn.classList.toggle('show', window.scrollY > 300);
+  });
+  
+  render();
+</script>
+</body>
+</html>

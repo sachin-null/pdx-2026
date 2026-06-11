@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Truth or Dare</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:white;
+}
+
+.box{
+  width:90%;
+  max-width:400px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(15px);
+  padding:25px;
+  border-radius:15px;
+  text-align:center;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.truth{ background:#25d366; }
+.dare{ background:#ff4d6d; }
+
+.option{
+  background:#1e293b;
+  padding:10px;
+  margin:8px 0;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.option:hover{
+  background:#25d366;
+  color:black;
+}
+
+.hidden{display:none;}
+.back-btn{
+  position:fixed;
+  top:20px;
+  left:20px;
+  background:#25d366;
+  color:black;
+  padding:10px 14px;
+  border-radius:50%;
+  text-decoration:none;
+  font-size:18px;
+  z-index:2000;
+  box-shadow:0 0 10px rgba(37,211,102,0.6);
+  transition:0.3s;
+}
+
+.back-btn:hover{
+  transform:scale(1.1);
+  background:#1ebe5d;
+}
+</style>
+</head>
+
+<body>
+<a href="index.html" class="back-btn">←</a>
+<div class="box">
+
+  <h2>Truth or Dare 😎</h2>
+
+  <button class="truth" onclick="getTruth()">Truth 😇</button>
+  <button class="dare" onclick="getDare()">Dare 😈</button>
+
+  <div id="area"></div>
+
+</div>
+
+<script>
+
+const truth=[
+{
+q:"Who is your crush? 😏",
+o:["Best friend 😆","Secret 🤫","Ex 😅","No one 😇"]
+},
+{
+q:"Favorite person?",
+o:["Besty ❤️","Crush 😍","Family 👨‍👩‍👧","Myself 😎"]
+},
+{
+q:"Late night chat with?",
+o:["Crush 😏","Friend 😁","No one 😴","Secret 🤫"]
+},
+{
+q:"Biggest fear?",
+o:["Ghost 👻","Love 💔","Exam 😭","Parents 😅"]
+},
+{
+q:"Last lie you told?",
+o:["To friend 😂","To parents 😅","To teacher 😭","No lie 😇"]
+},
+{
+q:"Most embarrassing moment?",
+o:["School 😆","Public 😅","Friends 😂","Secret 🤫"]
+}
+];
+
+const dare=[
+"Send 'I love you ❤️' to your crush 😂",
+"Put status 'I am crazy 🤪'",
+"Call friend & say miss you 😆",
+"Send 10 random emojis 😂",
+"Record funny video 🤣",
+"Text your ex 'Hi again 😅'",
+"Say your secret loudly 😆",
+"Change DP to weird pic 🤪"
+];
+
+function getTruth(){
+let t=truth[Math.floor(Math.random()*truth.length)];
+
+let html="<p>"+t.q+"</p>";
+t.o.forEach(op=>{
+html+=`<div class='option' onclick='selectAns(this)'>${op}</div>`;
+});
+
+document.getElementById("area").innerHTML=html;
+}
+
+function selectAns(el){
+el.style.background="#25d366";
+el.style.color="black";
+
+setTimeout(()=>{
+document.getElementById("area").innerHTML="<h3>😂 Nice Answer!</h3><button onclick='getTruth()'>Next Truth</button>";
+},800);
+}
+
+function getDare(){
+let d=dare[Math.floor(Math.random()*dare.length)];
+
+document.getElementById("area").innerHTML=
+"<p>"+d+"</p><button onclick='getDare()'>Next Dare 😈</button>";
+}
+
+</script>
+
+</body>
+</html>

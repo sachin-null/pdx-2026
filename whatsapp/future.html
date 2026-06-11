@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Future Prediction</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:linear-gradient(135deg,#1e3c72,#2a5298);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:white;
+}
+
+/* BOX */
+.box{
+  width:90%;
+  max-width:400px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(15px);
+  padding:25px;
+  border-radius:15px;
+  text-align:center;
+  animation:fade 0.5s ease;
+}
+
+@keyframes fade{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1;}
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border:none;
+  border-radius:8px;
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:8px;
+  background:#00eaff;
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  transform:scale(1.05);
+  background:#00bcd4;
+}
+
+.result{
+  margin-top:15px;
+  font-size:18px;
+}
+
+/* BACK BUTTON */
+.back-btn{
+  position:fixed;
+  top:20px;
+  left:20px;
+  background:#00eaff;
+  color:black;
+  padding:10px;
+  border-radius:50%;
+  text-decoration:none;
+}
+
+/* HIDE */
+.hidden{display:none;}
+</style>
+
+</head>
+
+<body>
+
+<a href="index.html" class="back-btn">←</a>
+
+<div class="box" id="start">
+  <h2>🔮 Future Prediction</h2>
+  <input id="name" placeholder="Enter your name">
+  <button onclick="predict()">Check Future</button>
+
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+
+const predictions=[
+"💰 You will become rich soon!",
+"❤️ Love life will be amazing!",
+"😂 Something funny will happen tomorrow!",
+"🚀 Big success coming soon!",
+"😎 You will become famous!",
+"🎁 Surprise waiting for you!",
+"📱 Someone will text you today!",
+"🌍 Travel chance coming!",
+"🔥 Your dream will come true!",
+"🤯 Unexpected twist in life!"
+];
+
+function predict(){
+let name=document.getElementById("name").value;
+if(name=="") return alert("Enter name");
+
+let r=predictions[Math.floor(Math.random()*predictions.length)];
+
+document.getElementById("result").innerText=
+name+", "+r;
+}
+
+// SHARE
+function share(){
+let text="🔮 Check your future here 😎👇\n"+window.location.href;
+window.open("https://wa.me/?text="+encodeURIComponent(text));
+}
+
+</script>
+
+</body>
+</html>
