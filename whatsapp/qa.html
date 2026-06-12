@@ -3,240 +3,237 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiz</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
-
-body{
-  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  color:white;
-}
-
-/* MAIN BOX */
-.box{
-  width:90%;
-  max-width:400px;
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(15px);
-  padding:25px;
-  border-radius:15px;
-  text-align:center;
-  animation:fade 0.5s ease;
-}
-
-@keyframes fade{
-  from{opacity:0; transform:translateY(20px);}
-  to{opacity:1;}
-}
-
-/* INPUT */
-input,select{
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  border:none;
-  border-radius:8px;
-  outline:none;
-}
-
-/* BUTTON */
-button{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border:none;
-  border-radius:8px;
-  background:#25d366;
-  font-weight:bold;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-button:hover{
-  transform:scale(1.05);
-  background:#1ebe5d;
-}
-
-/* PROGRESS BAR */
-.progress{
-  height:6px;
-  background:#333;
-  border-radius:10px;
-  margin-bottom:15px;
-  overflow:hidden;
-}
-
-.progress div{
-  height:100%;
-  width:0%;
-  background:#25d366;
-  transition:0.4s;
-}
-
-/* HIDE */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);display:flex;justify-content:center;align-items:center;min-height:100vh;color:white;padding:20px;}
+.box{width:90%;max-width:400px;background:rgba(255,255,255,0.08);backdrop-filter:blur(15px);padding:25px;border-radius:15px;text-align:center;animation:fade 0.5s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(20px);}to{opacity:1;}}
+input,select{width:100%;padding:12px;margin:10px 0;border:none;border-radius:8px;outline:none;font-size:14px;}
+button{width:100%;padding:12px;margin-top:10px;border:none;border-radius:8px;background:#25d366;font-weight:bold;cursor:pointer;transition:0.3s;font-size:14px;}
+button:hover{transform:scale(1.05);background:#1ebe5d;}
+.progress{height:6px;background:#333;border-radius:10px;margin-bottom:15px;overflow:hidden;}
+.progress div{height:100%;width:0%;background:#25d366;transition:0.4s;}
 .hidden{display:none;}
-.back-btn{
-  position:fixed;
-  top:20px;
-  left:20px;
-  background:#25d366;
-  color:black;
-  padding:10px 14px;
-  border-radius:50%;
-  text-decoration:none;
-  font-size:18px;
-  z-index:2000;
-  box-shadow:0 0 10px rgba(37,211,102,0.6);
-  transition:0.3s;
-}
-
-.back-btn:hover{
-  transform:scale(1.1);
-  background:#1ebe5d;
-}
+.back-btn{position:fixed;top:20px;left:20px;background:#25d366;color:black;padding:10px 14px;border-radius:50%;text-decoration:none;font-size:18px;z-index:2000;box-shadow:0 0 10px rgba(37,211,102,0.6);transition:0.3s;}
+.back-btn:hover{transform:scale(1.1);}
+.share-info{background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.3);border-radius:10px;padding:12px;margin:12px 0;font-size:13px;color:#a8ffc8;}
+.btn-secondary{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;margin-top:8px;}
+.btn-secondary:hover{background:rgba(255,255,255,0.2);}
+.score-big{font-size:3rem;margin:10px 0;}
 </style>
-
 </head>
-
 <body>
 
-<div class="box" id="start">
-  <h2>Enter Your Name 😎</h2>
-  <input id="name" placeholder="Your name">
-  <button onclick="start()">Start Quiz</button>
+<!-- SCREEN 1: Enter Name (Quiz Creator) -->
+<div class="box" id="startScreen">
+  <h2>😎 Enter Your Name</h2>
+  <p style="font-size:13px;color:#aaa;margin:8px 0">Friends will guess about you!</p>
+  <input id="nameInput" placeholder="Your name..." />
+  <button onclick="startQuiz()">Start Quiz ▶</button>
 </div>
 
-<div class="box hidden" id="quiz">
+<!-- SCREEN 2: Quiz Questions (Creator answers) -->
+<div class="box hidden" id="quizScreen">
   <div class="progress"><div id="bar"></div></div>
-  <h3 id="title"></h3>
-  <p id="question"></p>
-  <select id="answer"></select>
-  <button onclick="nextQ()">Next</button>
+  <h3 id="quizTitle" style="margin-bottom:8px"></h3>
+  <p id="questionText" style="margin:12px 0;font-size:15px"></p>
+  <select id="answerSelect"></select>
+  <button onclick="nextQuestion()">Next →</button>
 </div>
 
-<div class="box hidden" id="share">
-  <h3>🔥 Share with Friends</h3>
-  <button onclick="shareWhatsApp()">Share on WhatsApp</button>
-  <button onclick="startGuess()">Test Friend</button>
+<!-- SCREEN 3: Share Screen -->
+<div class="box hidden" id="shareScreen">
+  <h3>🔥 Quiz Ready!</h3>
+  <div class="share-info">
+    Share this with friends — they will guess your answers!<br/>
+    <small> By sachin 😌</small>
+  </div>
+  <button onclick="shareWhatsApp()">💬 Share on WhatsApp</button>
+  <button class="btn-secondary" onclick="testFriend()">🧪 Test Friend (Now)</button>
 </div>
 
-<div class="box hidden" id="guess">
+<!-- SCREEN 4: Friend Guessing -->
+<div class="box hidden" id="guessScreen">
   <div class="progress"><div id="bar2"></div></div>
-  <h3 id="guessTitle"></h3>
-  <p id="gq"></p>
-  <select id="gans"></select>
-  <button onclick="nextGuess()">Next</button>
+  <h3 id="guessTitle" style="margin-bottom:8px"></h3>
+  <p style="font-size:12px;color:#aaa;margin-bottom:12px">What do you think <span id="friendNameSpan"></span> chose?</p>
+  <p id="guessQuestion" style="margin:10px 0;font-size:15px"></p>
+  <select id="guessSelect"></select>
+  <button onclick="nextGuess()">Next →</button>
 </div>
 
-<div class="box hidden" id="result">
-  <h2 id="score"></h2>
-  <button onclick="location.reload()">Create Your Own 🔁</button>
+<!-- SCREEN 5: Result -->
+<div class="box hidden" id="resultScreen">
+  <div class="score-big" id="scoreEmoji"></div>
+  <h2 id="scoreText"></h2>
+  <p id="scorePercent" style="color:#aaa;margin:8px 0;font-size:14px"></p>
+  <button onclick="shareResult()">📤 Share Result</button>
+  <button class="btn-secondary" onclick="location.href=location.pathname">Create My Quiz 🔁</button>
 </div>
+
 <a href="index.html" class="back-btn">←</a>
 
 <script>
-let name="",index=0,answers=[],score=0;
+// ── STATE ──
+let creatorName = "";
+let creatorAnswers = [];
+let currentQ = 0;
+let guessScore = 0;
+let guessIndex = 0;
+let isGuestMode = false;
 
-const questions=[
-{q:"Favorite Chocolate 🍫",o:["Dairy Milk","KitKat","Five Star","Other"]},
-{q:"Favorite Food 🍗",o:["Mandhi","Biriyani","Porotta & Beef","Sadya"]},
-{q:"Favorite Place 🌍",o:["Beach","Hill","City","Home"]},
-{q:"Favorite Color 🎨",o:["Black","Blue","Red","White"]},
-{q:"Biggest Fear 😨",o:["Ghost","Ex","Besty","You 🤭"]},
-{q:"Favorite Time ⏰",o:["Morning","Night","Midnight","Evening"]}
+const QUESTIONS = [
+  { q: "Favorite Chocolate 🍫", o: ["Dairy Milk","KitKat","Five Star","Other"] },
+  { q: "Favorite Food 🍗",      o: ["Mandhi","Biriyani","Porotta & Beef","Sadya"] },
+  { q: "Favorite Place 🌍",     o: ["Beach","Hill","City","Home"] },
+  { q: "Favorite Color 🎨",     o: ["Black","Blue","Red","White"] },
+  { q: "Biggest Fear 😨",       o: ["Ghost","Ex","Besty","You 🤭"] },
+  { q: "Favorite Time ⏰",      o: ["Morning","Night","Midnight","Evening"] }
 ];
 
-function start(){
-name=document.getElementById("name").value;
-if(name=="") return alert("Enter name");
+// ── ON PAGE LOAD — check URL params ──
+window.addEventListener('load', function() {
+  const params = new URLSearchParams(window.location.search);
+  const n = params.get('n');   // name
+  const a = params.get('a');   // answers (encoded)
 
-document.getElementById("start").classList.add("hidden");
-document.getElementById("quiz").classList.remove("hidden");
-document.getElementById("title").innerText=name+"'s Quiz";
-loadQ();
+  if (n && a) {
+    // FRIEND MODE — came from shared link
+    isGuestMode = true;
+    try {
+      creatorName    = decodeURIComponent(n);
+      creatorAnswers = JSON.parse(atob(a)); // decode base64 → JSON
+      startFriendMode();
+    } catch(e) {
+      // If decode fails, show start screen
+      showScreen('startScreen');
+    }
+  } else {
+    showScreen('startScreen');
+  }
+});
+
+// ── HELPERS ──
+function showScreen(id) {
+  ['startScreen','quizScreen','shareScreen','guessScreen','resultScreen'].forEach(s => {
+    document.getElementById(s).classList.add('hidden');
+  });
+  document.getElementById(id).classList.remove('hidden');
 }
 
-function loadQ(){
-let q=questions[index];
-document.getElementById("question").innerText=q.q;
-
-let sel=document.getElementById("answer");
-sel.innerHTML="";
-q.o.forEach(op=> sel.innerHTML+=`<option>${op}</option>`);
-
-// progress
-document.getElementById("bar").style.width=((index+1)/questions.length)*100+"%";
+function setProgress(barId, index, total) {
+  document.getElementById(barId).style.width = ((index + 1) / total * 100) + '%';
 }
 
-function nextQ(){
-answers.push(document.getElementById("answer").value);
-index++;
-
-if(index<questions.length){
-loadQ();
-}else{
-document.getElementById("quiz").classList.add("hidden");
-document.getElementById("share").classList.remove("hidden");
-}
+function loadOptions(selectId, options) {
+  const sel = document.getElementById(selectId);
+  sel.innerHTML = options.map(o => `<option value="${o}">${o}</option>`).join('');
 }
 
-function shareWhatsApp(){
-let text="🔥 Try this quiz about "+name+" 😎👇\n"+window.location.href;
-window.open("https://wa.me/?text="+encodeURIComponent(text));
+// ── CREATOR FLOW ──
+function startQuiz() {
+  const n = document.getElementById('nameInput').value.trim();
+  if (!n) { alert('Enter your name!'); return; }
+  creatorName = n;
+  currentQ = 0;
+  creatorAnswers = [];
+  showScreen('quizScreen');
+  document.getElementById('quizTitle').innerText = creatorName + "'s Quiz 🎯";
+  loadCreatorQ();
 }
 
-// GUESS
-let gIndex=0;
-
-function startGuess(){
-document.getElementById("share").classList.add("hidden");
-document.getElementById("guess").classList.remove("hidden");
-document.getElementById("guessTitle").innerText="About "+name;
-loadGuess();
+function loadCreatorQ() {
+  const q = QUESTIONS[currentQ];
+  document.getElementById('questionText').innerText = q.q;
+  loadOptions('answerSelect', q.o);
+  setProgress('bar', currentQ, QUESTIONS.length);
 }
 
-function loadGuess(){
-let q=questions[gIndex];
-document.getElementById("gq").innerText=q.q;
-
-let sel=document.getElementById("gans");
-sel.innerHTML="";
-q.o.forEach(op=> sel.innerHTML+=`<option>${op}</option>`);
-
-// progress
-document.getElementById("bar2").style.width=((gIndex+1)/questions.length)*100+"%";
+function nextQuestion() {
+  creatorAnswers.push(document.getElementById('answerSelect').value);
+  currentQ++;
+  if (currentQ < QUESTIONS.length) {
+    loadCreatorQ();
+  } else {
+    showScreen('shareScreen');
+  }
 }
 
-function nextGuess(){
-if(answers[gIndex]==document.getElementById("gans").value) score++;
-gIndex++;
-
-if(gIndex<questions.length){
-loadGuess();
-}else{
-let percent=Math.round((score/questions.length)*100);
-document.getElementById("guess").classList.add("hidden");
-document.getElementById("result").classList.remove("hidden");
-
-let text="You got "+percent+"% 😎";
-
-if(percent==100) text="Best Friend 🏆🔥";
-else if(percent>60) text="Close Friend 🤝";
-else text="Just Friend 😅";
-
-document.getElementById("score").innerText=text;
+// ── BUILD SHARE LINK ──
+function buildShareLink() {
+  const base   = window.location.origin + window.location.pathname;
+  const name   = encodeURIComponent(creatorName);
+  const ans    = btoa(JSON.stringify(creatorAnswers)); // base64 encode
+  return `${base}?n=${name}&a=${ans}`;
 }
+
+function shareWhatsApp() {
+  const link = buildShareLink();
+  const msg  = `🔥 *${creatorName}'s Quiz* 🎯\n\nDo you know me well?\nGuess my answers! 😎\n\n👇 Try here:\n${link}`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg));
+}
+
+function testFriend() {
+  // Creator tests directly without sharing
+  guessScore = 0;
+  guessIndex = 0;
+  showScreen('guessScreen');
+  document.getElementById('guessTitle').innerText = "About " + creatorName + " 🤔";
+  document.getElementById('friendNameSpan').innerText = creatorName;
+  loadGuessQ();
+}
+
+// ── FRIEND GUESS FLOW ──
+function startFriendMode() {
+  guessScore = 0;
+  guessIndex = 0;
+  showScreen('guessScreen');
+  document.getElementById('guessTitle').innerText = "About " + creatorName + " 🤔";
+  document.getElementById('friendNameSpan').innerText = creatorName;
+  loadGuessQ();
+}
+
+function loadGuessQ() {
+  const q = QUESTIONS[guessIndex];
+  document.getElementById('guessQuestion').innerText = q.q;
+  loadOptions('guessSelect', q.o);
+  setProgress('bar2', guessIndex, QUESTIONS.length);
+}
+
+function nextGuess() {
+  const selected = document.getElementById('guessSelect').value;
+  if (selected === creatorAnswers[guessIndex]) guessScore++;
+  guessIndex++;
+  if (guessIndex < QUESTIONS.length) {
+    loadGuessQ();
+  } else {
+    showResult();
+  }
+}
+
+// ── RESULT ──
+function showResult() {
+  showScreen('resultScreen');
+  const pct = Math.round((guessScore / QUESTIONS.length) * 100);
+
+  let emoji, text;
+  if (pct === 100) { emoji = "🏆"; text = "Best Friend!"; }
+  else if (pct >= 80) { emoji = "🔥"; text = "Very Close!"; }
+  else if (pct >= 60) { emoji = "🤝"; text = "Good Friend!"; }
+  else if (pct >= 40) { emoji = "😅"; text = "Kinda Know Me"; }
+  else               { emoji = "😂"; text = "Stranger 😂"; }
+
+  document.getElementById('scoreEmoji').innerText  = emoji;
+  document.getElementById('scoreText').innerText   = text;
+  document.getElementById('scorePercent').innerText = `You got ${guessScore}/${QUESTIONS.length} correct (${pct}%)`;
+}
+
+function shareResult() {
+  const pct  = Math.round((guessScore / QUESTIONS.length) * 100);
+  const link = window.location.origin + window.location.pathname;
+  const msg  = `I scored ${pct}% on *${creatorName}'s* quiz! 🎯\nCan you beat me?\n\n${link}`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg));
 }
 </script>
 
