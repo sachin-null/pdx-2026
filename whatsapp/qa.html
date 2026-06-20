@@ -1,241 +1,440 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How Well Do You Know Me? | Paradox World</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet"/>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-body{background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);display:flex;justify-content:center;align-items:center;min-height:100vh;color:white;padding:20px;}
-.box{width:90%;max-width:400px;background:rgba(255,255,255,0.08);backdrop-filter:blur(15px);padding:25px;border-radius:15px;text-align:center;animation:fade 0.5s ease;}
-@keyframes fade{from{opacity:0;transform:translateY(20px);}to{opacity:1;}}
-input,select{width:100%;padding:12px;margin:10px 0;border:none;border-radius:8px;outline:none;font-size:14px;}
-button{width:100%;padding:12px;margin-top:10px;border:none;border-radius:8px;background:#25d366;font-weight:bold;cursor:pointer;transition:0.3s;font-size:14px;}
-button:hover{transform:scale(1.05);background:#1ebe5d;}
-.progress{height:6px;background:#333;border-radius:10px;margin-bottom:15px;overflow:hidden;}
-.progress div{height:100%;width:0%;background:#25d366;transition:0.4s;}
-.hidden{display:none;}
-.back-btn{position:fixed;top:20px;left:20px;background:#25d366;color:black;padding:10px 14px;border-radius:50%;text-decoration:none;font-size:18px;z-index:2000;box-shadow:0 0 10px rgba(37,211,102,0.6);transition:0.3s;}
-.back-btn:hover{transform:scale(1.1);}
-.share-info{background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.3);border-radius:10px;padding:12px;margin:12px 0;font-size:13px;color:#a8ffc8;}
-.btn-secondary{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;margin-top:8px;}
-.btn-secondary:hover{background:rgba(255,255,255,0.2);}
-.score-big{font-size:3rem;margin:10px 0;}
+:root{
+  --bg:#07080f;
+  --card:rgba(255,255,255,.04);
+  --purple:#a855f7;
+  --pink:#ec4899;
+  --cyan:#22d3ee;
+  --green:#25d366;
+  --gold:#fbbf24;
+  --white:#f0f4ff;
+  --muted:rgba(240,244,255,.45);
+  --border:rgba(168,85,247,.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh}
+body{
+  background:var(--bg);color:var(--white);
+  font-family:'Inter',sans-serif;
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:20px;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 20%,rgba(168,85,247,.12) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 45% at 80% 80%,rgba(236,72,153,.1) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 35% at 60% 40%,rgba(34,211,238,.05) 0%,transparent 55%);
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(168,85,247,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(168,85,247,.03) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+
+/* BACK */
+.back-btn{
+  position:fixed;top:16px;left:16px;z-index:500;
+  width:38px;height:38px;border-radius:50%;
+  background:rgba(168,85,247,.15);border:1px solid var(--border);
+  color:var(--white);text-decoration:none;font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.back-btn:hover{background:rgba(168,85,247,.3);transform:scale(1.08)}
+
+/* CARD */
+.card{
+  position:relative;z-index:10;
+  width:100%;max-width:420px;
+  background:rgba(255,255,255,.04);
+  backdrop-filter:blur(24px);
+  border:1px solid var(--border);
+  border-radius:24px;padding:28px 24px;
+  text-align:center;
+  animation:cardIn .5s cubic-bezier(.23,1,.32,1) both;
+  box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px rgba(168,85,247,.06);
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.hidden{display:none!important}
+
+/* HEADER */
+.card-icon{font-size:2.5rem;margin-bottom:12px;display:block;animation:iconBounce 2s ease-in-out infinite alternate}
+@keyframes iconBounce{from{transform:scale(1) rotate(-3deg)}to{transform:scale(1.08) rotate(3deg)}}
+.card-title{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+.card-sub{font-size:.82rem;color:var(--muted);line-height:1.5;margin-bottom:20px}
+
+/* INPUT */
+.input-wrap{position:relative;margin-bottom:14px}
+.inp{
+  width:100%;padding:13px 16px;border-radius:12px;border:none;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  color:var(--white);font-size:.95rem;font-family:'Inter',sans-serif;
+  outline:none;transition:all .2s;
+}
+.inp:focus{border-color:rgba(168,85,247,.5);background:rgba(168,85,247,.06);box-shadow:0 0 0 3px rgba(168,85,247,.1)}
+.inp::placeholder{color:rgba(240,244,255,.25)}
+
+/* SELECT */
+.sel-wrap{position:relative;margin-bottom:16px}
+.sel{
+  width:100%;padding:13px 40px 13px 16px;border-radius:12px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  color:var(--white);font-size:.95rem;font-family:'Inter',sans-serif;
+  outline:none;appearance:none;cursor:pointer;transition:all .2s;
+}
+.sel:focus{border-color:rgba(168,85,247,.5);background:rgba(168,85,247,.06)}
+.sel option{background:#1a1a2e;color:var(--white)}
+.sel-arrow{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:.7rem;color:var(--muted);pointer-events:none}
+
+/* BUTTONS */
+.btn{
+  width:100%;padding:14px;border-radius:14px;border:none;
+  font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;
+  letter-spacing:.02em;cursor:pointer;transition:all .25s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff;box-shadow:0 8px 24px rgba(168,85,247,.35);
+  margin-bottom:10px;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(168,85,247,.5)}
+.btn-green{
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  color:#000;box-shadow:0 8px 24px rgba(37,211,102,.3);
+  margin-bottom:10px;font-weight:800;
+}
+.btn-green:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(37,211,102,.45)}
+.btn-ghost{
+  background:rgba(255,255,255,.06);color:var(--muted);
+  border:1px solid rgba(255,255,255,.1);margin-bottom:10px;
+}
+.btn-ghost:hover{background:rgba(255,255,255,.1);color:var(--white)}
+
+/* PROGRESS */
+.progress-wrap{margin-bottom:18px}
+.progress-bar{
+  height:5px;background:rgba(255,255,255,.08);border-radius:10px;
+  overflow:hidden;margin-bottom:8px;
+}
+.progress-fill{height:100%;width:0%;border-radius:10px;transition:.4s ease;background:linear-gradient(90deg,var(--purple),var(--pink))}
+.progress-text{font-family:'Space Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.1em;text-align:right}
+
+/* QUESTION */
+.q-num{font-family:'Space Mono',monospace;font-size:.6rem;color:var(--purple);letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px}
+.q-text{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:18px;line-height:1.35}
+
+/* SHARE INFO */
+.share-info{
+  background:rgba(37,211,102,.07);border:1px solid rgba(37,211,102,.2);
+  border-radius:12px;padding:14px;margin-bottom:16px;
+  font-size:.82rem;color:rgba(37,211,102,.8);line-height:1.6;
+}
+.share-link{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;padding:10px 12px;margin:10px 0;
+  font-family:'Space Mono',monospace;font-size:.65rem;color:var(--muted);
+  word-break:break-all;text-align:left;
+}
+
+/* RESULT */
+.score-emoji{font-size:4rem;margin:10px 0;display:block;animation:scorePop .5s cubic-bezier(.23,1,.32,1) both}
+@keyframes scorePop{from{transform:scale(0) rotate(-20deg)}to{transform:scale(1) rotate(0)}}
+.score-title{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.score-pct{
+  font-family:'Space Mono',monospace;font-size:.78rem;
+  color:var(--muted);margin-bottom:20px;letter-spacing:.08em;
+}
+.score-bar-wrap{margin:12px 0 20px}
+.score-bar{height:8px;background:rgba(255,255,255,.08);border-radius:10px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:10px;transition:width 1s cubic-bezier(.23,1,.32,1);background:linear-gradient(90deg,var(--purple),var(--pink))}
+.correct-answers{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:14px;margin:12px 0;text-align:left;
+}
+.ca-title{font-family:'Space Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.15em;margin-bottom:10px}
+.ca-item{font-size:.82rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ca-item:last-child{border-bottom:none}
+.ca-q{color:var(--muted);flex:1;font-size:.78rem}
+.ca-a{color:var(--green);font-weight:500;font-size:.78rem}
+.ca-tick{font-size:.8rem}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:10px;margin:8px 0}
+.div-line{flex:1;height:1px;background:rgba(255,255,255,.08)}
+.div-txt{font-size:.65rem;color:rgba(255,255,255,.25);font-family:'Space Mono',monospace;letter-spacing:.08em}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);
+  z-index:999;background:#111;border:1px solid rgba(168,85,247,.3);
+  border-radius:100px;padding:10px 20px;
+  font-family:'Space Mono',monospace;font-size:.62rem;
+  letter-spacing:.1em;color:var(--purple);
+  opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:380px){.card{padding:22px 18px}}
 </style>
 </head>
 <body>
 
-<!-- SCREEN 1: Enter Name (Quiz Creator) -->
-<div class="box" id="startScreen">
-  <h2>😎 Enter Your Name</h2>
-  <p style="font-size:13px;color:#aaa;margin:8px 0">Friends will guess about you!</p>
-  <input id="nameInput" placeholder="Your name..." />
-  <button onclick="startQuiz()">Start Quiz ▶</button>
+<a href="index.html" class="back-btn">←</a>
+<div class="toast" id="toast"></div>
+
+<!-- ── SCREEN 1: START ── -->
+<div class="card" id="startScreen">
+  <span class="card-icon">🧠</span>
+  <div class="card-title">How Well Do<br/>You Know Me?</div>
+  <div class="card-sub">Answer 10 questions about yourself.<br/>Share the link — friends will guess! 😎</div>
+  <div class="input-wrap">
+    <input class="inp" id="nameInput" placeholder="Enter your name..." maxlength="20"/>
+  </div>
+  <button class="btn btn-primary" onclick="startQuiz()">Start Quiz ▶</button>
+  <div class="divider"><div class="div-line"></div><div class="div-txt">PARADOX WORLD</div><div class="div-line"></div></div>
+  <div style="font-family:'Space Mono',monospace;font-size:.58rem;color:rgba(255,255,255,.18);letter-spacing:.1em">10 QUESTIONS · SHARE · COMPARE</div>
 </div>
 
-<!-- SCREEN 2: Quiz Questions (Creator answers) -->
-<div class="box hidden" id="quizScreen">
-  <div class="progress"><div id="bar"></div></div>
-  <h3 id="quizTitle" style="margin-bottom:8px"></h3>
-  <p id="questionText" style="margin:12px 0;font-size:15px"></p>
-  <select id="answerSelect"></select>
-  <button onclick="nextQuestion()">Next →</button>
+<!-- ── SCREEN 2: QUIZ ── -->
+<div class="card hidden" id="quizScreen">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText"></div>
+  </div>
+  <div class="q-num" id="qNum"></div>
+  <div class="q-text" id="qText"></div>
+  <div class="sel-wrap">
+    <select class="sel" id="answerSelect"></select>
+    <div class="sel-arrow">▼</div>
+  </div>
+  <button class="btn btn-primary" onclick="nextQuestion()">Next →</button>
 </div>
 
-<!-- SCREEN 3: Share Screen -->
-<div class="box hidden" id="shareScreen">
-  <h3>🔥 Quiz Ready!</h3>
+<!-- ── SCREEN 3: SHARE ── -->
+<div class="card hidden" id="shareScreen">
+  <span class="card-icon">🎉</span>
+  <div class="card-title">Quiz Ready!</div>
   <div class="share-info">
     Share this with friends — they will guess your answers!<br/>
-    <small> By sachin 😌</small>
+    <small style="opacity:.7">By Sachin 😌 · Paradox World</small>
   </div>
-  <button onclick="shareWhatsApp()">💬 Share on WhatsApp</button>
-  <button class="btn-secondary" onclick="testFriend()">🧪 Test Friend (Now)</button>
+  <button class="btn btn-green" onclick="shareWhatsApp()">💬 Share on WhatsApp</button>
+  <button class="btn btn-ghost" onclick="copyLink()">🔗 Copy Link</button>
+  <div class="divider"><div class="div-line"></div><div class="div-txt">OR</div><div class="div-line"></div></div>
+  <button class="btn btn-ghost" onclick="testFriend()">🧪 Test Friend Right Now</button>
 </div>
 
-<!-- SCREEN 4: Friend Guessing -->
-<div class="box hidden" id="guessScreen">
-  <div class="progress"><div id="bar2"></div></div>
-  <h3 id="guessTitle" style="margin-bottom:8px"></h3>
-  <p style="font-size:12px;color:#aaa;margin-bottom:12px">What do you think <span id="friendNameSpan"></span> chose?</p>
-  <p id="guessQuestion" style="margin:10px 0;font-size:15px"></p>
-  <select id="guessSelect"></select>
-  <button onclick="nextGuess()">Next →</button>
+<!-- ── SCREEN 4: GUESS ── -->
+<div class="card hidden" id="guessScreen">
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill2"></div></div>
+    <div class="progress-text" id="progressText2"></div>
+  </div>
+  <div class="q-num">ABOUT <span id="friendNameSpan" style="color:var(--purple)"></span></div>
+  <div class="q-text" id="guessQuestion"></div>
+  <div class="sel-wrap">
+    <select class="sel" id="guessSelect"></select>
+    <div class="sel-arrow">▼</div>
+  </div>
+  <button class="btn btn-primary" onclick="nextGuess()">Next →</button>
 </div>
 
-<!-- SCREEN 5: Result -->
-<div class="box hidden" id="resultScreen">
-  <div class="score-big" id="scoreEmoji"></div>
-  <h2 id="scoreText"></h2>
-  <p id="scorePercent" style="color:#aaa;margin:8px 0;font-size:14px"></p>
-  <button onclick="shareResult()">📤 Share Result</button>
-  <button class="btn-secondary" onclick="location.href=location.pathname">Create My Quiz 🔁</button>
+<!-- ── SCREEN 5: RESULT ── -->
+<div class="card hidden" id="resultScreen">
+  <span class="score-emoji" id="scoreEmoji"></span>
+  <div class="score-title" id="scoreText"></div>
+  <div class="score-pct" id="scorePercent"></div>
+  <div class="score-bar-wrap">
+    <div class="score-bar"><div class="score-bar-fill" id="scoreBarFill"></div></div>
+  </div>
+  <div class="correct-answers" id="answerReview"></div>
+  <button class="btn btn-green" onclick="shareResult()">📤 Share My Result</button>
+  <button class="btn btn-ghost" onclick="location.href=location.pathname">🔁 Create My Quiz</button>
 </div>
-
-<a href="index.html" class="back-btn">←</a>
 
 <script>
-// ── STATE ──
-let creatorName = "";
-let creatorAnswers = [];
-let currentQ = 0;
-let guessScore = 0;
-let guessIndex = 0;
-let isGuestMode = false;
-
+// ── QUESTIONS (10) ──
 const QUESTIONS = [
-  { q: "Favorite Chocolate 🍫", o: ["Dairy Milk","KitKat","Five Star","Other"] },
-  { q: "Favorite Food 🍗",      o: ["Mandhi","Biriyani","Porotta & Beef","Sadya"] },
-  { q: "Favorite Place 🌍",     o: ["Beach","Hill","City","Home"] },
-  { q: "Favorite Color 🎨",     o: ["Black","Blue","Red","White"] },
-  { q: "Biggest Fear 😨",       o: ["Ghost","Ex","Besty","You 🤭"] },
-  { q: "Favorite Time ⏰",      o: ["Morning","Night","Midnight","Evening"] }
+  { q: "Favorite Chocolate 🍫", o: ["Dairy Milk","KitKat","Five Star","Perk","Munch","None"] },
+  { q: "Favorite Food 🍗",      o: ["Biriyani","Mandhi","Porotta & Beef","Sadya","Pizza","Noodles"] },
+  { q: "Favorite Place 🌍",     o: ["Beach","Hill Station","City","Home","Forest","Cafe"] },
+  { q: "Favorite Color 🎨",     o: ["Black","Blue","Red","White","Purple","Green"] },
+  { q: "Biggest Fear 😨",       o: ["Ghost","Exam","Failing","Losing Friends","Dark","You 🤭"] },
+  { q: "Favorite Time ⏰",      o: ["Morning","Afternoon","Evening","Night","Midnight","Dawn"] },
+  { q: "Favorite Movie Genre 🎬", o: ["Action","Thriller","Romance","Horror","Comedy","Sci-Fi"] },
+  { q: "Mood Most of the Time 😶", o: ["Happy","Lazy","Overthinking","Chill","Hungry","Sleepy"] },
+  { q: "Favorite Social Media 📱", o: ["Instagram","WhatsApp","YouTube","Snapchat","Twitter/X","None"] },
+  { q: "What describes you best? ✨", o: ["Introvert","Extrovert","Foodie","Gamer","Music Lover","Dreamer"] },
 ];
 
-// ── ON PAGE LOAD — check URL params ──
-window.addEventListener('load', function() {
-  const params = new URLSearchParams(window.location.search);
-  const n = params.get('n');   // name
-  const a = params.get('a');   // answers (encoded)
+// ── STATE ──
+let creatorName="", creatorAnswers=[], currentQ=0;
+let guessScore=0, guessIndex=0, guessResults=[];
 
-  if (n && a) {
-    // FRIEND MODE — came from shared link
-    isGuestMode = true;
-    try {
+// ── PAGE LOAD ──
+window.addEventListener('load', () => {
+  const p = new URLSearchParams(window.location.search);
+  const n = p.get('n'), a = p.get('a');
+  if(n && a){
+    try{
       creatorName    = decodeURIComponent(n);
-      creatorAnswers = JSON.parse(atob(a)); // decode base64 → JSON
+      creatorAnswers = JSON.parse(atob(a));
       startFriendMode();
-    } catch(e) {
-      // If decode fails, show start screen
-      showScreen('startScreen');
-    }
-  } else {
-    showScreen('startScreen');
-  }
+    } catch(e){ show('startScreen'); }
+  } else { show('startScreen'); }
 });
 
 // ── HELPERS ──
-function showScreen(id) {
-  ['startScreen','quizScreen','shareScreen','guessScreen','resultScreen'].forEach(s => {
-    document.getElementById(s).classList.add('hidden');
-  });
-  document.getElementById(id).classList.remove('hidden');
+function show(id){
+  ['startScreen','quizScreen','shareScreen','guessScreen','resultScreen']
+    .forEach(s => document.getElementById(s).classList.add('hidden'));
+  const el = document.getElementById(id);
+  el.classList.remove('hidden');
+  el.style.animation='none'; el.offsetHeight;
+  el.style.animation='cardIn .5s cubic-bezier(.23,1,.32,1) both';
 }
 
-function setProgress(barId, index, total) {
-  document.getElementById(barId).style.width = ((index + 1) / total * 100) + '%';
+function setProgress(fillId, txtId, idx, total){
+  document.getElementById(fillId).style.width = ((idx+1)/total*100)+'%';
+  document.getElementById(txtId).textContent  = `${idx+1} / ${total}`;
 }
 
-function loadOptions(selectId, options) {
-  const sel = document.getElementById(selectId);
-  sel.innerHTML = options.map(o => `<option value="${o}">${o}</option>`).join('');
+function loadOpts(selId, opts){
+  const sel = document.getElementById(selId);
+  sel.innerHTML = opts.map(o=>`<option value="${o}">${o}</option>`).join('');
 }
 
-// ── CREATOR FLOW ──
-function startQuiz() {
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ── CREATOR ──
+function startQuiz(){
   const n = document.getElementById('nameInput').value.trim();
-  if (!n) { alert('Enter your name!'); return; }
-  creatorName = n;
-  currentQ = 0;
-  creatorAnswers = [];
-  showScreen('quizScreen');
-  document.getElementById('quizTitle').innerText = creatorName + "'s Quiz 🎯";
+  if(!n){ toast('⚠️ Enter your name!'); return; }
+  creatorName=n; currentQ=0; creatorAnswers=[];
+  show('quizScreen');
   loadCreatorQ();
 }
 
-function loadCreatorQ() {
+function loadCreatorQ(){
   const q = QUESTIONS[currentQ];
-  document.getElementById('questionText').innerText = q.q;
-  loadOptions('answerSelect', q.o);
-  setProgress('bar', currentQ, QUESTIONS.length);
+  document.getElementById('qNum').textContent = `QUESTION ${currentQ+1} OF ${QUESTIONS.length}`;
+  document.getElementById('qText').textContent = q.q;
+  loadOpts('answerSelect', q.o);
+  setProgress('progressFill','progressText',currentQ,QUESTIONS.length);
 }
 
-function nextQuestion() {
+function nextQuestion(){
   creatorAnswers.push(document.getElementById('answerSelect').value);
   currentQ++;
-  if (currentQ < QUESTIONS.length) {
-    loadCreatorQ();
-  } else {
-    showScreen('shareScreen');
-  }
+  if(currentQ < QUESTIONS.length){ loadCreatorQ(); }
+  else { show('shareScreen'); }
 }
 
-// ── BUILD SHARE LINK ──
-function buildShareLink() {
-  const base   = window.location.origin + window.location.pathname;
-  const name   = encodeURIComponent(creatorName);
-  const ans    = btoa(JSON.stringify(creatorAnswers)); // base64 encode
-  return `${base}?n=${name}&a=${ans}`;
+// ── SHARE ──
+function buildLink(){
+  const base = window.location.origin + window.location.pathname;
+  return `${base}?n=${encodeURIComponent(creatorName)}&a=${btoa(JSON.stringify(creatorAnswers))}`;
 }
 
-function shareWhatsApp() {
-  const link = buildShareLink();
-  const msg  = `🔥 *${creatorName}'s Quiz* 🎯\n\nDo you know me well?\nGuess my answers! 😎\n\n👇 Try here:\n${link}`;
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg));
+function shareWhatsApp(){
+  const link = buildLink();
+  const msg  = `🔥 *${creatorName}'s Quiz* 🧠\n\nDo you really know me?\nGuess my answers and find out! 😎\n\n👇 Try it:\n${link}\n\n_By Paradox World_`;
+  window.open('https://wa.me/?text='+encodeURIComponent(msg));
 }
 
-function testFriend() {
-  // Creator tests directly without sharing
-  guessScore = 0;
-  guessIndex = 0;
-  showScreen('guessScreen');
-  document.getElementById('guessTitle').innerText = "About " + creatorName + " 🤔";
-  document.getElementById('friendNameSpan').innerText = creatorName;
+function copyLink(){
+  navigator.clipboard.writeText(buildLink())
+    .then(()=>toast('✅ Link copied!'))
+    .catch(()=>toast('📋 Copy: '+buildLink()));
+}
+
+function testFriend(){
+  guessScore=0; guessIndex=0; guessResults=[];
+  show('guessScreen');
+  document.getElementById('friendNameSpan').textContent = creatorName;
   loadGuessQ();
 }
 
-// ── FRIEND GUESS FLOW ──
-function startFriendMode() {
-  guessScore = 0;
-  guessIndex = 0;
-  showScreen('guessScreen');
-  document.getElementById('guessTitle').innerText = "About " + creatorName + " 🤔";
-  document.getElementById('friendNameSpan').innerText = creatorName;
+// ── FRIEND GUESS ──
+function startFriendMode(){
+  guessScore=0; guessIndex=0; guessResults=[];
+  show('guessScreen');
+  document.getElementById('friendNameSpan').textContent = creatorName;
   loadGuessQ();
 }
 
-function loadGuessQ() {
+function loadGuessQ(){
   const q = QUESTIONS[guessIndex];
-  document.getElementById('guessQuestion').innerText = q.q;
-  loadOptions('guessSelect', q.o);
-  setProgress('bar2', guessIndex, QUESTIONS.length);
+  document.getElementById('guessQuestion').textContent = q.q;
+  loadOpts('guessSelect', q.o);
+  setProgress('progressFill2','progressText2',guessIndex,QUESTIONS.length);
 }
 
-function nextGuess() {
-  const selected = document.getElementById('guessSelect').value;
-  if (selected === creatorAnswers[guessIndex]) guessScore++;
+function nextGuess(){
+  const sel = document.getElementById('guessSelect').value;
+  const correct = creatorAnswers[guessIndex];
+  const isRight = sel === correct;
+  if(isRight) guessScore++;
+  guessResults.push({q:QUESTIONS[guessIndex].q, correct, selected:sel, right:isRight});
   guessIndex++;
-  if (guessIndex < QUESTIONS.length) {
-    loadGuessQ();
-  } else {
-    showResult();
-  }
+  if(guessIndex < QUESTIONS.length){ loadGuessQ(); }
+  else { showResult(); }
 }
 
 // ── RESULT ──
-function showResult() {
-  showScreen('resultScreen');
-  const pct = Math.round((guessScore / QUESTIONS.length) * 100);
+function showResult(){
+  show('resultScreen');
+  const pct = Math.round((guessScore/QUESTIONS.length)*100);
 
-  let emoji, text;
-  if (pct === 100) { emoji = "🏆"; text = "Best Friend!"; }
-  else if (pct >= 80) { emoji = "🔥"; text = "Very Close!"; }
-  else if (pct >= 60) { emoji = "🤝"; text = "Good Friend!"; }
-  else if (pct >= 40) { emoji = "😅"; text = "Kinda Know Me"; }
-  else               { emoji = "😂"; text = "Stranger 😂"; }
+  let emoji, text, color;
+  if(pct===100){ emoji="🏆"; text="BEST FRIEND!"; color="var(--gold)"; }
+  else if(pct>=80){ emoji="🔥"; text="Very Close!"; color="var(--purple)"; }
+  else if(pct>=60){ emoji="🤝"; text="Good Friend!"; color="var(--cyan)"; }
+  else if(pct>=40){ emoji="😅"; text="Kinda Know Me"; color="var(--pink)"; }
+  else            { emoji="😂"; text="Total Stranger!"; color="#f43f5e"; }
 
-  document.getElementById('scoreEmoji').innerText  = emoji;
-  document.getElementById('scoreText').innerText   = text;
-  document.getElementById('scorePercent').innerText = `You got ${guessScore}/${QUESTIONS.length} correct (${pct}%)`;
+  document.getElementById('scoreEmoji').textContent = emoji;
+  document.getElementById('scoreText').textContent  = text;
+  document.getElementById('scoreText').style.color  = color;
+  document.getElementById('scorePercent').textContent = `${guessScore}/${QUESTIONS.length} correct · ${pct}%`;
+
+  setTimeout(()=>{
+    document.getElementById('scoreBarFill').style.width = pct+'%';
+  },300);
+
+  // Answer review
+  const rev = document.getElementById('answerReview');
+  rev.innerHTML = `<div class="ca-title">// ANSWER REVIEW</div>` +
+    guessResults.map(r=>`
+      <div class="ca-item">
+        <div class="ca-q">${r.q.replace(/ .+/,'')}</div>
+        <div class="ca-a">${r.correct}</div>
+        <div class="ca-tick">${r.right?'✅':'❌'}</div>
+      </div>`).join('');
 }
 
-function shareResult() {
-  const pct  = Math.round((guessScore / QUESTIONS.length) * 100);
+function shareResult(){
+  const pct  = Math.round((guessScore/QUESTIONS.length)*100);
   const link = window.location.origin + window.location.pathname;
-  const msg  = `I scored ${pct}% on *${creatorName}'s* quiz! 🎯\nCan you beat me?\n\n${link}`;
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg));
+  const msg  = `I scored *${pct}%* on ${creatorName}'s quiz! 🧠\n${guessScore}/${QUESTIONS.length} correct!\n\nCan you beat me? 😎\n👇 Try:\n${link}`;
+  window.open('https://wa.me/?text='+encodeURIComponent(msg));
 }
 </script>
-
 </body>
 </html>
