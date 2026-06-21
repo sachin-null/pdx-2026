@@ -4,18 +4,19 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>📜 The Time Scroll – Part 3 | Paradox World</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Sans+Malayalam:wght@300;400;500&family=Crimson+Pro:ital,wght@0,400;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 <style>
 :root{--c:#c084fc;--bg:#04030a;--border:rgba(192,132,252,.12);--w:rgba(255,255,255,.85);--muted:rgba(255,255,255,.38)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--c);border-radius:2px}
-body{background:var(--bg);font-family:'Crimson Pro',serif;min-height:100vh;overflow-x:hidden;color:var(--w)}
+body{background:var(--bg);font-family:'Noto Sans Malayalam',sans-serif;min-height:100vh;overflow-x:hidden;color:var(--w)}
 body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:radial-gradient(ellipse 55% 45% at 15% 20%,rgba(192,132,252,.10) 0%,transparent 65%),
-  radial-gradient(ellipse 45% 50% at 85% 80%,rgba(192,132,252,.07) 0%,transparent 60%)}
-body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.05) 3px,rgba(0,0,0,.05) 4px)}
+  background:radial-gradient(ellipse 60% 50% at 20% 20%,rgba(192,132,252,.09) 0%,transparent 65%),
+  radial-gradient(ellipse 50% 55% at 80% 80%,rgba(192,132,252,.07) 0%,transparent 60%)}
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px)}
 nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:54px;background:rgba(4,3,10,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
 .nav-logo{font-family:'Cinzel',serif;font-size:.75rem;font-weight:700;color:var(--c);letter-spacing:.2em;text-shadow:0 0 14px var(--c)}
 .nav-links{display:flex;gap:6px}
@@ -28,19 +29,41 @@ nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-co
 .divider{display:flex;align-items:center;gap:14px;max-width:640px;margin:0 auto;padding:0 20px 36px;position:relative;z-index:10}
 .divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(192,132,252,.18),transparent)}
 .divider-gem{font-size:.72rem;color:var(--c);text-shadow:0 0 10px var(--c);animation:pulse 3s ease infinite}
-@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
 .story-wrap{position:relative;z-index:10;max-width:680px;margin:0 auto;padding:0 20px 40px}
-.story-content{font-size:clamp(1rem,2.2vw,1.12rem);line-height:2;color:rgba(255,255,255,.72);letter-spacing:.01em}
-.story-content p,.story-content br+br{margin-bottom:18px}
-.story-content strong{color:var(--c);text-shadow:0 0 8px rgba(192,132,252,.2)}
-.story-content b{color:var(--c);text-shadow:0 0 8px rgba(192,132,252,.2)}
-.part-nav{position:relative;z-index:10;max-width:680px;margin:0 auto;padding:28px 20px 80px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--border)}
-.part-info{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.12em;text-align:center;flex:1}
+/* Malayalam text */
+.story-para{font-family:'Noto Sans Malayalam',sans-serif;font-size:clamp(1rem,2.5vw,1.15rem);line-height:2.1;color:rgba(255,255,255,.75);margin-bottom:22px;letter-spacing:.01em;font-weight:400}
+/* English highlight lines */
+.en-quote{font-family:'Crimson Pro',serif;font-style:italic;font-size:clamp(1rem,2.2vw,1.12rem);color:#c084fc;text-shadow:0 0 10px rgba(192,132,252,.2);display:block;margin:6px 0;line-height:1.7}
+.en-gold{font-family:'Crimson Pro',serif;font-style:italic;font-size:clamp(1rem,2.2vw,1.12rem);color:#fbbf24;text-shadow:0 0 10px rgba(251,191,36,.2);display:block;margin:6px 0;line-height:1.7}
+.en-fade{font-family:'Crimson Pro',serif;font-style:italic;font-size:.95rem;color:rgba(255,255,255,.3);display:block;margin:4px 0;line-height:1.7}
+.scene-break{text-align:center;margin:28px 0;font-size:.75rem;color:rgba(192,132,252,.18);letter-spacing:.4em}
+/* Scroll reveal box */
+.scroll-box{background:linear-gradient(135deg,rgba(192,132,252,.08),rgba(251,191,36,.04));border:1px solid rgba(192,132,252,.2);border-radius:14px;padding:22px 24px;margin:28px 0;position:relative;overflow:hidden}
+.scroll-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#c084fc,#fbbf24,transparent)}
+.scroll-label{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:rgba(192,132,252,.4);letter-spacing:.2em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.scroll-label::before{content:'';display:block;width:7px;height:7px;border-radius:50%;background:#c084fc;box-shadow:0 0 8px #c084fc;animation:pulse 2s ease infinite}
+/* Memory box */
+.memory-box{background:linear-gradient(135deg,rgba(251,191,36,.07),rgba(192,132,252,.04));border:1px solid rgba(251,191,36,.2);border-radius:14px;padding:22px 24px;margin:28px 0;position:relative}
+.memory-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#fbbf24,transparent)}
+.memory-label{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:rgba(251,191,36,.45);letter-spacing:.2em;margin-bottom:12px}
+/* Opening quote */
+.opening-quote{border-left:2px solid var(--c);padding:14px 0 14px 22px;margin-bottom:36px;background:linear-gradient(90deg,rgba(192,132,252,.06),transparent);border-radius:0 8px 8px 0}
+.opening-quote .en-q{font-family:'Crimson Pro',serif;font-style:italic;font-size:1.05rem;color:rgba(192,132,252,.75);line-height:1.75}
+.opening-quote .attr{font-family:'Share Tech Mono',monospace;font-size:.56rem;color:var(--muted);letter-spacing:.12em;margin-top:10px}
+/* Chapter title box */
+.chapter-name-box{text-align:center;margin-bottom:32px;padding:20px;background:rgba(192,132,252,.04);border:1px solid rgba(192,132,252,.1);border-radius:12px}
+.cn-part{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:rgba(192,132,252,.5);letter-spacing:.2em;margin-bottom:8px}
+.cn-title{font-family:'Cinzel',serif;font-size:clamp(1.1rem,3vw,1.6rem);font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.05em;margin-bottom:6px}
+.cn-sub{font-family:'Crimson Pro',serif;font-style:italic;font-size:.95rem;color:rgba(192,132,252,.45)}
+/* Part nav */
+.part-nav{position:relative;z-index:10;max-width:680px;margin:0 auto;padding:24px 20px 80px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--border)}
+.part-info{font-family:'Share Tech Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.1em;text-align:center;flex:1}
 .part-dots{display:flex;gap:8px;justify-content:center;margin-top:8px}
-.pdot{width:8px;height:8px;border-radius:50%;border:1px solid rgba(192,132,252,.25);background:transparent;transition:all .3s}
+.pdot{width:8px;height:8px;border-radius:50%;border:1px solid rgba(192,132,252,.3);background:transparent;transition:all .3s}
 .pdot.active{background:var(--c);border-color:var(--c);box-shadow:0 0 8px var(--c)}
 .pdot.done{background:rgba(192,132,252,.3);border-color:rgba(192,132,252,.3)}
-.nav-btn{font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.12em;padding:11px 22px;border-radius:8px;text-decoration:none;transition:all .28s;border:1px solid var(--border);color:var(--muted);background:transparent;white-space:nowrap}
+.nav-btn{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.1em;padding:11px 22px;border-radius:8px;text-decoration:none;transition:all .28s;border:1px solid var(--border);color:var(--muted);background:transparent;white-space:nowrap}
 .nav-btn:hover{color:var(--w);border-color:rgba(192,132,252,.3)}
 .nav-btn.next{color:var(--c);border-color:rgba(192,132,252,.35);background:rgba(192,132,252,.06)}
 .nav-btn.next:hover{background:rgba(192,132,252,.14);box-shadow:0 0 20px rgba(192,132,252,.2);transform:translateX(3px)}
@@ -50,6 +73,7 @@ nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-co
 </head>
 <body>
 <nav>
+  <div class="nav-logo">PARADOX WORLD</div>
   <div class="nav-links">
     <a href="../../index.html" class="nav-link">↩ STORY</a>
     <a href="/" class="nav-link">🏠</a>
@@ -58,70 +82,160 @@ nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-co
 <div class="chapter-intro">
   <div class="part-badge">✦ PART 3 OF 3 ✦</div>
   <h1 class="ch-title">📜 The Time Scroll</h1>
-  <div class="ch-sub">// FANTASY · 🧙</div>
+  <div class="ch-sub">// FANTASY · 🧙 · THE LAST TWO VISITS</div>
 </div>
 <div class="divider"><div class="divider-line"></div><div class="divider-gem">✦</div><div class="divider-line"></div></div>
 <div class="story-wrap">
-  <div class="story-content">
-<h2>Part 3 – The Cost of Remembering</h2>
-
-<p>
-അവസാനം അവൻ മനസ്സിലാക്കി.  
-Scroll നൽകുന്നത്  
-സമയം അല്ല…  
-Closure ആണ്.
-</p>
-
-<p>
-അവൻ അവസാനമായി Scroll തുറന്നു.  
-അവിടെ ഭാവി ഇല്ല.  
-ഭൂതകാലവും ഇല്ല.
-</p>
-
-<p>
-അവിടെ അവൻ മാത്രം.  
-നിശ്ശബ്ദമായി.
-</p>
-
-<p>
-Scroll അടഞ്ഞു.  
-അവന്റെ ഓർമ്മകൾ എല്ലാവർക്കും ഉണ്ടായിരുന്നു…  
-പക്ഷേ അവനെ കുറിച്ച്  
-ആർക്കും ഓർമ്മയില്ല.
-</p>
-
-<p>
-എന്നാലും,  
-ലോകം ഒറ്റ നിമിഷം കൂടി  
-സുന്ദരമായി തോന്നി.
-</p>
-
-<p>
-കാരണം ചിലർ  
-ജീവിക്കാൻ വേണ്ടിയല്ല…  
-മറ്റുള്ളവർക്ക് ഓർക്കാൻ വേണ്ടി  
-വന്നവരാണ്.
-</p>
+  <div class="chapter-name-box">
+    <div class="cn-part">// PART 3</div>
+    <div class="cn-title">The Last Two Visits</div>
+    <div class="cn-sub">— Choose what you stay for —</div>
   </div>
+
+  <div class="opening-quote">
+    <p class="en-q">"The bravest thing a person can do<br/>
+    is not to go back to what they lost —<br/>
+    but to stay in what they have."</p>
+    <div class="attr">— Final inscription on the Time Scroll</div>
+  </div>
+
+  <p class="story-para">
+    Kiran-ന് രണ്ട് visits ബാക്കി ഉണ്ടായിരുന്നു.<br/>
+    ഒരൊറ്റ ജീവിതം. ഒരൊറ്റ ഇന്ന്. ഈ രണ്ടിൽ ഏത് ഓർമ്മ ആണ് ബാക്കി ജീവിതത്തേക്കാൾ വലുത്?
+  </p>
+
+  <p class="story-para">
+    അവന്റെ കൈയിൽ ഒരു list ഉണ്ടായിരുന്നു — ഇരുപത്തി ഏഴ് നിമിഷങ്ങൾ.<br/>
+    നായ മരിച്ച ദിവസം. ഒരു സൗഹൃദം അവസാനിക്കുന്നതിന് മുൻപ് ഉള്ള അവസാന സംഭാഷണം.<br/>
+    "I love you" പറയാൻ കഴിയാതിരുന്ന ഒരു afternoon.
+  </p>
+
+  <div class="scene-break">· · · 📜 · · ·</div>
+
+  <div class="memory-box">
+    <div class="memory-label">// THE SIXTH VISIT — SECOND TO LAST</div>
+    <p class="story-para" style="margin-bottom:10px">
+      അവൻ Meera-യുടെ ഓർമ്മ തിരഞ്ഞെടുത്തു.<br/>
+      ആദ്യ സ്നേഹം. ഒരു afternoon. 4 PM. Monsoon. ഒരു ബസ് stop.
+    </p>
+    <p class="story-para" style="margin-bottom:10px">
+      Vision-ൽ — അവർ പതിനാറ് വയസ്സ്. ഒരു കുട — രണ്ടു പേർക്ക്. രണ്ടു പേരും നനഞ്ഞ്.<br/>
+      Meera ചിരിക്കുകയായിരുന്നു. Kiran എന്ത് പറഞ്ഞെന്ന് ഓർക്കുന്നില്ല.
+    </p>
+    <span class="en-quote">But in the scroll — he heard it.<br/>
+    He saw her face at the exact moment<br/>
+    before the laugh left her.<br/>
+    The half-second of delight before joy becomes sound.</span>
+    <p class="story-para" style="margin-top:14px;margin-bottom:0;color:rgba(192,132,252,.5)">
+      Vision തീർന്നപ്പോൾ — Kiran-ന്റെ കൈ ഒരു നിഴൽ പോലെ ആയിരുന്നു.<br/>
+      ഒരു visit ബാക്കി.
+    </p>
+  </div>
+
+  <div class="scene-break">· · · 📜 · · ·</div>
+
+  <p class="story-para">
+    Final visit-ന് മുൻപ് Kiran ദീർഘ നേരം ഇരുന്നു.<br/>
+    ഏറ്റവും വലിയ ഓർമ്മ ഏത്? ഈ ഒരൊറ്റ visit-ന് ഏത് ആണ് worthy?
+  </p>
+
+  <p class="story-para">
+    അപ്പോൾ — അവൻ ഒരു കാര്യം മനസ്സിലാക്കി.<br/>
+    മുത്തശ്ശൻ അറിഞ്ഞിരുന്നത്. ആ vision-ലെ വൃദ്ധൻ കൂടി വൈകി മനസ്സിലാക്കിയത്.
+  </p>
+
+  <p class="story-para" style="text-align:center">
+    <span class="en-gold">The scroll was not asking which memory was most important.<br/>
+    It was asking — whether memory was more important than the present.</span>
+  </p>
+
+  <div class="scroll-box">
+    <div class="scroll-label">// THE SEVENTH VISIT — THE LAST</div>
+    <p class="story-para" style="margin-bottom:10px">
+      Kiran scroll അവസാനമായി unroll ചെയ്തു.<br/>
+      ഈ തവണ — അവൻ ഒരു ഓർമ്മ ചോദിച്ചില്ല.
+    </p>
+    <p class="story-para" style="margin-bottom:12px">
+      ആ glowing words-നോട് അവൻ പതിയെ പറഞ്ഞു:
+    </p>
+    <span class="en-quote">"Show me nothing. Keep this one."</span>
+    <p class="story-para" style="margin-top:14px;margin-bottom:12px;color:rgba(192,132,252,.6)">
+      Scroll ഒരു നിമിഷം നിശ്ചലമായി. പിന്നെ:
+    </p>
+    <span class="en-quote">"Are you sure?<br/>You have twenty-five moments left unclaimed."</span>
+    <p class="story-para" style="margin-top:14px;margin-bottom:0">
+      "അതെ," Kiran പറഞ്ഞു.<br/>
+      "ഇരുപത്തി അഞ്ചും ബാക്കി ഇരിക്കട്ടെ.<br/>
+      ഇന്ന് ഞാൻ ഇന്ന് ആണ്."
+    </p>
+  </div>
+
+  <div class="scene-break">· · · 📜 · · ·</div>
+
+  <p class="story-para">
+    Scroll — ഒരു നെടുവീർപ്പ് പോലെ — അടഞ്ഞു.<br/>
+    Kiran-ന്റെ shadow — ആ library-ൽ — തിരിച്ചു വന്നു.<br/>
+    അവൻ real ആയിരുന്നു. ഇപ്പോഴും. ഇവിടെ. ഇന്നിൽ.
+  </p>
+
+  <p class="story-para">
+    അവൻ scroll പെട്ടിയിൽ വെച്ചു. Lid അടച്ചു. Lock ചെയ്തു.<br/>
+    ആ ചാവി — മേശമേൽ ഉപേക്ഷിച്ചു — അടുത്ത ആൾക്ക് വേണ്ടി.
+  </p>
+
+  <div class="memory-box">
+    <div class="memory-label">// WHAT HE UNDERSTOOD AT THE END</div>
+    <span class="en-quote">Memory is not a museum you live in.<br/>
+    It is a window — you can look, but not enter.</span>
+    <p class="story-para" style="margin-top:14px;margin-bottom:10px">
+      നമ്മൾ നഷ്ടപ്പെടുത്തിയ ആളുകൾ — ഭൂതകാലത്തിൽ ജീവിക്കുന്നില്ല.<br/>
+      അവർ ജീവിക്കുന്നത് — നമ്മൾ ചിരിക്കുന്ന രീതിയിൽ.<br/>
+      മഴ നോക്കി മൗനമിരിക്കുമ്പോൾ. ഓർക്കാതെ ചെയ്യുന്ന ചെറിയ ശീലങ്ങളിൽ.
+    </p>
+    <span class="en-gold">His father lived in the way Kiran chose his words carefully.<br/>
+    Meera lived in the way he noticed the half-second before a smile.<br/>
+    His grandfather lived in the key — and the courage to use it.</span>
+    <p class="story-para" style="margin-top:16px;margin-bottom:0;color:rgba(255,255,255,.35);text-align:center">
+      ആ scroll — ആ ലൈബ്രറിയിൽ ഇരിക്കുന്നു.<br/>
+      ഇനിയും ആരെങ്കിലും വരും. ആ lock. ആ ഊഷ്മളത. ഒരൊറ്റ ചോദ്യം:
+    </p>
+    <span class="en-quote" style="text-align:center;display:block;margin-top:12px">"What are you willing to stay for?"</span>
+  </div>
+
+  <p class="story-para">
+    Kiran ആ library-യിൽ നിന്ന് പുറത്തു കടന്നു.<br/>
+    ആ തെരുവ് — ഇനി ഒഴിഞ്ഞ ഒന്നല്ല. ഒരു ജീവിതം നടന്നു പോകുന്ന ഒന്ന്.<br/>
+    Phone ബെൽ ചെയ്തു. അമ്മ.
+  </p>
+
+  <p class="story-para">
+    ആദ്യ ring-ൽ തന്നെ അവൻ എടുത്തു.
+  </p>
+
+  <p class="story-para" style="text-align:center;color:rgba(255,255,255,.3)">
+    "Hi," അവൻ പറഞ്ഞു.<br/>
+    "Hi," അവൾ പറഞ്ഞു.<br/>
+    ഒരു നിമിഷം — ഇരുവരും ഒന്നും പറഞ്ഞില്ല.
+  </p>
+
+  <p class="story-para" style="text-align:center">
+    <span class="en-gold">It was enough.</span>
+  </p>
+
 </div>
 <div class="part-nav">
   <a href="part2.html" class="nav-btn">← BACK</a>
-  <div class="part-info">
-    📜 THE TIME SCROLL
-    <div class="part-dots"><div class="pdot done"></div><div class="pdot done"></div><div class="pdot active"></div></div>
-  </div>
+  <div class="part-info">📜 THE TIME SCROLL<div class="part-dots"><div class="pdot done"></div><div class="pdot done"></div><div class="pdot active"></div></div></div>
   <a href="/" class="nav-btn next">🏠 HOME</a>
 </div>
 <script>
 const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}});
-},{threshold:.06});
-document.querySelectorAll('.story-content p,.story-content br').forEach((el,i)=>{
-  if(el.tagName==='P'){
-    el.style.opacity='0';el.style.transform='translateY(16px)';
-    el.style.transition=`opacity .5s ease ${Math.min(i*.03,.5)}s, transform .5s ease ${Math.min(i*.03,.5)}s`;
-    obs.observe(el);
-  }
+},{threshold:.07});
+document.querySelectorAll('.story-para,.scroll-box,.memory-box,.opening-quote,.scene-break,.chapter-name-box').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(18px)';
+  el.style.transition='opacity .65s ease,transform .65s ease';
+  obs.observe(el);
 });
 </script>
 </body>
